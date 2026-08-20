@@ -30,9 +30,9 @@ class Head(nn.Module):
         k = self.key(x)     # (B, T, head_size)
         v = self.value(x)   # (B, T, head_size)
 
-        weights = q @ k.transpose(-2, -1)                                      # (B, T, T)
+        weights = q @ k.transpose(-2, -1)                                                # (B, T, T)
         weights = weights.masked_fill(self.tril[:self.T, :self.T] == 0, float('-inf'))   # (B, T, T)
-        weights = torch.softmax(weights)                                       # (B, T, T)
+        weights = torch.softmax(weights)                                                 # (B, T, T)
 
         out = weights @ v    # (B, T, head_size)
 
@@ -80,7 +80,7 @@ class Block(nn.Module):
 
 
 class GPT(nn.Module):
-    def __init__(self, T, C, vocab_size, num_heads, n_layers):
+    def __init__(self, T, C, vocab_size, num_heads, n_layers, dropout):
         super().__init__()
         self.T = T
         self.embedding = EmbeddingLayer(vocab_size, T, C)
