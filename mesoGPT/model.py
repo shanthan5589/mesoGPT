@@ -5,34 +5,39 @@ import torch.nn as nn
 class EmbeddingLayer(nn.Module):
     def __init__(self, vocab_size, T, C):
         super().__init__()
-        self.token_embedding = nn.Embedding(vocab_size, C)   # (vocab_size, C) learnable params
-        self.position_embedding = nn.Embedding(T, C)         # (T, C) learnable params
+        self.token_embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
+        self.position_embedding = nn.Embedding(T, C)         # (T x C) learnable params
 
     def forward(self, x):
         B, T = x.shape
-        token_emb = self.token_embedding(x)                         # (B, T, C)
-        position_emb = self.position_embedding(torch.arange(T))     # (T, C)
-        return token_emb + position_emb                             # (B, T, C)
+        token_emb = self.token_embedding(x)     
+        position_ids = torch.arange(T, device=x.device)             # (B, T, C)
+        position_emb = self.position_embedding(position_ids)        # (T, C)
+        return token_emb + position_emb                             # (B, T, C) Broadcasting works
 
 
 class Head(nn.Module):
-    def __init__(self, T, C, head_size):
+    def __init__(self, T, C, head_size, dropout):
         super().__init__()
-        self.T = T
-        self.query = nn.Linear(C, head_size)    # (head_size, C)  learnable params
-        self.key = nn.Linear(C, head_size)      # (head_size, C)  learnable params
-        self.value = nn.Linear(C, head_size)    # (head_size, C)  learnable params
+        self.head_size = head_size
+        self.query = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
+        self.key = nn.Linear(C, head_size)      # (head_size x C) + head_size learnable params
+        self.value = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
+        self.dropout = nn.Dropout(dropout)
         self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
 
     def forward(self, x):
+
+        B, T, C = x.shape
 
         q = self.query(x)   # (B, T, head_size)
         k = self.key(x)     # (B, T, head_size)
         v = self.value(x)   # (B, T, head_size)
 
-        weights = q @ k.transpose(-2, -1)                                                # (B, T, T)
-        weights = weights.masked_fill(self.tril[:self.T, :self.T] == 0, float('-inf'))   # (B, T, T)
-        weights = torch.softmax(weights)                                                 # (B, T, T)
+        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)                # (B, T, T)
+        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))        # (B, T, T) Dynamic causal-mask slicing
+        weights = torch.softmax(weights, dim=-1)                                    # (B, T, T)
+        weights = self.dropout(weights)                                             # (B, T, T)
 
         out = weights @ v    # (B, T, head_size)
 
@@ -40,25 +45,28 @@ class Head(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, T, C, num_heads):
+    def __init__(self, T, C, num_heads, dropout):
         super().__init__()
         self.head_size = C // num_heads
-        self.heads = nn.ModuleList([Head(T, C, self.head_size) for _ in range(num_heads)])
-        self.proj = nn.Linear(C, C)     # (C, C) learnable params
+        self.heads = nn.ModuleList([Head(T, C, self.head_size, dropout) for _ in range(num_heads)])
+        self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         out = torch.concat([h(x) for h in self.heads], dim=-1)
         out = self.proj(out)
+        out = self.dropout(out)
         return out
 
 
 class FeedForward(nn.Module):
-    def __init__(self, C):
+    def __init__(self, C, dropout):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(C, 4*C),         # (4*C, C) learnable params
-            nn.ReLU(),
-            nn.Linear(4*C, C)          # (C, 4*C) learnable params
+            nn.Linear(C, 4*C),         # (4C^2) + 4C learnable params
+            nn.GELU(),
+            nn.Linear(4*C, C),         # (4C^2) + C learnable params
+            nn.Dropout(dropout)
         )
         
     def forward(self, x):
@@ -66,12 +74,12 @@ class FeedForward(nn.Module):
 
 
 class Block(nn.Module):
-    def __init__(self, T, C, num_heads):
+    def __init__(self, T, C, num_heads, dropout):
         super().__init__()
-        self.ln1 = nn.LayerNorm(C)                       # (2 * C) learnable params
-        self.attn = MultiHeadAttention(T, C, num_heads)
-        self.ln2 = nn.LayerNorm(C)                       # (2 * C) learnable params
-        self.ff = FeedForward(C)
+        self.ln1 = nn.LayerNorm(C)                                     # 2C learnable params
+        self.attn = MultiHeadAttention(T, C, num_heads, dropout)       # (num_heads x (3 x head_size) x (C+1)) + (C^2 + C) learnable params
+        self.ln2 = nn.LayerNorm(C)                                     # 2C learnable params
+        self.ff = FeedForward(C, dropout)                              # 8C^2 + 5C learnable params 
 
     def forward(self, x):
         x = x + self.attn(self.ln1(x))
@@ -84,9 +92,9 @@ class GPT(nn.Module):
         super().__init__()
         self.T = T
         self.embedding = EmbeddingLayer(vocab_size, T, C)
-        self.blocks = nn.Sequential(*[Block(T, C, num_heads) for _ in range(n_layers)])
-        self.ln_f = nn.LayerNorm(C)
-        self.lm_head = nn.Linear(C, vocab_size)     # (vocab_size, C) learnable params
+        self.blocks = nn.Sequential(*[Block(T, C, num_heads, dropout) for _ in range(n_layers)])  
+        self.ln_f = nn.LayerNorm(C)                 # 2C learnable params
+        self.lm_head = nn.Linear(C, vocab_size)     # (vocab_size x C) + vocab_size learnable params
 
     def forward(self, x):
         x = self.embedding(x)
@@ -104,7 +112,7 @@ class GPT(nn.Module):
             logits = self(idx_cond)
             logits = logits[:, -1, :] / temperature
 
-            probs = torch.softmax(logits)
+            probs = torch.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
 
             idx = torch.cat((idx, idx_next), dim=1)

@@ -45,7 +45,7 @@ vocab_size = len(vocab)
 
 model = GPT(vocab_size=vocab_size, T=context_length, 
             C=n_embed, n_layers=n_layers, 
-            num_head=n_heads, dropout=dropout).to(device)
+            num_heads=n_heads, dropout=dropout).to(device)
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 criterion = nn.CrossEntropyLoss()
@@ -120,7 +120,7 @@ for step in range(max_steps):
                     "T": context_length,
                     "C": n_embed,
                     "vocab_size": vocab_size,
-                    "num_head": n_heads,
+                    "num_heads": n_heads,
                     "n_layers": n_layers,
                     "dropout": dropout
                 },
@@ -130,7 +130,7 @@ for step in range(max_steps):
                 "optimizer_state_dict": optimizer.state_dict(),
                 "step": completed_steps,
                 "val_loss": best_val_loss,
-            }, "model.pt")
+            }, "weights/model.pt")
 
             print(
                     f"Saved new best checkpoint "
