@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from model import GPT
-from data import load_data
+from mesoGPT.model import GPT
+from mesoGPT.dataloader import load_data
 
 # ---------------- hyperparameters ----------------
 

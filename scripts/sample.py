@@ -1,6 +1,6 @@
 import torch
-from model import GPT
-from data import Tokenizer
+from mesoGPT.model import GPT
+from mesoGPT.dataloader import Tokenizer
 
 text = " "
 max_tokens = 1000
