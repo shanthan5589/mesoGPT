@@ -1,3 +1,4 @@
+```
 mesoGPT/
 ├── .gitignore
 ├── .vscode/
@@ -16,3 +17,4 @@ mesoGPT/
 │   ├── base_train.py
 │   ├── sample.py
 │   └── count_params.py
+```
