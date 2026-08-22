@@ -1,97 +1,96 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader, IterableDataset, get_worker_info
+
+from mesoGPT.dataset import parquet_batches
+
 
 class Tokenizer:
-    def __init__(self, grammar):
+    def __init__(self):
+
+        grammar = """abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!
+        ?;:'\"()[]{}<>@#$%^&*-_=+|/\\`~\n\t"""
+
         self.itos = {i:s for i,s in enumerate(grammar)}
         self.stoi = {s:i for i,s in enumerate(grammar)}
 
     def encode(self, content):
-        return [self.stoi[x] for x in content]
+        unknown_id = self.stoi[" "]
+        return [self.stoi.get(character, unknown_id) for character in content]
 
     def decode(self, content):
         return ''.join([self.itos[x] for x in content])
 
-
-class GPTDataset(Dataset):
-    def __init__(self, text, tokenizer, T, stride):
-        self.input_ids = []
-        self.output_ids = []
-
-        token_ids = tokenizer.encode(text)
-
-        for i in range(0, len(token_ids) - T, stride):
-            self.input_ids.append(torch.tensor(token_ids[i: i+T]))
-            self.output_ids.append(torch.tensor(token_ids[i+1: i+T+1]))
-
-        self.input_ids = torch.stack(self.input_ids)
-        self.output_ids = torch.stack(self.output_ids)
-
-    def __getitem__(self, index):
-        return self.input_ids[index], self.output_ids[index]
-
     def __len__(self):
-        return len(self.input_ids)
-
-    def split_data(self, train_ratio=0.8):
-        split_idx = int(len(self.input_ids) * train_ratio)
-        train_input_ids = self.input_ids[:split_idx]
-        train_output_ids = self.output_ids[:split_idx]
-        val_input_ids = self.input_ids[split_idx:]
-        val_output_ids = self.output_ids[split_idx:]
-
-        return (train_input_ids, train_output_ids), (val_input_ids, val_output_ids)
-
-class TrainDataset(Dataset):
-    def __init__(self, data):
-        self.train_input_ids, self.train_output_ids = data
-
-    def __getitem__(self, index):
-        return self.train_input_ids[index], self.train_output_ids[index]
-
-    def __len__(self):
-        return len(self.train_input_ids)
-
-class ValDataset(Dataset):
-    def __init__(self, data):
-        self.val_input_ids, self.val_output_ids = data
-
-    def __getitem__(self, index):
-        return self.val_input_ids[index], self.val_output_ids[index]
-
-    def __len__(self):
-        return len(self.val_input_ids)
-
-def GPTDataLoader(dataset, B=4, shuffle=True, drop_last=True, num_workers=0):
-
-    dataloader = DataLoader(dataset, batch_size=B, 
-                            shuffle=shuffle, num_workers=num_workers, 
-                            drop_last=drop_last)
-
-    return dataloader
+        return len(self.itos)
 
 
-def load_data(B, T, stride, shuffle, drop_last, num_workers, train_ratio=0.8):
+class ParquetTokenDataset(IterableDataset):
+    def __init__(self, split, tokenizer, context_length, stride, repeat=False):
+        super().__init__()
+        self.split = split
+        self.tokenizer = tokenizer
+        self.context_length = context_length
+        self.stride = stride
+        self.repeat = repeat
 
-    with open('data/input.txt') as f:
-        text = f.read()
+    def __iter__(self):
 
-    vocab = sorted(list(set(text)))
+        worker = get_worker_info()
 
-    tokenizer = Tokenizer(vocab)
+        while True:
+            for batch_index, document_batch in enumerate(
+                parquet_batches(self.split)
+            ):
+                # Prevent multiple DataLoader workers from yielding
+                # the same row group.
+                if (
+                    worker is not None
+                    and batch_index % worker.num_workers != worker.id
+                ):
+                    continue
 
-    gpt_dataset = GPTDataset(text, tokenizer, T=T, stride=stride)
+                documents = [
+                    document
+                    for document in document_batch
+                    if document
+                ]
 
-    train_dataset, val_dataset = gpt_dataset.split_data(train_ratio=train_ratio)
+                text = "\n".join(documents)
+                token_ids = self.tokenizer.encode(text)
 
-    train_dataloader = GPTDataLoader(TrainDataset(train_dataset), B=B, 
-                                     shuffle=shuffle, 
-                                     drop_last=drop_last, 
-                                     num_workers=num_workers)
-    
-    val_dataloader = GPTDataLoader(ValDataset(val_dataset), B=B, 
-                                     shuffle=False,
-                                     drop_last=True, 
-                                     num_workers=num_workers)
+                for start in range(0, len(token_ids) - self.context_length, self.stride):
 
-    return vocab, tokenizer, train_dataloader, val_dataloader
+                    end = start + self.context_length + 1
+
+                    window = torch.tensor(token_ids[start:end], dtype=torch.long)
+
+                    yield window[:-1], window[1:]
+
+            if not self.repeat:
+                return
+
+
+def create_dataloader(
+    split,
+    tokenizer,
+    context_length,
+    stride,
+    batch_size,
+    repeat=False,
+    drop_last=True,
+    num_workers=0,
+):
+    dataset = ParquetTokenDataset(
+        split=split,
+        tokenizer=tokenizer,
+        context_length=context_length,
+        stride=stride,
+        repeat=repeat,
+    )
+
+    return DataLoader(
+        dataset,
+        batch_size=batch_size,
+        drop_last=drop_last,
+        num_workers=num_workers,
+    )

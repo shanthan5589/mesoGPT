@@ -2,7 +2,9 @@ import torch
 import torch.nn as nn
 
 from mesoGPT.model import GPT
-from mesoGPT.dataloader import load_data
+
+from mesoGPT.dataloader import Tokenizer, create_dataloader
+
 
 # ---------------- hyperparameters ----------------
 
@@ -23,13 +25,12 @@ eval_interval = 250
 eval_iters = 50
 
 # Dataset
-train_ratio = 0.8
 stride = context_length
-shuffle = True          # Set to False for Validation dataset because what if the randomly picked batch is too easy to predict, if it's too easy we will have a low validation loss and we end up saving a wrong checkpoint.
 drop_last = True        # Set to True for Validation dataset
 num_workers = 0
 
 # -------------------------------------------------
+
 
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -37,15 +38,15 @@ device = torch.device(
 
 print(f"Using device: {device}")
 
-vocab, tokenizer, train_dataloader, val_dataloader = load_data(batch_size, context_length, 
-                                                               stride, shuffle, 
-                                                               drop_last, num_workers, 
-                                                               train_ratio=train_ratio)
-vocab_size = len(vocab)
+tokenizer = Tokenizer()
+vocab_size = len(tokenizer)
 
-model = GPT(vocab_size=vocab_size, T=context_length, 
-            C=n_embed, n_layers=n_layers, 
-            num_heads=n_heads, dropout=dropout).to(device)
+model = GPT(vocab_size=vocab_size, 
+            T=context_length, 
+            C=n_embed, 
+            n_layers=n_layers, 
+            num_heads=n_heads, 
+            dropout=dropout).to(device)
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
 criterion = nn.CrossEntropyLoss()
@@ -56,7 +57,32 @@ def estimate_loss():
     model.eval()
     losses = {}
 
-    for split, dataloader in [("train", train_dataloader), ("val", val_dataloader)]:
+    train_dataloader_eval = create_dataloader(
+    split="train",
+    tokenizer=tokenizer,
+    context_length=context_length,
+    stride=stride,
+    batch_size=batch_size,
+    repeat=False,
+    drop_last=drop_last,
+    num_workers=num_workers,
+    )
+
+    val_dataloader = create_dataloader(
+        split="val",
+        tokenizer=tokenizer,
+        context_length=context_length,
+        stride=stride,
+        batch_size=batch_size,
+        repeat=False,
+        drop_last=drop_last,
+        num_workers=num_workers,
+    )
+
+    for split, dataloader in [
+        ("train", train_dataloader_eval),
+        ("val", val_dataloader),
+    ]:
 
         batch_losses = []
 
@@ -79,16 +105,24 @@ def estimate_loss():
     model.train()
     return losses
 
+train_dataloader = create_dataloader(
+    split="train",
+    tokenizer=tokenizer,
+    context_length=context_length,
+    stride=stride,
+    batch_size=batch_size,
+    repeat=True,
+    drop_last=drop_last,
+    num_workers=num_workers,
+)
+
 train_iterator = iter(train_dataloader)
-best_val_loss = float('inf')
+
+best_val_loss = float("inf")
 
 for step in range(max_steps):
-        
-    try:
-        xb, yb = next(train_iterator)
-    except StopIteration:
-        train_iterator = iter(train_dataloader)
-        xb, yb = next(train_iterator)
+
+    xb, yb = next(train_iterator)
 
     xb = xb.to(device)
     yb = yb.to(device)
@@ -108,8 +142,8 @@ for step in range(max_steps):
         losses = estimate_loss()
 
         print(f"Step: {completed_steps}: "  
-              f"Train Loss: {losses['train']:.4f}, "
-              f"Val Loss: {losses['val']:.4f}")
+            f"Train Loss: {losses['train']:.4f}, "
+            f"Val Loss: {losses['val']:.4f}")
         
         if losses['val'] < best_val_loss:
 
@@ -124,7 +158,6 @@ for step in range(max_steps):
                     "n_layers": n_layers,
                     "dropout": dropout
                 },
-                "vocab": vocab,
                 "state_dict": model.state_dict(),
                 # Useful if you want to resume training
                 "optimizer_state_dict": optimizer.state_dict(),

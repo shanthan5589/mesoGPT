@@ -9,10 +9,10 @@ from mesoGPT.common import ROOT_DIR
 
 BASE_URL = "https://huggingface.co/datasets/karpathy/climbmix-400b-shuffle/resolve/main"
 
-# Nanochat uses this fixed final shard for validation.
 VALIDATION_SHARD_INDEX = 6542
 
 DATA_DIRECTORY = ROOT_DIR / "data"
+
 
 def shard_filename(index):
     """Convert a shard index into its filename."""
@@ -46,11 +46,8 @@ def download_shard(index, max_attempts=5):
                 f"(attempt {attempt}/{max_attempts})..."
             )
 
-            with requests.get(
-                url,
-                stream=True,
-                timeout=30,
-            ) as response:
+            with requests.get(url, stream=True, timeout=30) as response:
+                
                 response.raise_for_status()
 
                 with temporary_file.open("wb") as file:
@@ -79,6 +76,7 @@ def download_shard(index, max_attempts=5):
 
     print(f"Could not download {filename}")
     return False
+
 
 def list_parquet_files():
     """Return all local Parquet shards in filename order."""
@@ -129,6 +127,7 @@ def parquet_batches(split):
             documents = row_group.column("text").to_pylist()
 
             yield documents
+
 
 def main():
     parser = argparse.ArgumentParser(
