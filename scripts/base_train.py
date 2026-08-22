@@ -58,14 +58,14 @@ def estimate_loss():
     losses = {}
 
     train_dataloader_eval = create_dataloader(
-    split="train",
-    tokenizer=tokenizer,
-    context_length=context_length,
-    stride=stride,
-    batch_size=batch_size,
-    repeat=False,
-    drop_last=drop_last,
-    num_workers=num_workers,
+        split="train",
+        tokenizer=tokenizer,
+        context_length=context_length,
+        stride=stride,
+        batch_size=batch_size,
+        repeat=False,
+        drop_last=drop_last,
+        num_workers=num_workers,
     )
 
     val_dataloader = create_dataloader(

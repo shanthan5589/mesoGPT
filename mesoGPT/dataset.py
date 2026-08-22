@@ -130,6 +130,7 @@ def parquet_batches(split):
 
 
 def main():
+
     parser = argparse.ArgumentParser(
         description="Download mesoGPT tokenizer data"
     )
