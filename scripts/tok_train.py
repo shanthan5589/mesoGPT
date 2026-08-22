@@ -1,8 +1,8 @@
 from time import perf_counter
 
-from mesoGPT.common import ROOT_DIR
 from mesoGPT.dataset import parquet_batches
 from mesoGPT.tokenizer import BPETokenizer
+from mesoGPT.common import ROOT_DIR
 
 VOCAB_SIZE = 4096
 MAX_TRAINING_CHARACTERS = 10_000_000
@@ -18,11 +18,10 @@ def training_text_iterator():
     total_characters = 0
 
     for document_batch in parquet_batches(split="train"):
+
         for document in document_batch:
             if not document:
                 continue
-
-            document = document[:MAX_CHARACTERS_PER_DOCUMENT]
 
             remaining_characters = (
                 MAX_TRAINING_CHARACTERS - total_characters
@@ -30,14 +29,18 @@ def training_text_iterator():
 
             if remaining_characters <= 0:
                 return
-
-            document = document[:remaining_characters]
+            elif remaining_characters <= MAX_CHARACTERS_PER_DOCUMENT:
+                document = document[:remaining_characters]
+            elif remaining_characters > MAX_CHARACTERS_PER_DOCUMENT:
+                document = document[:MAX_CHARACTERS_PER_DOCUMENT]
 
             total_characters += len(document)
+
             yield document
 
             if total_characters >= MAX_TRAINING_CHARACTERS:
                 return
+
 
 def main():
     

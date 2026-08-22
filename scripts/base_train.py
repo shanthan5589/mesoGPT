@@ -5,6 +5,10 @@ from mesoGPT.model import GPT
 
 from mesoGPT.dataloader import Tokenizer, create_dataloader
 
+from mesoGPT.common import ROOT_DIR
+
+CHECKPOINT_PATH = ROOT_DIR / "weights"
+
 
 # ---------------- hyperparameters ----------------
 
@@ -163,7 +167,7 @@ for step in range(max_steps):
                 "optimizer_state_dict": optimizer.state_dict(),
                 "step": completed_steps,
                 "val_loss": best_val_loss,
-            }, "weights/model.pt")
+            }, CHECKPOINT_PATH / "model.pt")
 
             print(
                     f"Saved new best checkpoint "
