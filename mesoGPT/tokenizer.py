@@ -16,6 +16,9 @@ SPECIAL_TOKENS = [
 
     "<|assistant_start|>",
     "<|assistant_end|>",
+
+    "<|python_start|>",
+    "<|python_end|>"
 ]
 
 SPLIT_PATTERN = (
