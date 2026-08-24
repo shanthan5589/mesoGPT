@@ -139,9 +139,9 @@ def main():
 
     characters_per_token, bytes_per_token, tokens_per_word, total_characters, total_bytes, total_tokens, word_count = validation(tokenizer)
     print(f"Validation results:")
-    print(f"  Characters per token: {characters_per_token:.2f}")
-    print(f"  Bytes per token: {bytes_per_token:.2f}")
-    print(f"  Tokens per word: {tokens_per_word:.2f}")
+    print(f"  Characters per token: {characters_per_token:.8f}")
+    print(f"  Bytes per token: {bytes_per_token:.8f}")
+    print(f"  Tokens per word: {tokens_per_word:.8f}")
     print(f"  Total characters: {total_characters:,}")
     print(f"  Total bytes: {total_bytes:,}")
     print(f"  Total tokens: {total_tokens:,}")

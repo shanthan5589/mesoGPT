@@ -7,3 +7,4 @@ data/
 artifacts/
 weights/
 *.tmp
+ssh_keys/
