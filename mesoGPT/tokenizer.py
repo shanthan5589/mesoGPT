@@ -18,7 +18,10 @@ SPECIAL_TOKENS = [
     "<|assistant_end|>",
 
     "<|python_start|>",
-    "<|python_end|>"
+    "<|python_end|>", 
+
+    "<|output_start|>",
+    "<|output_end|>"
 ]
 
 SPLIT_PATTERN = (
@@ -124,12 +127,12 @@ class BPETokenizer:
         """Convert token IDs back into text."""
         return self.tokenizer.decode(token_ids)
 
-    def save(self, tokenizer_directory):
+    def save(self, tokenizer_directory, tokenizer_name):
         """Save the trained tokenizer to a directory."""
         tokenizer_directory = Path(tokenizer_directory)
         tokenizer_directory.mkdir(parents=True, exist_ok=True)
 
-        tokenizer_path = tokenizer_directory / "tokenizer.pkl"
+        tokenizer_path = tokenizer_directory / f"{tokenizer_name}.pkl"
 
         with tokenizer_path.open("wb") as file:
             pickle.dump(self.tokenizer, file)
@@ -137,9 +140,9 @@ class BPETokenizer:
         print(f"Saved tokenizer to {tokenizer_path}")
 
     @classmethod
-    def from_directory(cls, tokenizer_directory):
+    def from_directory(cls, tokenizer_directory, tokenizer_name):
         """Load a previously trained tokenizer."""
-        tokenizer_path = Path(tokenizer_directory) / "tokenizer.pkl"
+        tokenizer_path = Path(tokenizer_directory) / f"{tokenizer_name}.pkl"
 
         with tokenizer_path.open("rb") as file:
             encoding = pickle.load(file)

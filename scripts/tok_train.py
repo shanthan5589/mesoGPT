@@ -1,19 +1,22 @@
 from time import perf_counter
 
-from mesoGPT.dataset import parquet_batches
+from mesoGPT.dataset import list_parquet_files, parquet_batches
 from mesoGPT.tokenizer import BPETokenizer
+import pyarrow.parquet as pq
 from mesoGPT.common import ROOT_DIR
 
-VOCAB_SIZE = 4096
-MAX_TRAINING_CHARACTERS = 10_000_000
-MAX_CHARACTERS_PER_DOCUMENT = 10_000
+import argparse
+
+from pathlib import Path
+
+import re
 
 TOKENIZER_OUTPUT_DIRECTORY = (
     ROOT_DIR / "artifacts" / "tokenizer"
 )
 
 
-def training_text_iterator():
+def training_text_iterator(args):
     """Yield cropped documents for tokenizer training."""
     total_characters = 0
 
@@ -24,45 +27,132 @@ def training_text_iterator():
                 continue
 
             remaining_characters = (
-                MAX_TRAINING_CHARACTERS - total_characters
+                args.max_training_chars - total_characters
             )
 
             if remaining_characters <= 0:
                 return
-            elif remaining_characters <= MAX_CHARACTERS_PER_DOCUMENT:
+            elif remaining_characters <= args.max_characters_per_document:
                 document = document[:remaining_characters]
-            elif remaining_characters > MAX_CHARACTERS_PER_DOCUMENT:
-                document = document[:MAX_CHARACTERS_PER_DOCUMENT]
+            elif remaining_characters > args.max_characters_per_document:
+                document = document[:args.max_characters_per_document]
 
             total_characters += len(document)
 
             yield document
 
-            if total_characters >= MAX_TRAINING_CHARACTERS:
+            if total_characters >= args.max_training_chars:
                 return
+
+def validation(tokenizer):
+
+    total_characters = 0
+    total_bytes = 0
+    total_tokens = 0
+    word_count = 0
+
+    if len(list_parquet_files()) <= 2:
+        print("No validation shards found. Please run dataset.py to create download shards.")
+        exit()
+    
+    # Last but one shard is reserved for validation of tokenizer, so we only count the validation shard.
+    for parquet_path in list_parquet_files()[-2:-1]:
+                
+        parquet_file = pq.ParquetFile(parquet_path)
+
+        for record_batch in parquet_file.iter_batches(columns=["text"]):
+
+            documents = record_batch.column("text").to_pylist()
+
+            for text in documents:
+
+                if not text:
+                    continue
+
+                token_ids = tokenizer.encode(text)
+
+                total_characters += len(text)
+                total_bytes += len(text.encode("utf-8"))
+                total_tokens += len(token_ids)
+                words = re.findall(r"\b\w+\b", text)
+                word_count += len(words)
+
+    characters_per_token = (total_characters / total_tokens)
+    bytes_per_token = total_bytes / total_tokens
+    tokens_per_word = total_tokens / word_count
+
+    return characters_per_token, bytes_per_token, tokens_per_word, total_characters, total_bytes, total_tokens, word_count
+
 
 
 def main():
+
+    parser = argparse.ArgumentParser(
+            description="Train a BPE tokenizer on the training data."
+        )
     
+    parser.add_argument(
+            "--max-training-chars",
+            type=int,
+            default=10**9,
+            help="Maximum number of characters to train tokenizer on.",
+        )
+    
+    parser.add_argument(
+            "--max-chars-per-document",
+            type=int,
+            default=10**4,
+            help="Maximum number of characters to use from each document.",
+        )
+
+    parser.add_argument(
+            "--vocab-size",
+            type=int,
+            default=1000,
+            help="Vocabulary size for the tokenizer.",
+        )
+
+    parser.add_argument(
+        "--tokenizer-output-directory",
+        type=Path,
+        default=TOKENIZER_OUTPUT_DIRECTORY,
+        help="Parent directory for trained tokenizers.",
+    )
+    
+    args = parser.parse_args()
+
+    training_char_millions = args.max_training_chars / 1_000_000
+
+    tokenizer_name = (f"tok-v{args.vocab_size}" f"-c{training_char_millions:.1f}m")
+
     print("Training mesoGPT tokenizer...")
-    print(f"Vocabulary size: {VOCAB_SIZE:,}")
+    print(f"Vocabulary size: {args.vocab_size:,}")
     print(
         f"Maximum training characters: "
-        f"{MAX_TRAINING_CHARACTERS:,}"
+        f"{args.max_training_chars:,}"
     )
 
     start_time = perf_counter()
 
     tokenizer = BPETokenizer.train_from_iterator(
-        text_iterator=training_text_iterator(),
-        vocab_size=VOCAB_SIZE,
+        text_iterator=training_text_iterator(args),
+        vocab_size= args.vocab_size,
     )
 
     elapsed_time = perf_counter() - start_time
 
     print(f"Training completed in {elapsed_time:.2f} seconds")
 
-    tokenizer.save(TOKENIZER_OUTPUT_DIRECTORY)
+    characters_per_token, bytes_per_token, tokens_per_word, total_characters, total_bytes, total_tokens, word_count = validation(tokenizer)
+    print(f"Validation results:")
+    print(f"  Characters per token: {characters_per_token:.2f}")
+    print(f"  Bytes per token: {bytes_per_token:.2f}")
+    print(f"  Tokens per word: {tokens_per_word:.2f}")
+    print(f"  Total characters: {total_characters:,}")
+    print(f"  Total bytes: {total_bytes:,}")
+    print(f"  Total tokens: {total_tokens:,}")
+    print(f"  Total words: {word_count:,}")
+    print(f"BOS token ID: {tokenizer.get_bos_token_id()}")
 
     # Verify that encoding and decoding preserve the original text.
     test_text = """Hello from mesoGPT!
@@ -81,11 +171,13 @@ def main():
         )
 
     print("Round-trip test passed")
-    print(f"Test characters: {len(test_text)}")
-    print(f"Test tokens: {len(token_ids)}")
-    print(f"BOS token ID: {tokenizer.get_bos_token_id()}")
-    print(f"Saved to: {TOKENIZER_OUTPUT_DIRECTORY}")
 
+    tokenizer.save(args.tokenizer_output_directory, tokenizer_name)
+    
+    print(f"Saved to: {args.tokenizer_output_directory}")
+
+    print("="*50,end="")
+    print()
 
 if __name__ == "__main__":
     main()

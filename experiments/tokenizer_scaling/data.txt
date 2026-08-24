@@ -1,0 +1,3 @@
+Raw Characters per shard: ~252,606,075.5 (252.6M)
+Number of documents per shard: 86,016 (86K)
+Raw Characters per document = ~2937 (2.93K)

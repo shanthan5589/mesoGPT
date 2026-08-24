@@ -10,6 +10,7 @@ from mesoGPT.common import ROOT_DIR
 BASE_URL = "https://huggingface.co/datasets/karpathy/climbmix-400b-shuffle/resolve/main"
 
 VALIDATION_SHARD_INDEX = 6542
+TOKENIZER_SHARD_INDEX = 6541
 
 DATA_DIRECTORY = ROOT_DIR / "data"
 
@@ -103,14 +104,14 @@ def parquet_batches(split):
 
     parquet_files = list_parquet_files()
 
-    if len(parquet_files) < 2:
+    if len(parquet_files) < 3:
         raise ValueError(
-            "At least two Parquet files are required: "
-            "one for training and one for validation."
+            "At least three Parquet files are required: "
+            "one for training, one for validation, and one for tokenizer evaluation."
         )
 
     if split == "train":
-        selected_files = parquet_files[:-1]
+        selected_files = parquet_files[:-2]
     else:
         selected_files = parquet_files[-1:]
 
@@ -145,16 +146,17 @@ def main():
 
     args = parser.parse_args()
 
-    if not 1 <= args.num_train_shards <= VALIDATION_SHARD_INDEX:
+    if not 1 <= args.num_train_shards <= TOKENIZER_SHARD_INDEX:
         raise ValueError(
             f"num-train-shards must be between 1 and "
-            f"{VALIDATION_SHARD_INDEX}"
+            f"{TOKENIZER_SHARD_INDEX}"
         )
 
     # Training shards begin at zero.
     shard_indices = list(range(args.num_train_shards))
 
-    # Always include nanochat's fixed validation shard.
+    # Always include nanochat's fixed validation shards for tokenizer and model evaluation.
+    shard_indices.append(TOKENIZER_SHARD_INDEX)
     shard_indices.append(VALIDATION_SHARD_INDEX)
 
     print(
