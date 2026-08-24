@@ -5,7 +5,7 @@ set -euo pipefail
 # bash runs/tokenizer_experiment.sh
 
 eval "$(conda shell.bash hook)"
-conda activate gpu_env
+conda activate mesogpt
 
 LOG_FILE="tokenizer_experiment_$(date +%Y%m%d_%H%M%S).log"
 exec > >(tee "$LOG_FILE") 2>&1
@@ -29,7 +29,7 @@ do
     echo "===== TOKENIZER: $TRAINING_CHARS TRAINING CHARACTERS ====="
     /usr/bin/time -v python -m scripts.tok_train \
         --max-training-chars "$TRAINING_CHARS" \
-        --max-characters-per-document 10_000 \
+        --max-chars-per-document 10_000 \
         --vocab-size 16384
 done
 

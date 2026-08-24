@@ -108,7 +108,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--max-characters-per-document",
+        "--max-chars-per-document",
         type=int,
         default=10**3,
         help="Maximum number of characters to use from each document.",
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     available_shards, required_extra_shards, enough_characters = main(
-        args.type, args.max_training_chars, args.max_characters_per_document
+        args.type, args.max_training_chars, args.max_chars_per_document
     )
 
     if not enough_characters:

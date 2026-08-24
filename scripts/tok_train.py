@@ -32,10 +32,10 @@ def training_text_iterator(args):
 
             if remaining_characters <= 0:
                 return
-            elif remaining_characters <= args.max_characters_per_document:
+            elif remaining_characters <= args.max_chars_per_document:
                 document = document[:remaining_characters]
-            elif remaining_characters > args.max_characters_per_document:
-                document = document[:args.max_characters_per_document]
+            elif remaining_characters > args.max_chars_per_document:
+                document = document[:args.max_chars_per_document]
 
             total_characters += len(document)
 
