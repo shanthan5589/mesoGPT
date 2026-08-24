@@ -1,0 +1,485 @@
+===== DATASET DOWNLOAD =====
+Downloading 15 training shard(s) and one validation shard
+Skipping shard_00000.parquet: already downloaded
+Skipping shard_00001.parquet: already downloaded
+Skipping shard_00002.parquet: already downloaded
+Skipping shard_00003.parquet: already downloaded
+Skipping shard_00004.parquet: already downloaded
+Skipping shard_00005.parquet: already downloaded
+Skipping shard_00006.parquet: already downloaded
+Skipping shard_00007.parquet: already downloaded
+Skipping shard_00008.parquet: already downloaded
+Skipping shard_00009.parquet: already downloaded
+Skipping shard_00010.parquet: already downloaded
+Skipping shard_00011.parquet: already downloaded
+Skipping shard_00012.parquet: already downloaded
+Skipping shard_00013.parquet: already downloaded
+Skipping shard_00014.parquet: already downloaded
+Skipping shard_06541.parquet: already downloaded
+Skipping shard_06542.parquet: already downloaded
+Downloaded 17/17 shards
+	Command being timed: "python -m mesoGPT.dataset -n 15"
+	User time (seconds): 0.18
+	System time (seconds): 0.02
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.21
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 64852
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6734
+	Voluntary context switches: 3
+	Involuntary context switches: 6
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 25_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 25,000,000
+Training completed in 2.58 seconds
+Validation results:
+  Characters per token: 4.36615179
+  Bytes per token: 4.37352306
+  Tokens per word: 1.36841136
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,837,759
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c25.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 25_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 42.57
+	System time (seconds): 0.32
+	Percent of CPU this job got: 111%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:38.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 177440
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 88561
+	Voluntary context switches: 568
+	Involuntary context switches: 325
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 408
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 50_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 50,000,000
+Training completed in 4.50 seconds
+Validation results:
+  Characters per token: 4.37533703
+  Bytes per token: 4.38272381
+  Tokens per word: 1.36553863
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,716,339
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c50.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 50_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 48.39
+	System time (seconds): 0.28
+	Percent of CPU this job got: 122%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:39.83
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 221992
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 101259
+	Voluntary context switches: 593
+	Involuntary context switches: 356
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 100_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 100,000,000
+Training completed in 8.40 seconds
+Validation results:
+  Characters per token: 4.37956123
+  Bytes per token: 4.38695515
+  Tokens per word: 1.36422153
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,660,670
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c100.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 100_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 61.79
+	System time (seconds): 0.41
+	Percent of CPU this job got: 139%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:44.51
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 291892
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 132146
+	Voluntary context switches: 829
+	Involuntary context switches: 430
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 150_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 150,000,000
+Training completed in 12.17 seconds
+Validation results:
+  Characters per token: 4.38164739
+  Bytes per token: 4.38904483
+  Tokens per word: 1.36357200
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,633,217
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c150.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 150_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 73.68
+	System time (seconds): 0.46
+	Percent of CPU this job got: 154%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:48.00
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 340148
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 140956
+	Voluntary context switches: 996
+	Involuntary context switches: 462
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 200_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 200,000,000
+Training completed in 15.61 seconds
+Validation results:
+  Characters per token: 4.38247190
+  Bytes per token: 4.38987073
+  Tokens per word: 1.36331546
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,622,374
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c200.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 200_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 85.18
+	System time (seconds): 0.49
+	Percent of CPU this job got: 167%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:51.20
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 364144
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 155081
+	Voluntary context switches: 889
+	Involuntary context switches: 716
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 250_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 250,000,000
+Training completed in 19.05 seconds
+Validation results:
+  Characters per token: 4.38267871
+  Bytes per token: 4.39007788
+  Tokens per word: 1.36325113
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,619,655
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c250.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 250_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 96.36
+	System time (seconds): 0.51
+	Percent of CPU this job got: 177%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.57
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 395968
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 170089
+	Voluntary context switches: 1016
+	Involuntary context switches: 620
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 300_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 300,000,000
+Training completed in 22.47 seconds
+Validation results:
+  Characters per token: 4.38282156
+  Bytes per token: 4.39022097
+  Tokens per word: 1.36320670
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,617,777
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c300.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 300_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 108.10
+	System time (seconds): 0.53
+	Percent of CPU this job got: 187%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:58.01
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 433560
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 180422
+	Voluntary context switches: 1130
+	Involuntary context switches: 742
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 350_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 350,000,000
+Training completed in 26.02 seconds
+Validation results:
+  Characters per token: 4.38308438
+  Bytes per token: 4.39048424
+  Tokens per word: 1.36312496
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,614,322
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c350.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 350_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 120.08
+	System time (seconds): 0.57
+	Percent of CPU this job got: 196%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:01.50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 445080
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 181293
+	Voluntary context switches: 1485
+	Involuntary context switches: 763
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 400_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 400,000,000
+Training completed in 29.51 seconds
+Validation results:
+  Characters per token: 4.38301919
+  Bytes per token: 4.39041894
+  Tokens per word: 1.36314523
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,615,179
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c400.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 400_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 132.61
+	System time (seconds): 0.65
+	Percent of CPU this job got: 202%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:05.79
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 476768
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 195013
+	Voluntary context switches: 1771
+	Involuntary context switches: 917
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 450_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 450,000,000
+Training completed in 32.75 seconds
+Validation results:
+  Characters per token: 4.38315384
+  Bytes per token: 4.39055382
+  Tokens per word: 1.36310336
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,613,409
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c450.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 450_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 143.35
+	System time (seconds): 0.66
+	Percent of CPU this job got: 210%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:08.49
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 504940
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 204323
+	Voluntary context switches: 1540
+	Involuntary context switches: 1062
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== TOKENIZER: 500_000_000 TRAINING CHARACTERS =====
+Training mesoGPT tokenizer...
+Vocabulary size: 16,384
+Maximum training characters: 500,000,000
+Training completed in 36.24 seconds
+Validation results:
+  Characters per token: 4.38292410
+  Bytes per token: 4.39032369
+  Tokens per word: 1.36317481
+  Total characters: 252,528,435
+  Total bytes: 252,954,773
+  Total tokens: 57,616,429
+  Total words: 42,266,354
+BOS token ID: 16375
+Round-trip test passed
+Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c500.00m.pkl
+==================================================
+	Command being timed: "python -m scripts.tok_train --max-training-chars 500_000_000 --max-chars-per-document 10_000 --vocab-size 16384"
+	User time (seconds): 154.45
+	System time (seconds): 0.70
+	Percent of CPU this job got: 217%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:11.46
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 528796
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 211782
+	Voluntary context switches: 2212
+	Involuntary context switches: 994
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== EXPERIMENT COMPLETE =====
+Log saved to: tokenizer_experiment_20260824_185831.log
