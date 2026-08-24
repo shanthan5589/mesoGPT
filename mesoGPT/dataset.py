@@ -99,8 +99,8 @@ def parquet_batches(split):
     - All shards except the last are training data.
     - The final shard is validation data.
     """
-    if split not in {"train", "val"}:
-        raise ValueError("split must be either 'train' or 'val'")
+    if split not in {"train", "tokenizer_val", "model_val"}:
+        raise ValueError("split must be either 'train', 'tokenizer_val', or 'model_val'")
 
     parquet_files = list_parquet_files()
 
@@ -112,7 +112,9 @@ def parquet_batches(split):
 
     if split == "train":
         selected_files = parquet_files[:-2]
-    else:
+    elif split == "tokenizer_val":
+        selected_files = parquet_files[-2:-1]
+    elif split == "model_val":
         selected_files = parquet_files[-1:]
 
     for parquet_path in selected_files:

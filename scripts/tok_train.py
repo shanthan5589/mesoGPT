@@ -56,26 +56,20 @@ def validation(tokenizer):
         exit()
     
     # Last but one shard is reserved for validation of tokenizer, so we only count the validation shard.
-    for parquet_path in list_parquet_files()[-2:-1]:
+    for document_batch in parquet_batches(split="tokenizer_val"):
                 
-        parquet_file = pq.ParquetFile(parquet_path)
+        for document in document_batch:
 
-        for record_batch in parquet_file.iter_batches(columns=["text"]):
+            if not document:
+                continue
 
-            documents = record_batch.column("text").to_pylist()
+            token_ids = tokenizer.encode(document)
 
-            for text in documents:
-
-                if not text:
-                    continue
-
-                token_ids = tokenizer.encode(text)
-
-                total_characters += len(text)
-                total_bytes += len(text.encode("utf-8"))
-                total_tokens += len(token_ids)
-                words = re.findall(r"\b\w+\b", text)
-                word_count += len(words)
+            total_characters += len(document)
+            total_bytes += len(document.encode("utf-8"))
+            total_tokens += len(token_ids)
+            words = re.findall(r"\b\w+\b", document)
+            word_count += len(words)
 
     characters_per_token = (total_characters / total_tokens)
     bytes_per_token = total_bytes / total_tokens
@@ -123,7 +117,7 @@ def main():
 
     training_char_millions = args.max_training_chars / 1_000_000
 
-    tokenizer_name = (f"tok-v{args.vocab_size}" f"-c{training_char_millions:.1f}m")
+    tokenizer_name = (f"tok-v{args.vocab_size}" f"-c{training_char_millions:.2f}m")
 
     print("Training mesoGPT tokenizer...")
     print(f"Vocabulary size: {args.vocab_size:,}")
@@ -166,15 +160,13 @@ def main():
     if decoded_text != test_text:
         raise RuntimeError(
             "Tokenizer round-trip test failed:\n"
-            f"Original: {test_text!r}\n"
-            f"Decoded:  {decoded_text!r}"
+            # f"Original: {test_text!r}\n"
+            # f"Decoded:  {decoded_text!r}"
         )
 
     print("Round-trip test passed")
 
     tokenizer.save(args.tokenizer_output_directory, tokenizer_name)
-    
-    print(f"Saved to: {args.tokenizer_output_directory}")
 
     print("="*50,end="")
     print()
