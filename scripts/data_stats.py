@@ -51,7 +51,7 @@ def main(type, max_budget, max_characters_per_document=0):
         tokens_per_shard = 0
         available_training_shards = len(list_parquet_files()) - 2
 
-        for documents in parquet_batches('model_val'):
+        for documents in parquet_batches('one'):
 
             for document in documents:
 
