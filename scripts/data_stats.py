@@ -1,3 +1,11 @@
+'''
+available arguments:
+    type: "tokenizer" or "model"
+    --max-budget: maximum number of characters/tokens used to train tokenizer/model.
+    --max-chars-per-document: maximum number of characters to use from each selected document (only applicable when type is "tokenizer")
+'''
+
+
 from mesoGPT.dataset import list_parquet_files, parquet_batches
 from mesoGPT.tokenizer import BPETokenizer
 from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
@@ -12,7 +20,7 @@ def main(type, max_budget, max_characters_per_document=0):
 
     available_training_shards = len(list_parquet_files()) - 2
 
-    if available_training_shards <= 2:
+    if available_training_shards < 1:
         print("At least 3 shards are required to train the tokenizer or model. Please download more shards.")
         exit()
 
@@ -43,7 +51,7 @@ def main(type, max_budget, max_characters_per_document=0):
         tokens_per_shard = 0
         available_training_shards = len(list_parquet_files()) - 2
 
-        for documents in parquet_batches('one'):
+        for documents in parquet_batches('model_val'):
 
             for document in documents:
 
@@ -51,6 +59,8 @@ def main(type, max_budget, max_characters_per_document=0):
                     continue
 
                 tokens_per_shard += len(tokenizer.encode(document))
+
+        print(f"Tokens per shard: {tokens_per_shard:,}")
 
         required_extra_shards = math.ceil((max_budget - (tokens_per_shard * available_training_shards)) / tokens_per_shard) + 1 if tokens_per_shard < max_budget else 0 
 
