@@ -40,6 +40,8 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Number of documents per shard: 86,016 (86K)
 - Raw Characters per shard: ~252,606,075.5 (252.6M)
 - Number of tokens per shard: ~57,582,082 (57.6M)
+- Training shards: 36
+- Validation shards: 1
 - Duplicate removal:
 - Document-length statistics:
 
@@ -78,10 +80,6 @@ Weight tying reduced the training token budget by 11.33% and the training comput
 - Training tokens per parameter (TPP): 20 
 - Training token budget: 1,968,834,560 (~1.97B)  
 - Training compute budget: 1.162 x 10¹⁸ FLOPs (≈1.16 exaFLOPs)
-- Training shards: 36
-
-- Validation tokens: 57,582,082 (~57.6M)
-- Validation shards: 1
 
 ## Optimization
 
