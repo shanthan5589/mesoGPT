@@ -1,92 +1,60 @@
-import pyarrow.parquet as pq
-from mesoGPT.dataset import list_parquet_files
+from mesoGPT.dataset import list_parquet_files, parquet_batches
+from mesoGPT.tokenizer import BPETokenizer
+from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
+
 import argparse
 import math
 
-def main(type, max_training_chars, max_characters_per_document=0):
+def main(type, max_budget, max_characters_per_document=0):
+
+    if type not in {"tokenizer", "model"}:
+        raise ValueError("type must be either 'tokenizer' or 'model'")
+
+    available_training_shards = len(list_parquet_files()) - 2
+
+    if available_training_shards <= 2:
+        print("At least 3 shards are required to train the tokenizer or model. Please download more shards.")
+        exit()
 
     if type == "tokenizer":
-        #raw_characters = 0
-        eligible_characters = 0
-        available_shards = len(list_parquet_files()) - 2
 
-        if available_shards <= 2:
-            print("No training shards found. Please run dataset.py to create download shards.")
-            exit()
+        eligible_characters_per_shard = 0
 
-        # Last shard is reserved for validation, so we only count training shards.
-        for parquet_path in list_parquet_files()[:-2]:
-            
-            parquet_file = pq.ParquetFile(parquet_path)
+        for documents in parquet_batches('one'):
 
-            #document_count = 0
+            for document in documents:
 
-            for record_batch in parquet_file.iter_batches(
-                columns=["text"]
-            ):
-                documents = record_batch.column("text").to_pylist()
+                if not document:
+                    continue
 
-                for document in documents:
-                    if not document:
-                        continue
+                eligible_characters_per_shard += len(document[:max_characters_per_document])
 
-                    #document_count += 1
-                    #raw_characters += len(document)
+        required_extra_shards = math.ceil((max_budget - (eligible_characters_per_shard * available_training_shards)) / eligible_characters_per_shard) + 1 if eligible_characters_per_shard < max_budget else 0 
 
-                    # This matches tok_train.py's document cropping.
-                    eligible_characters += len(
-                        document[:max_characters_per_document]
-                    )
+        return available_training_shards, required_extra_shards
+    
+    if type == "model":
 
-            #print(f"{parquet_path.name}  Documents: {document_count:,}")
+        tokenizer = BPETokenizer.from_directory(
+            tokenizer_directory=TOKENIZER_DIR,
+            tokenizer_name=TOKENIZER_NAME,
+        )
 
-        #print(f"  Raw characters: {raw_characters:,}")
-        print(f"  Eligible characters available to train tokenizer: {eligible_characters:,}")
+        tokens_per_shard = 0
+        available_training_shards = len(list_parquet_files()) - 2
 
-        required_extra_shards = math.ceil((max_training_chars - eligible_characters) / (eligible_characters / available_shards)) if eligible_characters < max_training_chars else 0 
+        for documents in parquet_batches('one'):
 
-        return available_shards, required_extra_shards, eligible_characters >= max_training_chars
-    elif type == "model":
+            for document in documents:
 
-        raw_characters = 0
-        available_shards = len(list_parquet_files()) - 2
+                if not document:
+                    continue
 
-        if available_shards <= 0:
-            print("No training shards found. Please run dataset.py to create download shards.")
-            exit()
+                tokens_per_shard += len(tokenizer.encode(document))
 
-        # Last shard is reserved for validation, so we only count training shards.
-        for parquet_path in list_parquet_files()[:-2]:
-            
-            parquet_file = pq.ParquetFile(parquet_path)
+        required_extra_shards = math.ceil((max_budget - (tokens_per_shard * available_training_shards)) / tokens_per_shard) + 1 if tokens_per_shard < max_budget else 0 
 
-            #document_count = 0
-
-            for record_batch in parquet_file.iter_batches(
-                columns=["text"]
-            ):
-                documents = record_batch.column("text").to_pylist()
-
-                for document in documents:
-                    if not document:
-                        continue
-
-                    #document_count += 1
-                    raw_characters += len(document)
-
-                    # # This matches tok_train.py's document cropping.
-                    # eligible_characters += len(
-                    #     document[:max_characters_per_document]
-                    # )
-
-            #print(f"{parquet_path.name}  Documents: {document_count:,}")
-
-        #print(f"  Raw characters: {raw_characters:,}")
-        print(f"  Raw characters available to train tokenizer: {raw_characters:,}")
-
-        required_extra_shards = math.ceil((max_training_chars - raw_characters) / (raw_characters / available_shards)) if raw_characters < max_training_chars else 0 
-
-        return available_shards, required_extra_shards, raw_characters >= max_training_chars
+        return available_training_shards, required_extra_shards
 
 if __name__ == "__main__":
     
@@ -101,10 +69,10 @@ if __name__ == "__main__":
     )
     
     parser.add_argument(
-        "--max-training-chars",
+        "--max-budget",
         type=int,
         default=10**9,
-        help="Maximum number of characters to train tokenizer on.",
+        help="Maximum number of characters/tokens to train tokenizer/model on.",
     )
 
     parser.add_argument(
@@ -116,11 +84,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    available_shards, required_extra_shards, enough_characters = main(
-        args.type, args.max_training_chars, args.max_chars_per_document
+    available_training_shards, required_extra_shards = main(
+        args.type, args.max_budget, args.max_chars_per_document
     )
 
-    if not enough_characters:
-        print(f"  {available_shards} shards available, you need more {required_extra_shards:.2f} shards to train the {args.type}.")
+    if required_extra_shards > 0:
+        print(f"  {available_training_shards} shards available, you need more {required_extra_shards:.2f} shards to train the {args.type}.")
     else:
-        print(f"  {available_shards} shards available, you have enough characters to train the {args.type}.")
+        print(f"  {available_training_shards} shards available, you have enough characters to train the {args.type}.")

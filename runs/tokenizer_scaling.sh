@@ -4,11 +4,21 @@ set -euo pipefail
 # Run from the repository root with:
 # bash runs/tokenizer_experiment.sh
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
+LOG_DIR="$PROJECT_ROOT/logs"
+
+mkdir -p "$LOG_DIR"
+cd "$PROJECT_ROOT"
+
+RUN_TIMESTAMP="$(date -u +'%Y-%m-%dT%H-%M-%SZ')"
+LOG_FILE="$LOG_DIR/tokenizer-scaling_${RUN_TIMESTAMP}.log"
+
+exec > >(tee "$LOG_FILE") 2>&1
+
 eval "$(conda shell.bash hook)"
 conda activate mesogpt
 
-LOG_FILE="tokenizer_experiment_$(date +%Y%m%d_%H%M%S).log"
-exec > >(tee "$LOG_FILE") 2>&1
 
 echo "===== DATASET DOWNLOAD ====="
 /usr/bin/time -v python -m mesoGPT.dataset -n 15

@@ -3,27 +3,6 @@ from torch.utils.data import DataLoader, IterableDataset, get_worker_info
 
 from mesoGPT.dataset import parquet_batches
 
-
-class Tokenizer:
-    def __init__(self):
-
-        grammar = """abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,!
-        ?;:'\"()[]{}<>@#$%^&*-_=+|/\\`~\n\t"""
-
-        self.itos = {i:s for i,s in enumerate(grammar)}
-        self.stoi = {s:i for i,s in enumerate(grammar)}
-
-    def encode(self, content):
-        unknown_id = self.stoi[" "]
-        return [self.stoi.get(character, unknown_id) for character in content]
-
-    def decode(self, content):
-        return ''.join([self.itos[x] for x in content])
-
-    def __len__(self):
-        return len(self.itos)
-
-
 class ParquetTokenDataset(IterableDataset):
     def __init__(self, split, tokenizer, context_length, stride, repeat=False):
         super().__init__()

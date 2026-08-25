@@ -3,12 +3,10 @@ import torch.nn as nn
 
 from mesoGPT.model import GPT
 
-from mesoGPT.dataloader import Tokenizer, create_dataloader
+from mesoGPT.dataloader import create_dataloader
 
-from mesoGPT.common import ROOT_DIR
-
-CHECKPOINT_PATH = ROOT_DIR / "weights"
-
+from mesoGPT.tokenizer import BPETokenizer
+from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME, CHECKPOINT_DIR, MODEL_NAME
 
 # ---------------- hyperparameters ----------------
 
@@ -42,8 +40,12 @@ device = torch.device(
 
 print(f"Using device: {device}")
 
-tokenizer = Tokenizer()
-vocab_size = len(tokenizer)
+tokenizer = BPETokenizer.from_directory(
+    tokenizer_directory=TOKENIZER_DIR,
+    tokenizer_name=TOKENIZER_NAME,
+)
+
+vocab_size = tokenizer.get_vocab_size()
 
 model = GPT(vocab_size=vocab_size, 
             T=context_length, 
@@ -167,7 +169,7 @@ for step in range(max_steps):
                 "optimizer_state_dict": optimizer.state_dict(),
                 "step": completed_steps,
                 "val_loss": best_val_loss,
-            }, CHECKPOINT_PATH / "model.pt")
+            }, CHECKPOINT_DIR / f"{MODEL_NAME}.pt")
 
             print(
                     f"Saved new best checkpoint "
