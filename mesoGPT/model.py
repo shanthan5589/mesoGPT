@@ -95,6 +95,8 @@ class GPT(nn.Module):
         self.blocks = nn.Sequential(*[Block(T, C, num_heads, dropout) for _ in range(n_layers)])  
         self.ln_f = nn.LayerNorm(C)                 # 2C learnable params
         self.lm_head = nn.Linear(C, vocab_size)     # (vocab_size x C) + vocab_size learnable params
+        # Weight Tying
+        self.lm_head.weight = self.embedding.token_embedding.weight
 
     def forward(self, x):
         x = self.embedding(x)
