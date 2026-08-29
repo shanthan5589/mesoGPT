@@ -67,7 +67,11 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Vocabulary size: 16,384
 - Dropout: 0.1
 - Head dimension: 64
-
+- Tied weights for token embedding and lm_head
+- Bias in linear layers: True
+- Pre LayerNorm
+- Activation function: GELU
+- RoPE: True
 
 ## Scaling and Compute Budget
 

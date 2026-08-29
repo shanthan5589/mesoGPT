@@ -11,7 +11,7 @@ available arguments:
 
 import torch
 
-from mesoGPT.model import GPT
+from mesoGPT.model_2 import GPT
 
 import argparse
 

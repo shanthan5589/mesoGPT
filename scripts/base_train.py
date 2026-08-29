@@ -75,7 +75,7 @@ def estimate_loss():
     )
 
     val_dataloader = create_dataloader(
-        split="val",
+        split="model_val",
         tokenizer=tokenizer,
         context_length=context_length,
         stride=stride,
