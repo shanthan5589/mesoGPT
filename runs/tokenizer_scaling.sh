@@ -2,17 +2,17 @@
 set -euo pipefail
 
 # Run from the repository root with:
-# bash runs/tokenizer_experiment.sh
+# bash runs/tokenizer_scaling.sh
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-LOG_DIR="$PROJECT_ROOT/logs"
+LOG_DIR="$PROJECT_ROOT/experiments/tokenizer_scaling/logs"
 
 mkdir -p "$LOG_DIR"
 cd "$PROJECT_ROOT"
 
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%dT%H-%M-%SZ')"
-LOG_FILE="$LOG_DIR/tokenizer-scaling_${RUN_TIMESTAMP}.log"
+LOG_FILE="$LOG_DIR/tokenizer_${RUN_TIMESTAMP}.log"
 
 exec > >(tee "$LOG_FILE") 2>&1
 
@@ -37,7 +37,7 @@ for TRAINING_CHARS in \
     500_000_000
 do
     echo "===== TOKENIZER: $TRAINING_CHARS TRAINING CHARACTERS ====="
-    /usr/bin/time -v python -m scripts.tok_train \
+    /usr/bin/time -v python experiments/tokenizer_scaling/tok_train.py \
         --max-training-chars "$TRAINING_CHARS" \
         --max-chars-per-document 10_000 \
         --vocab-size 16384
