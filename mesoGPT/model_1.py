@@ -1,42 +1,23 @@
 '''
-Rotary Positional Embeddings
+GPT Model - baseline
 '''
+
 
 import torch
 import torch.nn as nn
 
 
-class TokenEmbedding(nn.Module):
-    def __init__(self, vocab_size, C):
+class Embedding(nn.Module):
+    def __init__(self, T, vocab_size, C):
         super().__init__()
-        self.embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
-
-    def forward(self, x):
-        token_emb = self.embedding(x)     
-        return token_emb                           
-
-
-class RotaryEmbedding(nn.Module):
-    def __init__(self, T, C, base=10000):
-        super().__init__()
-        assert C % 2 == 0, "RoPE needs an even head_size to form rotation pairs"
-        self.T = T
-        self.C = C
-        inv_freq = 1 / (base ** (torch.arange(0, C, 2).float() / C))     # (C/2,)
-        t = torch.arange(T, dtype=torch.float32)                         # (T,)
-        freqs = torch.outer(t, inv_freq)                                 # (T, C/2)
-        self.register_buffer('cos', freqs.cos(), persistent=False)                         # (T, C/2)
-        self.register_buffer('sin', freqs.sin(), persistent=False)                         # (T, C/2)
+        self.token_embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
+        self.position_embedding = nn.Embedding(T, C)
 
     def forward(self, x):
         T = x.shape[1]
-        cos = self.cos[:T, :].unsqueeze(0)                      # (1, T, C/2)
-        sin = self.sin[:T, :].unsqueeze(0)                      # (1, T, C/2)
-        x1, x2 = x[..., 0::2], x[..., 1::2]                     # (B, T, C/2), (B, T, C/2)
-        rotated = torch.empty_like(x)
-        rotated[..., 0::2] = (x1 * cos) - (x2 * sin)
-        rotated[...,1::2] = (x1 * sin) + (x2 * cos)
-        return rotated
+        token_emb = self.token_embedding(x)
+        pos_embedding = self.position_embedding(torch.arange(T, device=x.device))     
+        return token_emb + pos_embedding                           
 
 
 class Head(nn.Module):
@@ -46,7 +27,6 @@ class Head(nn.Module):
         self.query = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
         self.key = nn.Linear(C, head_size)      # (head_size x C) + head_size learnable params
         self.value = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
-        self.rope = RotaryEmbedding(T, head_size)
         self.dropout = nn.Dropout(dropout)
         self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
 
@@ -54,8 +34,8 @@ class Head(nn.Module):
 
         T = x.shape[1]
 
-        q = self.rope(self.query(x))   # (B, T, head_size)
-        k = self.rope(self.key(x))     # (B, T, head_size)
+        q = self.query(x)  # (B, T, head_size)
+        k = self.key(x)    # (B, T, head_size)
         v = self.value(x)              # (B, T, head_size)
 
         weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)                # (B, T, T)
@@ -116,15 +96,26 @@ class GPT(nn.Module):
     def __init__(self, T, C, vocab_size, num_heads, n_layers, dropout):
         super().__init__()
         self.T = T
-        self.token_embedding = TokenEmbedding(vocab_size, C)
+        self.embedding = Embedding(T, vocab_size, C)
         self.blocks = nn.Sequential(*[Block(T, C, num_heads, dropout) for _ in range(n_layers)])  
         self.ln_f = nn.LayerNorm(C)                 # 2C learnable params
         self.lm_head = nn.Linear(C, vocab_size)     # (vocab_size x C) + vocab_size learnable params
-        # Weight Tying
-        self.lm_head.weight = self.token_embedding.embedding.weight
+        # Weight Sharing Scheme
+        self.lm_head.weight = self.embedding.token_embedding.weight
+        self._init_weights()
+
+    def _init_weights(module):
+
+        if isinstance(module, nn.Linear):
+            nn.init.normal(module.weight, mean=0.0, std=0.02)
+            if module.bias is not None:
+                nn.init.zeros_(module.bias)
+
+        if isinstance(module, nn.Embedding):
+            nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
     def forward(self, x):
-        x = self.token_embedding(x)
+        x = self.embedding(x)
         x = self.blocks(x)
         x = self.ln_f(x)
         logits = self.lm_head(x)

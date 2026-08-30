@@ -70,6 +70,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Tied weights for token embedding and lm_head
 - Bias in linear layers: True
 - Pre LayerNorm
+- Batch size = 512
 - Activation function: GELU
 - RoPE: True
 

@@ -1,3 +1,8 @@
+'''
+Fused QKV with Rotary Positional Embeddings
+'''
+
+
 import torch
 import torch.nn as nn
 
@@ -16,67 +21,54 @@ class RotaryEmbedding(nn.Module):
     def __init__(self, T, C, base=10000):
         super().__init__()
         assert C % 2 == 0, "RoPE needs an even head_size to form rotation pairs"
-        self.T = T
-        self.C = C
         inv_freq = 1 / (base ** (torch.arange(0, C, 2).float() / C))     # (C/2,)
         t = torch.arange(T, dtype=torch.float32)                         # (T,)
         freqs = torch.outer(t, inv_freq)                                 # (T, C/2)
-        self.register_buffer('cos', freqs.cos(), persistent=False)                         # (T, C/2)
-        self.register_buffer('sin', freqs.sin(), persistent=False)                         # (T, C/2)
+        self.register_buffer('cos', freqs.cos(), persistent=False)       # (T, C/2)
+        self.register_buffer('sin', freqs.sin(), persistent=False)       # (T, C/2)
 
     def forward(self, x):
-        T = x.shape[1]
-        cos = self.cos[:T, :].unsqueeze(0)                      # (1, T, C/2)
-        sin = self.sin[:T, :].unsqueeze(0)                      # (1, T, C/2)
-        x1, x2 = x[..., 0::2], x[..., 1::2]                     # (B, T, C/2), (B, T, C/2)
+        T = x.shape[-2]
+        cos = self.cos[:T, :].view(1, 1, T, -1).to(dtype=x.dtype)   # (1, 1, T, C/2)
+        sin = self.sin[:T, :].view(1, 1, T, -1).to(dtype=x.dtype)   # (1, 1, T, C/2)
+        x1, x2 = x[..., 0::2], x[..., 1::2]                         # (B, num_heads, T, C/2), (B, num_heads, T, C/2)
         rotated = torch.empty_like(x)
         rotated[..., 0::2] = (x1 * cos) - (x2 * sin)
         rotated[...,1::2] = (x1 * sin) + (x2 * cos)
         return rotated
 
 
-class Head(nn.Module):
-    def __init__(self, T, C, head_size, dropout):
-        super().__init__()
-        self.head_size = head_size
-        self.query = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
-        self.key = nn.Linear(C, head_size)      # (head_size x C) + head_size learnable params
-        self.value = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
-        self.rope = RotaryEmbedding(T, head_size)
-        self.dropout = nn.Dropout(dropout)
-        self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
-
-    def forward(self, x):
-
-        T = x.shape[1]
-
-        q = self.rope(self.query(x))   # (B, T, head_size)
-        k = self.rope(self.key(x))     # (B, T, head_size)
-        v = self.value(x)              # (B, T, head_size)
-
-        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)                # (B, T, T)
-        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))        # (B, T, T) Dynamic causal-mask slicing
-        weights = torch.softmax(weights, dim=-1)                                    # (B, T, T)
-        weights = self.dropout(weights)                                             # (B, T, T)
-
-        out = weights @ v    # (B, T, head_size)
-
-        return out
-
-
 class MultiHeadAttention(nn.Module):
     def __init__(self, T, C, num_heads, dropout):
         super().__init__()
+        self.T = T
+        self.num_heads = num_heads
         assert C % num_heads == 0, "Embedding dimension must be divisible by number of heads"
         self.head_size = C // num_heads
-        self.heads = nn.ModuleList([Head(T, C, self.head_size, dropout) for _ in range(num_heads)])
-        self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
+        self.qkv = nn.Linear(C, 3 * C)      # (3C, C) 
+        self.rope = RotaryEmbedding(T, self.head_size)
         self.dropout = nn.Dropout(dropout)
+        self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
+        self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
 
     def forward(self, x):
-        out = torch.concat([h(x) for h in self.heads], dim=-1)
-        out = self.proj(out)
-        out = self.dropout(out)
+        B, T, C = x.shape
+        qkv = self.qkv(x)                                                       # (B, T, 3C)
+        qkv = qkv.view(B, T, 3, self.num_heads, self.head_size)                 # (B, T, 3, num_heads, head_size)
+        q, k, v = qkv.unbind(dim=2)                                             # (B, T, num_heads, head_size) x 3
+        q = q.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        k = k.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        v = v.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        q, k = self.rope(q), self.rope(k)                                       # (B, num_heads, T, head_size) x 2     
+        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)            # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)      
+        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))    # (B, num_heads, T, T) Dynamic causal-mask slicing
+        weights = torch.softmax(weights, dim=-1)
+        weights = self.dropout(weights)
+        out = weights @ v                                                       # (B, num_heads, T, head_size)
+        out = out.transpose(1, 2).contiguous()                                  # (B, T, num_heads, head_size)
+        out = out.view(B, T, C)                                                 # (B, T, C) because num_heads * head_size = C                  
+        out = self.proj(out) 
+        out = self.dropout(out)                              
         return out
 
 

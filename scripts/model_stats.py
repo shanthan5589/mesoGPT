@@ -11,11 +11,12 @@ available arguments:
 
 import torch
 
-from mesoGPT.model_2 import GPT
+from mesoGPT.model import GPT
 
 import argparse
+import math
 
-def count_parameters(T, C, vocab_size, num_heads, n_layers, dropout):
+def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
 
     with torch.device("meta"):
         model = GPT(
@@ -45,20 +46,23 @@ def count_parameters(T, C, vocab_size, num_heads, n_layers, dropout):
     print(f"Trainable parameters: {trainable_parameters:,}")
     print(f"Training token budget: {training_token_budget:,}")
     print(f"Training compute budget: {training_compute_budget:,}")
+    print(f"For batch size {B}, Optimizer steps needed: {math.ceil(training_token_budget / B * T):,}")
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Count parameters in a GPT model.")
+    parser.add_argument("--B", type=int, required=False, default=1, help="Batch size")
     parser.add_argument("--T", type=int, required=True, help="Context length")
     parser.add_argument("--C", type=int, required=True, help="Embedding size")
     parser.add_argument("--vocab_size", type=int, required=True, help="Vocabulary size")
     parser.add_argument("--num_heads", type=int, required=True, help="Number of attention heads")
     parser.add_argument("--n_layers", type=int, required=True, help="Number of transformer layers")
-    parser.add_argument("--dropout", type=float, default=0.1, help="Dropout rate")
+    parser.add_argument("--dropout", type=float, required=False, default=0.1, help="Dropout rate")
 
     args = parser.parse_args()
 
     count_parameters(
+        B=args.B,
         T=args.T,
         C=args.C,
         vocab_size=args.vocab_size,
