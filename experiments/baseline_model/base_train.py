@@ -6,7 +6,9 @@ from model import GPT
 
 from mesoGPT.dataloader import create_dataloader
 from mesoGPT.tokenizer import BPETokenizer
-from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME, CHECKPOINT_DIR, MODEL_NAME
+from mesoGPT.common import ROOT_DIR, TOKENIZER_DIR, TOKENIZER_NAME
+
+CHECKPOINT_DIR = ROOT_DIR / "experiments" / "baseline_model" / "weights"
 
 import argparse
 
@@ -200,7 +202,7 @@ def train(model, tokenizer, optimizer, criterion,
                     "optimizer_state_dict": optimizer.state_dict(),
                     "step": completed_steps,
                     "val_loss": best_val_loss,
-                }, CHECKPOINT_DIR / f"{MODEL_NAME}_{args.model_version}.pt")
+                }, CHECKPOINT_DIR / f"model.pt")
 
                 print(
                         f"Saved new best checkpoint "
