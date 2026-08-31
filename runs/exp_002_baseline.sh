@@ -2,18 +2,21 @@
 set -euo pipefail
 
 # Run from anywhere with:
-# bash runs/baseline_model.sh
+# bash runs/exp_002_baseline.sh
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-LOG_DIR="$PROJECT_ROOT/experiments/baseline_model/logs"
 
-mkdir -p "$LOG_DIR"
 cd "$PROJECT_ROOT"
 
-RUN_TIMESTAMP="$(date -u +'%Y-%m-%dT%H-%M-%SZ')"
-RUN_LOG="$LOG_DIR/baseline_${RUN_TIMESTAMP}.log"
-GPU_LOG="$LOG_DIR/baseline_gpu_${RUN_TIMESTAMP}.csv"
+RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
+RUNS_DIR="$PROJECT_ROOT/experiments/exp_002_baseline/runs"
+RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
+
+mkdir -p "$RUN_DIR"
+
+RUN_LOG="$RUN_DIR/train.log"
+GPU_LOG="$RUN_DIR/gpu_metrics.csv"
 
 exec > >(tee "$RUN_LOG") 2>&1
 
@@ -57,7 +60,7 @@ else
 fi
 
 echo "===== BASELINE TRAINING ====="
-/usr/bin/time -v python experiments/baseline_model/base_train.py \
+/usr/bin/time -v python experiments/exp_002_baseline/base_train.py \
     --context_length 1024 \
     --n_embed 768 \
     --n_layers 12 \
@@ -74,13 +77,16 @@ echo "===== BASELINE TRAINING ====="
     --eval_iters 50 \
     --stride 1024 \
     --drop_last \
-    --num_workers 4
+    --num_workers 4 \
+    --run_dir "$RUN_DIR"
 
 stop_gpu_monitor
 
 echo "===== RUN COMPLETE ====="
 echo "UTC end: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+echo "Run directory: $RUN_DIR"
 echo "Training log: $RUN_LOG"
+
 if [[ -f "$GPU_LOG" ]]; then
     echo "GPU metrics: $GPU_LOG"
 fi

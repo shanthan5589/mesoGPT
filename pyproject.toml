@@ -17,4 +17,6 @@ dependencies = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["mesoGPT*"]
+where = ["."]
+include = ["mesoGPT*", "experiments*"]
+namespaces = true

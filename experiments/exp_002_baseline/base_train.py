@@ -1,45 +1,20 @@
 import torch
 import torch.nn as nn
 
-from model import GPT 
+import argparse
+import math
 
+from pathlib import Path
+
+import json
+from dataclasses import asdict
+
+from model import GPT, GPTConfig
 
 from mesoGPT.dataloader import create_dataloader
 from mesoGPT.tokenizer import BPETokenizer
-from mesoGPT.common import ROOT_DIR, TOKENIZER_DIR, TOKENIZER_NAME
+from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
 
-CHECKPOINT_DIR = ROOT_DIR / "experiments" / "baseline_model" / "weights"
-
-import argparse
-
-import math
-
-'''
-# ---------------- hyperparameters ----------------
-
-# Model
-context_length = 256
-n_embed = 384
-n_layers = 6
-n_heads = 6
-
-# Training:
-max_steps = 5000
-learning_rate = 3e-4
-batch_size = 64
-dropout = 0.2
-
-# Evaluation
-eval_interval = 250
-eval_iters = 50
-
-# Dataset
-stride = context_length
-drop_last = True        # Set to True for Validation dataset
-num_workers = 0
-
-# -------------------------------------------------
-'''
 
 
 device = torch.device(
@@ -74,7 +49,7 @@ def estimate_loss(model, tokenizer,criterion,
         stride=stride,
         batch_size=batch_size,
         repeat=False,
-        drop_last=drop_last,
+        drop_last=False,
         num_workers=num_workers,
     )
 
@@ -98,6 +73,12 @@ def estimate_loss(model, tokenizer,criterion,
             loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
             batch_losses.append(loss.item())
+
+
+        if not batch_losses:
+            raise RuntimeError(
+                f"No evaluation batches were produced for split {split!r}."
+            )
             
         losses[split] = sum(batch_losses) / len(batch_losses)
 
@@ -124,7 +105,7 @@ def getlr(step, max_steps, warmup_steps, max_lr, min_lr):
 def train(model, tokenizer, optimizer, criterion, 
           optimizer_steps, eval_interval, eval_iters, 
           batch_size, vocab_size, context_length, 
-          stride, drop_last, num_workers, args):
+          stride, drop_last, num_workers, run_dir, args):
 
     assert eval_interval > 0, "eval_interval must be greater than 0 to avoid division by zero error."
     
@@ -165,7 +146,7 @@ def train(model, tokenizer, optimizer, criterion,
 
         completed_steps = step + 1
 
-        if completed_steps % eval_interval == 0 or completed_steps == max_steps:
+        if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
 
             losses = estimate_loss(
                 model=model,
@@ -188,21 +169,30 @@ def train(model, tokenizer, optimizer, criterion,
 
                 best_val_loss = losses['val']
 
-                torch.save({
-                    "model_args": {
-                        "T": args.context_length,
-                        "C": args.n_embed,
-                        "vocab_size": vocab_size,
-                        "num_heads": args.n_heads,
-                        "n_layers": args.n_layers,
-                        "dropout": args.dropout
-                    },
-                    "state_dict": model.state_dict(),
-                    # Useful if you want to resume training
-                    "optimizer_state_dict": optimizer.state_dict(),
+                model_path = run_dir / "model.pt"
+                optimizer_path = run_dir / "model_optimizer.pt"
+                metadata_path = run_dir / "model_meta.json"
+
+                # Model weights only.
+                torch.save(model.state_dict(), model_path)
+
+                # Optimizer state kept separately for resuming training.
+                torch.save(optimizer.state_dict(), optimizer_path)
+
+                # Human-readable model and training metadata.
+                metadata = {
+                    "checkpoint_format_version": 1,
+                    "run_id": run_dir.name,
+                    "exp_no": "002",
+                    "model_config": asdict(model.config),
+                    "training_config": vars(args).copy(),
+                    "tokenizer_name": TOKENIZER_NAME,
                     "step": completed_steps,
                     "val_loss": best_val_loss,
-                }, CHECKPOINT_DIR / f"model.pt")
+                }
+
+                with metadata_path.open("w", encoding="utf-8") as file:
+                    json.dump(metadata, file, indent=2)
 
                 print(
                         f"Saved new best checkpoint "
@@ -211,8 +201,6 @@ def train(model, tokenizer, optimizer, criterion,
 
 
 if __name__ == "__main__":
-
-    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
     parser = argparse.ArgumentParser(description="Train a GPT model.")
 
@@ -237,7 +225,12 @@ if __name__ == "__main__":
     parser.add_argument("--stride", type=int, default=None, help="Stride for the dataset. Defaults to context_length if not provided.")
     parser.add_argument("--drop_last", action="store_true", help="Whether to drop the last incomplete batch in the dataloader.")
     parser.add_argument("--num_workers", type=int, default=4, help="Number of worker processes for the dataloader.")
+    parser.add_argument("--run_dir", type=str, required=True, help="Directory where all artifacts for this run are saved.",
+)
     args = parser.parse_args()
+
+    run_dir = Path(args.run_dir).resolve()
+    run_dir.mkdir(parents=True, exist_ok=True)
 
     tokenizer = BPETokenizer.from_directory(
         tokenizer_directory=TOKENIZER_DIR,
@@ -246,12 +239,16 @@ if __name__ == "__main__":
 
     vocab_size = tokenizer.get_vocab_size()
 
-    model = GPT(T=args.context_length, 
-                C=args.n_embed,
-                vocab_size=vocab_size, 
-                num_heads=args.n_heads,
-                n_layers=args.n_layers, 
-                dropout=args.dropout).to(device)
+    model_config = GPTConfig(
+        T=args.context_length,
+        C=args.n_embed,
+        vocab_size=vocab_size,
+        num_heads=args.n_heads,
+        n_layers=args.n_layers,
+        dropout=args.dropout
+    )
+
+    model = GPT(config=model_config).to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
     criterion = nn.CrossEntropyLoss()
@@ -261,7 +258,7 @@ if __name__ == "__main__":
         tokenizer=tokenizer,
         optimizer=optimizer,
         criterion=criterion,
-        max_steps=args.optimizer_steps,
+        optimizer_steps=args.optimizer_steps,
         eval_interval=args.eval_interval,
         eval_iters=args.eval_iters,
         batch_size=args.batch_size,
@@ -270,5 +267,6 @@ if __name__ == "__main__":
         stride=args.stride if args.stride is not None else args.context_length,
         drop_last=args.drop_last,
         num_workers=args.num_workers,
+        run_dir=run_dir,
         args=args
     )
