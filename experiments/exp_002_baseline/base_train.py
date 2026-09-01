@@ -280,7 +280,7 @@ if __name__ == "__main__":
         dropout=args.dropout
     )
 
-    model = GPT(config=model_config).to(device)
+    model = GPT(config=model_config).to(device, dtype=torch.float16)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
     criterion = nn.CrossEntropyLoss()

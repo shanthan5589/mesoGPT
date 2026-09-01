@@ -64,7 +64,9 @@ def main(type, max_budget, max_characters_per_document=0):
 
         required_extra_shards = math.ceil((max_budget - (tokens_per_shard * available_training_shards)) / tokens_per_shard) + 1 if tokens_per_shard < max_budget else 0 
 
-        return available_training_shards, required_extra_shards
+        storage_needed = ((available_training_shards + required_extra_shards) * 92) / 1024
+
+        return available_training_shards, required_extra_shards, storage_needed
 
 if __name__ == "__main__":
     
@@ -94,11 +96,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    available_training_shards, required_extra_shards = main(
+    available_training_shards, required_extra_shards, storage_needed = main(
         args.type, args.max_budget, args.max_chars_per_document
     )
 
     if required_extra_shards > 0:
-        print(f"  {available_training_shards} shards available, you need more {required_extra_shards:.2f} shards to train the {args.type}.")
+        print(f"  {available_training_shards} shards available, you need more {required_extra_shards:.2f} shards to train the {args.type}. Total storage needed: {storage_needed:.2f} GiB.")
     else:
         print(f"  {available_training_shards} shards available, you have enough characters to train the {args.type}.")
