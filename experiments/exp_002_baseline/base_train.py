@@ -15,6 +15,8 @@ from mesoGPT.dataloader import create_dataloader
 from mesoGPT.tokenizer import BPETokenizer
 from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
 
+import time
+
 
 
 device = torch.device(
@@ -132,6 +134,10 @@ def train(model, tokenizer, optimizer, criterion,
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
 
+        # --- start of optimization step ---
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        t0 = time.perf_counter()
 
         optimizer.zero_grad(set_to_none=True)
 
@@ -151,6 +157,13 @@ def train(model, tokenizer, optimizer, criterion,
             loss.backward()
 
         optimizer.step()
+
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        dt = time.perf_counter() - t0
+        # --- end of optimization step ---
+
+        print(f"Step: {step+1}, Time: {dt:.2f}s")
 
         completed_steps = step + 1
 
