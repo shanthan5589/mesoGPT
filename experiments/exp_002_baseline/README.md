@@ -12,8 +12,8 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 
 # Experiment Report
 
-- Experiment ID: 
-- Date:
+- Experiment ID: 002
+- Date: 
 - Description:
 - Hypothesis:
 - Git commit:
@@ -22,7 +22,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 
 ## Hardware and Software
 
-- GPU model:
+- GPU model: 
 - GPU count:
 - VRAM per GPU:
 - CPU:
@@ -68,11 +68,11 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Dropout: 0.1
 - Head dimension: 64
 - Tied weights for token embedding and lm_head
-- Bias in linear layers: True
+- Bias in linear layers: False
 - Pre LayerNorm
 - Batch size = 512
 - Activation function: GELU
-- RoPE: True
+- RoPE: False
 
 ## Scaling and Compute Budget
 
@@ -83,23 +83,23 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 Weight tying reduced the training token budget by 11.33% and the training compute budget by 21.43%.
 
 - Training tokens per parameter (TPP): 20 
-- Training token budget: 1,968,834,560 (~1.97B)  
+- Training token budget: 1,968,834,560 (~1.97B) Tokens
 - Training compute budget: 1.162 x 10¹⁸ FLOPs (≈1.16 exaFLOPs)
 
 ## Optimization
 
 - Optimizer: AdamW
-- Peak learning rate:
-- Minimum learning rate:
-- Weight decay:
-- Betas:
-- Warmup steps:
-- Schedule:
-- Micro-batch size:
+- Peak learning rate: 3e-4
+- Minimum learning rate: 3e-5
+- Weight decay: 0.01
+- Betas: 0.9, 0.999
+- Warmup steps: 10
+- Schedule:  Cosine schedule
+- Micro-batch size: 
 - Gradient accumulation steps:
 - Global batch tokens:
 - Gradient clipping:
-- Total optimizer steps: 4,235
+- Total optimizer steps: 3,756
 - Target tokens: 
 
 ## Runtime Measurements

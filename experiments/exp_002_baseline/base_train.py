@@ -104,8 +104,9 @@ def getlr(step, max_steps, warmup_steps, max_lr, min_lr):
 
 def train(model, tokenizer, optimizer, criterion, 
           optimizer_steps, eval_interval, eval_iters, 
-          batch_size, vocab_size, context_length, 
-          stride, drop_last, num_workers, run_dir, args):
+          micro_batch_size, gradient_accumulation_steps, 
+          vocab_size, context_length, stride, drop_last, 
+          num_workers, run_dir, args):
 
     assert eval_interval > 0, "eval_interval must be greater than 0 to avoid division by zero error."
     
@@ -115,7 +116,7 @@ def train(model, tokenizer, optimizer, criterion,
         tokenizer=tokenizer,
         context_length=context_length,
         stride=stride,
-        batch_size=batch_size,
+        batch_size=micro_batch_size,
         repeat=True,
         drop_last=drop_last,
         num_workers=num_workers,
@@ -131,16 +132,23 @@ def train(model, tokenizer, optimizer, criterion,
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr
 
-        xb, yb = next(train_iterator)
 
-        xb = xb.to(device)
-        yb = yb.to(device)
+        optimizer.zero_grad(set_to_none=True)
 
-        optimizer.zero_grad()
+        for _ in range(gradient_accumulation_steps):
 
-        logits = model(xb)      
-        loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
-        loss.backward()
+            xb, yb = next(train_iterator)
+
+            xb = xb.to(device)
+            yb = yb.to(device)
+
+            logits = model(xb)      
+
+            micro_loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
+
+            loss = micro_loss / gradient_accumulation_steps
+
+            loss.backward()
 
         optimizer.step()
 
@@ -153,7 +161,7 @@ def train(model, tokenizer, optimizer, criterion,
                 tokenizer=tokenizer,
                 criterion=criterion,
                 eval_iters=eval_iters,
-                batch_size=batch_size,
+                batch_size=micro_batch_size,
                 vocab_size=vocab_size,
                 context_length=context_length,
                 stride=stride,
@@ -210,7 +218,8 @@ if __name__ == "__main__":
     parser.add_argument("--n_heads", type=int, default=6, help="Number of attention heads.")
     parser.add_argument("--dropout", type=float, default=0, help="Dropout rate.")
 
-    parser.add_argument("--batch_size", type=int, default=64, help="Batch size for training.")
+    parser.add_argument("--global_batch_size", type=int, default=64, help="Global batch size per optimizer step.")
+    parser.add_argument("--micro_batch_size", type=int, default=None, help="Number of sequences processed at once on each GPU. Defaults to global_batch_size.")
     parser.add_argument("--learning_rate", type=float, default=0.001, required=False, help="Learning rate for the optimizer.")
     parser.add_argument("--optimizer_steps", type=int, default=5000, help="Maximum number of training steps.")
 
@@ -228,6 +237,29 @@ if __name__ == "__main__":
     parser.add_argument("--run_dir", type=str, required=True, help="Directory where all artifacts for this run are saved.",
 )
     args = parser.parse_args()
+
+    if args.micro_batch_size is None:
+        args.micro_batch_size = args.global_batch_size
+
+    if args.global_batch_size <= 0:
+        parser.error("--global_batch_size must be greater than zero.")
+
+    if args.micro_batch_size <= 0:
+        parser.error("--micro_batch_size must be greater than zero.")
+
+    if args.global_batch_size % args.micro_batch_size != 0:
+        parser.error(
+            "--global_batch_size must be divisible by --micro_batch_size."
+        )
+
+    args.gradient_accumulation_steps = (args.global_batch_size // args.micro_batch_size)
+
+    print(f"Global batch size: {args.global_batch_size}")
+    print(f"Micro-batch size: {args.micro_batch_size}")
+    print(
+        "Gradient accumulation steps: "
+        f"{args.gradient_accumulation_steps}"
+    )
 
     run_dir = Path(args.run_dir).resolve()
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -253,6 +285,10 @@ if __name__ == "__main__":
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
     criterion = nn.CrossEntropyLoss()
 
+    assert args.global_batch_size == (
+        args.micro_batch_size * args.gradient_accumulation_steps
+    )
+
     train(
         model=model,
         tokenizer=tokenizer,
@@ -261,7 +297,8 @@ if __name__ == "__main__":
         optimizer_steps=args.optimizer_steps,
         eval_interval=args.eval_interval,
         eval_iters=args.eval_iters,
-        batch_size=args.batch_size,
+        micro_batch_size=args.micro_batch_size,
+        gradient_accumulation_steps=args.gradient_accumulation_steps,
         vocab_size=vocab_size,
         context_length=args.context_length,
         stride=args.stride if args.stride is not None else args.context_length,

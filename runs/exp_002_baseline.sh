@@ -66,7 +66,8 @@ echo "===== BASELINE TRAINING ====="
     --n_layers 12 \
     --n_heads 12 \
     --dropout 0.1 \
-    --batch_size 512 \
+    --global_batch_size 512 \
+    --micro_batch_size 64 \
     --learning_rate 3e-4 \
     --optimizer_steps 4235 \
     --max_lr 3e-4 \
