@@ -1,13 +1,12 @@
 import torch
 import torch.nn as nn
 
+from dataclasses import asdict
+from pathlib import Path
 import argparse
 import math
-
-from pathlib import Path
-
 import json
-from dataclasses import asdict
+import time
 
 from model import GPT, GPTConfig
 
@@ -15,15 +14,17 @@ from mesoGPT.dataloader import create_dataloader
 from mesoGPT.tokenizer import BPETokenizer
 from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
 
-import time
-
-
 
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 print(f"Using device: {device}")
 
+# AMP is enabled only for CUDA devices.
+amp_enabled = device.type == "cuda"
+
+# This prefers BF16 when supported and otherwise uses FP16.
+amp_dtype = (torch.bfloat16 if amp_enabled and torch.cuda.is_bf16_supported() else torch.float16)
 
 @torch.no_grad()
 def estimate_loss(model, tokenizer,criterion, 
@@ -70,12 +71,17 @@ def estimate_loss(model, tokenizer,criterion,
             xb = xb.to(device)
             yb = yb.to(device)
 
-            logits = model(xb)
+            with torch.autocast(
+                device_type=device.type,
+                dtype=amp_dtype,
+                enabled=amp_enabled,
+            ):
 
-            loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
+                logits = model(xb)
+
+                loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
             batch_losses.append(loss.item())
-
 
         if not batch_losses:
             raise RuntimeError(
@@ -108,7 +114,7 @@ def train(model, tokenizer, optimizer, criterion,
           optimizer_steps, eval_interval, eval_iters, 
           micro_batch_size, gradient_accumulation_steps, 
           vocab_size, context_length, stride, drop_last, 
-          num_workers, run_dir, args):
+          num_workers, run_dir, args, scalar):
 
     assert eval_interval > 0, "eval_interval must be greater than 0 to avoid division by zero error."
     
@@ -148,15 +154,22 @@ def train(model, tokenizer, optimizer, criterion,
             xb = xb.to(device)
             yb = yb.to(device)
 
-            logits = model(xb)      
+            with torch.autocast(
+                device_type=device.type,
+                dtype=amp_dtype,
+                enabled=amp_enabled,
+            ):
 
-            micro_loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
+                logits = model(xb)      
 
-            loss = micro_loss / gradient_accumulation_steps
+                micro_loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
-            loss.backward()
+                loss = micro_loss / gradient_accumulation_steps
 
-        optimizer.step()
+            scalar.scale(loss).backward()
+
+        scalar.step(optimizer)
+        scalar.update()
 
         if device.type == "cuda":
             torch.cuda.synchronize()
@@ -293,10 +306,13 @@ if __name__ == "__main__":
         dropout=args.dropout
     )
 
-    model = GPT(config=model_config).to(device, dtype=torch.float16)
+    model = GPT(config=model_config).to(device=device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate)
     criterion = nn.CrossEntropyLoss()
+
+    # The scaler is active for FP16 and disabled for BF16.
+    scaler = torch.amp.GradScaler("cuda", enabled=amp_enabled and amp_dtype == torch.float16)
 
     assert args.global_batch_size == (
         args.micro_batch_size * args.gradient_accumulation_steps
@@ -318,5 +334,6 @@ if __name__ == "__main__":
         drop_last=args.drop_last,
         num_workers=args.num_workers,
         run_dir=run_dir,
-        args=args
+        args=args,
+        scalar=scaler
     )

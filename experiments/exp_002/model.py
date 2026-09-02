@@ -107,6 +107,7 @@ class Block(nn.Module):
 class GPT(nn.Module):
     def __init__(self, config: GPTConfig):
         super().__init__()
+        self.config = config
         self.T = config.T
         self.embedding = Embedding(config.T, config.vocab_size, config.C)
         self.blocks = nn.Sequential(*[Block(config.T, config.C, config.num_heads, config.dropout) for _ in range(config.n_layers)])  

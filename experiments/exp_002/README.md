@@ -12,7 +12,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 
 # Experiment Report
 
-- Experiment ID: 002
+- Experiment ID: Training Baseline Model
 - Date: 
 - Description:
 - Hypothesis:

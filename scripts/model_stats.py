@@ -11,7 +11,7 @@ available arguments:
 
 import torch
 
-from experiments.exp_002_baseline.model import GPT, GPTConfig
+from experiments.exp_002.model import GPT, GPTConfig
 
 import argparse
 import math

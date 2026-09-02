@@ -10,7 +10,7 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
-RUNS_DIR="$PROJECT_ROOT/experiments/exp_002_baseline/runs"
+RUNS_DIR="$PROJECT_ROOT/experiments/exp_002/runs"
 RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
 
 mkdir -p "$RUN_DIR"
@@ -59,7 +59,7 @@ else
 fi
 
 echo "===== BASELINE TRAINING ====="
-/usr/bin/time -v python experiments/exp_002_baseline/base_train.py \
+/usr/bin/time -v python experiments/exp_002/base_train.py \
     --context_length 1024 \
     --n_embed 768 \
     --n_layers 12 \

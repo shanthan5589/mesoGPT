@@ -6,7 +6,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
-LOG_DIR="$PROJECT_ROOT/experiments/experiment_001_tokenizer_scaling/logs"
+LOG_DIR="$PROJECT_ROOT/experiments/exp_001/logs"
 
 mkdir -p "$LOG_DIR"
 cd "$PROJECT_ROOT"
@@ -37,7 +37,7 @@ for TRAINING_CHARS in \
     500_000_000
 do
     echo "===== TOKENIZER: $TRAINING_CHARS TRAINING CHARACTERS ====="
-    /usr/bin/time -v python experiments/tokenizer_scaling/tok_train.py \
+    /usr/bin/time -v python experiments/exp_001/tok_train.py \
         --max-training-chars "$TRAINING_CHARS" \
         --max-chars-per-document 10_000 \
         --vocab-size 16384
