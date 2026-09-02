@@ -8,3 +8,4 @@ artifacts/
 weights/
 *.tmp
 ssh_keys/
+temp-trash/

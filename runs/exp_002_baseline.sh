@@ -20,8 +20,7 @@ GPU_LOG="$RUN_DIR/gpu_metrics.csv"
 
 exec > >(tee "$RUN_LOG") 2>&1
 
-eval "$(conda shell.bash hook)"
-conda activate mesogpt
+source "$PROJECT_ROOT/.venv-runpod/bin/activate"
 
 echo "===== RUN INFORMATION ====="
 echo "UTC start: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"

@@ -3,8 +3,7 @@ from importlib import import_module
 
 MODEL_REGISTRY = {
     "002": "experiments.exp_002_baseline.model",
-    "003": "experiments.exp_003_fused_qkv.model",
-    "004": "experiments.exp_004_rope.model",
+    "003": "experiments.exp_004_rope.model",
 }
 
 

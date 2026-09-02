@@ -1,5 +1,5 @@
 '''
-GPT Model - baseline
+Baseline: Fused QKV 
 '''
 
 import torch
@@ -32,7 +32,6 @@ class GPTConfig:
         if not 0.0 <= self.dropout < 1.0:
             raise ValueError("dropout must be between 0 and 1")
 
-
 class Embedding(nn.Module):
     def __init__(self, T, vocab_size, C):
         super().__init__()
@@ -46,46 +45,32 @@ class Embedding(nn.Module):
         return token_emb + pos_embedding                           
 
 
-class Head(nn.Module):
-    def __init__(self, C, head_size, dropout):
-        super().__init__()
-        self.head_size = head_size
-        self.query = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
-        self.key = nn.Linear(C, head_size)      # (head_size x C) + head_size learnable params
-        self.value = nn.Linear(C, head_size)    # (head_size x C) + head_size learnable params
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self, x, causal_mask):
-
-        T = x.shape[1]
-
-        q = self.query(x)  # (B, T, head_size)
-        k = self.key(x)    # (B, T, head_size)
-        v = self.value(x)              # (B, T, head_size)
-
-        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)                # (B, T, T)
-        weights = weights.masked_fill(~causal_mask, float('-inf'))                  # (B, T, T) Dynamic causal-mask slicing
-        weights = torch.softmax(weights, dim=-1)                                    # (B, T, T)
-        weights = self.dropout(weights)                                             # (B, T, T)
-
-        out = weights @ v    # (B, T, head_size)
-
-        return out
-
-
 class MultiHeadAttention(nn.Module):
     def __init__(self, T, C, num_heads, dropout):
         super().__init__()
-        assert C % num_heads == 0, "Embedding dimension must be divisible by number of heads"
+        self.num_heads = num_heads
+        assert C % self.num_heads == 0, "Embedding dimension must be divisible by number of heads"
         self.head_size = C // num_heads
-        self.heads = nn.ModuleList([Head(C, self.head_size, dropout) for _ in range(num_heads)])
+        self.qkv = nn.Linear(C, 3 * C)
+        self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
         self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
         self.dropout = nn.Dropout(dropout)
-        self.register_buffer('causal_mask', torch.tril(torch.ones(T, T, dtype=torch.bool)), persistent=False)   # (T, T))
 
     def forward(self, x):
-        T = x.shape[1]
-        out = torch.concat([h(x, self.causal_mask[:T, :T]) for h in self.heads], dim=-1)
+        B, T, C = x.shape
+        qkv = self.qkv(x)
+        qkv = qkv.view(B, T, 3, self.num_heads, self.head_size)
+        q, k, v = qkv.unbind(dim=2)   # (B, T, num_heads, head_size) x 3
+        q = q.transpose(1, 2)   # (B, num_heads, T, head_size)
+        k = k.transpose(1, 2)   # (B, num_heads, T, head_size)
+        v = v.transpose(1, 2)    # (B, num_heads, T, head_size)
+        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)   # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)
+        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        weights = torch.softmax(weights, dim=-1)
+        weights = self.dropout(weights)
+        out = weights @ v   # (B, num_heads, T, T) x (B, num_heads, T, head_size) -> (B, num_heads, T, head_size)
+        out = out.transpose(1, 2).contiguous()   # (B, T, num_heads, head_size)
+        out = out.view(B, T, C)
         out = self.proj(out)
         out = self.dropout(out)
         return out
@@ -122,18 +107,17 @@ class Block(nn.Module):
 class GPT(nn.Module):
     def __init__(self, config: GPTConfig):
         super().__init__()
-        self.config = config
         self.T = config.T
         self.embedding = Embedding(config.T, config.vocab_size, config.C)
         self.blocks = nn.Sequential(*[Block(config.T, config.C, config.num_heads, config.dropout) for _ in range(config.n_layers)])  
         self.ln_f = nn.LayerNorm(config.C)                 # 2C learnable params
         self.lm_head = nn.Linear(config.C, config.vocab_size)     # (vocab_size x C) + vocab_size learnable params
-        # Weight Sharing Scheme
+        # Weight Tying
         self.lm_head.weight = self.embedding.token_embedding.weight
         self.apply(self._init_weights)
 
     def _init_weights(self, module):
-
+    
         if isinstance(module, nn.Linear):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
