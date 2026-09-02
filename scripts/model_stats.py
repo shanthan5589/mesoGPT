@@ -49,7 +49,7 @@ def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
     model_state_memory = 16 * total_parameters
     run_time_memory = n_layers * (B * T * C * (66 + ((9 * num_heads * T) / C))) + (8 * T * B * C) + (4 * T * B * vocab_size)
     run_time_memory_ = n_layers * (B * T * C * (34 + ((5 * num_heads * T) / C))) + (4 * T * B * C) + (2 * T * B * vocab_size)
-    temporary_memory = 10 * 1_073_741_824
+    temporary_memory = 20 * 1_073_741_824
     total_memory_usage = model_state_memory + run_time_memory + temporary_memory
     total_memory_usage_ = model_state_memory + run_time_memory_ + temporary_memory
 

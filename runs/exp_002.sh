@@ -9,6 +9,12 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
+if [[ ! -x /usr/bin/time ]]; then
+    echo "/usr/bin/time not found. Installing..."
+    apt-get update
+    apt-get install -y time
+fi
+
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
 RUNS_DIR="$PROJECT_ROOT/experiments/exp_002/runs"
 RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
@@ -59,7 +65,7 @@ else
 fi
 
 echo "===== BASELINE TRAINING ====="
-/usr/bin/time -v python experiments/exp_002/base_train.py \
+/usr/bin/time -v python -u experiments/exp_002/base_train.py \
     --context_length 1024 \
     --n_embed 768 \
     --n_layers 12 \
