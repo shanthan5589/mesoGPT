@@ -73,17 +73,15 @@ echo "===== BASELINE TRAINING ====="
     --dropout 0.1 \
     --global_batch_size 512 \
     --micro_batch_size 64 \
-    --learning_rate 3e-4 \
-    --optimizer_steps 4235 \
+    --optimizer_steps 3756 \
     --max_lr 3e-4 \
     --min_lr 3e-5 \
-    --warmup_steps 10 \
-    --max_lr_schedule_steps 4235 \
+    --warmup_steps 50 \
+    --max_lr_schedule_steps 3756 \
     --eval_interval 250 \
-    --eval_iters 50 \
+    --eval_iters 320 \
     --stride 1024 \
-    --drop_last \
-    --num_workers 4 \
+    --num_workers 16 \
     --run_dir "$RUN_DIR"
 
 stop_gpu_monitor

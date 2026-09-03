@@ -29,7 +29,7 @@ amp_dtype = (torch.bfloat16 if amp_enabled and torch.cuda.is_bf16_supported() el
 @torch.no_grad()
 def estimate_loss(model, tokenizer,criterion, 
                   eval_iters, batch_size, vocab_size, context_length, 
-                  stride, drop_last, num_workers):
+                  stride, num_workers):
 
     model.eval()
     losses = {}
@@ -41,7 +41,7 @@ def estimate_loss(model, tokenizer,criterion,
         stride=stride,
         batch_size=batch_size,
         repeat=False,
-        drop_last=drop_last,
+        drop_last=False,
         num_workers=num_workers,
     )
 
@@ -67,7 +67,7 @@ def estimate_loss(model, tokenizer,criterion,
 
         for batch_index, (xb, yb, num_bytes, yb_length) in enumerate(dataloader):
 
-            if batch_index >= eval_iters:
+            if eval_iters is not None and batch_index >= eval_iters:
                 break
 
             xb = xb.to(device)
@@ -83,14 +83,14 @@ def estimate_loss(model, tokenizer,criterion,
 
                 loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
-            tokens = yb_length.sum().item()
-            bytes = num_bytes.sum().item()
+            batch_tokens = yb_length.sum().item()
+            batch_bytes = num_bytes.sum().item()
             
-            total_loss += loss.item() * tokens
-            total_tokens += tokens
-            total_bytes += bytes
+            total_loss += loss.item() * batch_tokens
+            total_tokens += batch_tokens
+            total_bytes += batch_bytes
 
-        if not total_loss:
+        if total_tokens == 0:
             raise RuntimeError(
                 f"No evaluation batches were produced for split {split!r}."
             )
@@ -123,7 +123,7 @@ def getlr(step, max_steps, warmup_steps, max_lr, min_lr):
 def train(model, tokenizer, optimizer, criterion, 
           optimizer_steps, eval_interval, eval_iters, 
           micro_batch_size, gradient_accumulation_steps, 
-          vocab_size, context_length, stride, drop_last, 
+          vocab_size, context_length, stride, 
           num_workers, run_dir, args, scalar):
 
     assert eval_interval > 0, "eval_interval must be greater than 0 to avoid division by zero error."
@@ -136,7 +136,7 @@ def train(model, tokenizer, optimizer, criterion,
         stride=stride,
         batch_size=micro_batch_size,
         repeat=True,
-        drop_last=drop_last,
+        drop_last=True,
         num_workers=num_workers,
     )
 
@@ -157,7 +157,7 @@ def train(model, tokenizer, optimizer, criterion,
 
         optimizer.zero_grad(set_to_none=True)
 
-        for _ in range(gradient_accumulation_steps):
+        for batch_index in range(gradient_accumulation_steps):
 
             xb, yb, num_bytes, yb_length = next(train_iterator)
 
@@ -202,7 +202,6 @@ def train(model, tokenizer, optimizer, criterion,
                 vocab_size=vocab_size,
                 context_length=context_length,
                 stride=stride,
-                drop_last=drop_last,
                 num_workers=num_workers
             )
 
@@ -268,10 +267,9 @@ if __name__ == "__main__":
     parser.add_argument("--max_lr_schedule_steps", type=int, default=50, required=False, help="Total number of steps for learning rate scheduling.")
 
     parser.add_argument("--eval_interval", type=int, default=250, help="Interval for evaluation during training.")
-    parser.add_argument("--eval_iters", type=int, default=50, help="Number of iterations for evaluation.")
+    parser.add_argument("--eval_iters", type=int, default=None, required=False, help="Number of iterations for evaluation.")
 
     parser.add_argument("--stride", type=int, default=None, help="Stride for the dataset. Defaults to context_length if not provided.")
-    parser.add_argument("--drop_last", action="store_true", help="Whether to drop the last incomplete batch in the dataloader.")
     parser.add_argument("--num_workers", type=int, default=4, help="Number of worker processes for the dataloader.")
     parser.add_argument("--run_dir", type=str, required=True, help="Directory where all artifacts for this run are saved.",
 )
@@ -344,7 +342,6 @@ if __name__ == "__main__":
         vocab_size=vocab_size,
         context_length=args.context_length,
         stride=args.stride if args.stride is not None else args.context_length,
-        drop_last=args.drop_last,
         num_workers=args.num_workers,
         run_dir=run_dir,
         args=args,

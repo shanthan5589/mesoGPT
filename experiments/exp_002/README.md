@@ -22,7 +22,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 
 ## Hardware and Software
 
-- GPU model: RTX 4090
+- GPU model: 
 - GPU count: 1
 - VRAM per GPU: 
 - CPU:
