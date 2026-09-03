@@ -39,11 +39,18 @@ class ParquetTokenDataset(IterableDataset):
 
                 for start in range(0, len(token_ids) - self.context_length, self.stride):
 
-                    end = start + self.context_length + 1
+                    end = start + self.context_length
 
-                    window = torch.tensor(token_ids[start:end], dtype=torch.long)
+                    xb, yb = token_ids[start:end], token_ids[start + 1:end + 1]
 
-                    yield window[:-1], window[1:]
+                    yb_length = len(yb)
+
+                    num_bytes = len(self.tokenizer.decode(yb).encode("utf-8"))
+
+                    xb = torch.tensor(xb, dtype=torch.long)
+                    yb = torch.tensor(yb, dtype=torch.long)
+
+                    yield xb, yb, num_bytes, yb_length
 
             if not self.repeat:
                 return

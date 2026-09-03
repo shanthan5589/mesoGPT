@@ -61,9 +61,11 @@ def estimate_loss(model, tokenizer,criterion,
         ("val", val_dataloader),
     ]:
 
-        batch_losses = []
+        total_loss = 0.0
+        total_bytes = 0
+        total_tokens = 0
 
-        for batch_index, (xb, yb) in enumerate(dataloader):
+        for batch_index, (xb, yb, num_bytes, yb_length) in enumerate(dataloader):
 
             if batch_index >= eval_iters:
                 break
@@ -81,14 +83,22 @@ def estimate_loss(model, tokenizer,criterion,
 
                 loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
-            batch_losses.append(loss.item())
+            tokens = yb_length.sum().item()
+            bytes = num_bytes.sum().item()
+            
+            total_loss += loss.item() * tokens
+            total_tokens += tokens
+            total_bytes += bytes
 
-        if not batch_losses:
+        if not total_loss:
             raise RuntimeError(
                 f"No evaluation batches were produced for split {split!r}."
             )
             
-        losses[split] = sum(batch_losses) / len(batch_losses)
+        losses[split] = {
+            "loss": total_loss / total_tokens,
+            "bpb": total_loss / (math.log(2) * total_bytes),
+        }
 
     model.train()
     return losses
@@ -149,8 +159,9 @@ def train(model, tokenizer, optimizer, criterion,
 
         for _ in range(gradient_accumulation_steps):
 
-            xb, yb = next(train_iterator)
+            xb, yb, num_bytes, yb_length = next(train_iterator)
 
+            # Asynchronous
             xb = xb.to(device)
             yb = yb.to(device)
 
@@ -162,9 +173,9 @@ def train(model, tokenizer, optimizer, criterion,
 
                 logits = model(xb)      
 
-                micro_loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
+                loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
 
-                loss = micro_loss / gradient_accumulation_steps
+                loss = loss / gradient_accumulation_steps
 
             scalar.scale(loss).backward()
 
@@ -196,12 +207,14 @@ def train(model, tokenizer, optimizer, criterion,
             )
 
             print(f"Step: {completed_steps}: "  
-                f"Train Loss: {losses['train']:.4f}, "
-                f"Val Loss: {losses['val']:.4f}")
+                f"Train Loss: {losses['train']['loss']:.4f}, "
+                f"Train bpb: {losses['train']['bpb']:.4f}, "
+                f"Val Loss: {losses['val']['loss']:.4f}, "
+                f"Val bpb: {losses['val']['bpb']:.4f}")
             
-            if losses['val'] < best_val_loss:
+            if losses['val']['loss'] < best_val_loss:
 
-                best_val_loss = losses['val']
+                best_val_loss = losses['val']['loss']
 
                 model_path = run_dir / "model.pt"
                 optimizer_path = run_dir / "model_optimizer.pt"
