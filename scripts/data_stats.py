@@ -39,7 +39,10 @@ def main(type, max_budget, max_characters_per_document=0):
 
         required_extra_shards = math.ceil((max_budget - (eligible_characters_per_shard * available_training_shards)) / eligible_characters_per_shard) + 1 if eligible_characters_per_shard < max_budget else 0 
 
-        return available_training_shards, required_extra_shards
+        if required_extra_shards > 0:
+            storage_needed = ((available_training_shards + required_extra_shards) * 92) / 1024
+
+        return available_training_shards, required_extra_shards, storage_needed if required_extra_shards > 0 else 0
     
     if type == "model":
 

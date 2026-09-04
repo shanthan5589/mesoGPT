@@ -1,3 +1,12 @@
+# mesoGPT
+
+<p align="center">
+  <img src="assets/repo_banner.svg"
+  width="100%"
+  alt="mesoGPT banner">
+</p>
+
+
 ```
 mesoGPT/
 ├── .gitignore
