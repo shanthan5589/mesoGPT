@@ -482,4 +482,4 @@ Saved tokenizer to /home/ubuntu/mesoGPT/artifacts/tokenizer/tok-v16384-c500.00m.
 	Page size (bytes): 4096
 	Exit status: 0
 ===== EXPERIMENT COMPLETE =====
-Log saved to: tokenizer_experiment_20260824_185831.log
+Log saved to: 20260824_185831.log
