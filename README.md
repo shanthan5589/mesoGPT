@@ -7,6 +7,13 @@
 </p>
 
 
+mesoGPT is a successor to microGPT. This model is intended to train on more compute and data than its predecessor. 
+
+Experiments:
+- [exp_001](experiments/exp_001/README.md)
+
+
+
 ```
 mesoGPT/
 ├── .gitignore

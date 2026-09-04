@@ -72,14 +72,14 @@ echo "===== BASELINE TRAINING ====="
     --n_heads 12 \
     --dropout 0.1 \
     --global_batch_size 512 \
-    --micro_batch_size 64 \
-    --optimizer_steps 3756 \
+    --micro_batch_size 32 \
+    --optimizer_steps 3726 \
     --max_lr 3e-4 \
     --min_lr 3e-5 \
     --warmup_steps 40 \
-    --max_lr_schedule_steps 3756 \
+    --max_lr_schedule_steps 3726 \
     --eval_interval 10 \
-    --eval_iters 320 \
+    --eval_iters 64 \
     --stride 1024 \
     --num_workers 32 \
     --run_dir "$RUN_DIR"

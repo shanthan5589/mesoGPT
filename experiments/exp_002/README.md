@@ -46,7 +46,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Raw Characters per shard: ~252,606,075.5 (252.6M)
 - Number of tokens per shard: ~57,582,082 (57.6M)
 - Storage per shard: 92 MB
-- Training shards: 36
+- Training shards: 35  (3.14 GiB needed)
 - Validation shards: 1
 - Duplicate removal:
 - Document-length statistics:
@@ -65,7 +65,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 
 ## Model
 
-- Parameter count: 98,441,728 (Used weight tying)
+- Parameter count: 97,655,296 (After weight tying and RoPE)   
 - Attention heads: 12
 - Layers: 12
 - Width: 768
@@ -78,7 +78,7 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 - Pre LayerNorm
 - Batch size = 512
 - Activation function: GELU
-- RoPE: False
+- RoPE: True
 
 ## Scaling and Compute Budget
 
@@ -89,8 +89,8 @@ Max FLOPs - training compute budget (C) = 6ND ≈ 1.479 × 10¹⁸ FLOPs (≈1.4
 Weight tying reduced the training token budget by 11.33% and the training compute budget by 21.43%.
 
 - Training tokens per parameter (TPP): 20 
-- Training token budget: 1,968,834,560 (~1.97B) Tokens
-- Training compute budget: 1.162 x 10¹⁸ FLOPs (≈1.16 exaFLOPs) (≈1.16 x 10^6 TFLOPs)
+- Training token budget: 1,953,105,920 Tokens (≈1.95B) 
+- Training compute budget: 1.144 x 10¹⁸ FLOPs (≈1.14 exaFLOPs) (1.144 x 10^6 TFLOPs)
 
 ## Optimization
 
@@ -99,13 +99,13 @@ Weight tying reduced the training token budget by 11.33% and the training comput
 - Minimum learning rate: 3e-5
 - Weight decay: 0.01
 - Betas: 0.9, 0.999
-- Warmup steps: 10
+- Warmup steps: 40
 - Schedule:  Cosine schedule
-- Micro-batch size: 
-- Gradient accumulation steps:
+- Micro-batch size: 32
+- Gradient accumulation steps: 16
 - Global batch tokens:
-- Gradient clipping:
-- Total optimizer steps: 3,756
+- Gradient clipping: None
+- Total optimizer steps: 3,726
 - Target tokens: 
 
 ## Runtime Measurements

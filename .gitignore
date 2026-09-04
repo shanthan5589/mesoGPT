@@ -9,4 +9,6 @@ weights/
 *.tmp
 ssh_keys/
 temp-trash/
+temp-trash-1/
 scripts/count_params.py
+

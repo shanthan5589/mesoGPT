@@ -1,5 +1,5 @@
 '''
-Baseline: Fused QKV 
+Fused QKV with Rotary Positional Embeddings
 '''
 
 import torch
@@ -31,48 +31,72 @@ class GPTConfig:
             raise ValueError("n_layers must be positive")
         if not 0.0 <= self.dropout < 1.0:
             raise ValueError("dropout must be between 0 and 1")
+        if (self.C // self.num_heads) % 2 != 0:
+            raise ValueError("C // num_heads must be even for RoPE")
 
-class Embedding(nn.Module):
-    def __init__(self, T, vocab_size, C):
+
+class TokenEmbedding(nn.Module):
+    def __init__(self, vocab_size, C):
         super().__init__()
-        self.token_embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
-        self.position_embedding = nn.Embedding(T, C)
+        self.embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
 
     def forward(self, x):
-        T = x.shape[1]
-        token_emb = self.token_embedding(x)
-        pos_embedding = self.position_embedding(torch.arange(T, device=x.device))     
-        return token_emb + pos_embedding                           
+        token_emb = self.embedding(x)     
+        return token_emb                           
+
+
+class RotaryEmbedding(nn.Module):
+    def __init__(self, T, C, base=10000):
+        super().__init__()
+        assert C % 2 == 0, "RoPE needs an even head_size to form rotation pairs"
+        inv_freq = 1 / (base ** (torch.arange(0, C, 2).float() / C))     # (C/2,)
+        t = torch.arange(T, dtype=torch.float32)                         # (T,)
+        freqs = torch.outer(t, inv_freq)                                 # (T, C/2)
+        self.register_buffer('cos', freqs.cos(), persistent=False)       # (T, C/2)
+        self.register_buffer('sin', freqs.sin(), persistent=False)       # (T, C/2)
+
+    def forward(self, x):
+        T = x.shape[-2]
+        cos = self.cos[:T, :].view(1, 1, T, -1).to(dtype=x.dtype)   # (1, 1, T, C/2)
+        sin = self.sin[:T, :].view(1, 1, T, -1).to(dtype=x.dtype)   # (1, 1, T, C/2)
+        x1, x2 = x[..., 0::2], x[..., 1::2]                         # (B, num_heads, T, C/2), (B, num_heads, T, C/2)
+        rotated = torch.empty_like(x)
+        rotated[..., 0::2] = (x1 * cos) - (x2 * sin)
+        rotated[...,1::2] = (x1 * sin) + (x2 * cos)
+        return rotated
 
 
 class MultiHeadAttention(nn.Module):
     def __init__(self, T, C, num_heads, dropout):
         super().__init__()
+        self.T = T
         self.num_heads = num_heads
-        assert C % self.num_heads == 0, "Embedding dimension must be divisible by number of heads"
+        assert C % num_heads == 0, "Embedding dimension must be divisible by number of heads"
         self.head_size = C // num_heads
-        self.qkv = nn.Linear(C, 3 * C)
+        self.qkv = nn.Linear(C, 3 * C)      # (3C, C) 
+        self.rope = RotaryEmbedding(T, self.head_size)
+        self.dropout = nn.Dropout(dropout)
         self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
         self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
-        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x):
         B, T, C = x.shape
-        qkv = self.qkv(x)
-        qkv = qkv.view(B, T, 3, self.num_heads, self.head_size)
-        q, k, v = qkv.unbind(dim=2)   # (B, T, num_heads, head_size) x 3
-        q = q.transpose(1, 2)   # (B, num_heads, T, head_size)
-        k = k.transpose(1, 2)   # (B, num_heads, T, head_size)
-        v = v.transpose(1, 2)    # (B, num_heads, T, head_size)
-        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)   # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)
-        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))
+        qkv = self.qkv(x)                                                       # (B, T, 3C)
+        qkv = qkv.view(B, T, 3, self.num_heads, self.head_size)                 # (B, T, 3, num_heads, head_size)
+        q, k, v = qkv.unbind(dim=2)                                             # (B, T, num_heads, head_size) x 3
+        q = q.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        k = k.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        v = v.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
+        q, k = self.rope(q), self.rope(k)                                       # (B, num_heads, T, head_size) x 2     
+        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)            # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)      
+        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))    # (B, num_heads, T, T) Dynamic causal-mask slicing
         weights = torch.softmax(weights, dim=-1)
         weights = self.dropout(weights)
-        out = weights @ v   # (B, num_heads, T, T) x (B, num_heads, T, head_size) -> (B, num_heads, T, head_size)
-        out = out.transpose(1, 2).contiguous()   # (B, T, num_heads, head_size)
-        out = out.view(B, T, C)
-        out = self.proj(out)
-        out = self.dropout(out)
+        out = weights @ v                                                       # (B, num_heads, T, head_size)
+        out = out.transpose(1, 2).contiguous()                                  # (B, T, num_heads, head_size)
+        out = out.view(B, T, C)                                                 # (B, T, C) because num_heads * head_size = C                  
+        out = self.proj(out) 
+        out = self.dropout(out)                              
         return out
 
 
@@ -108,17 +132,16 @@ class GPT(nn.Module):
     def __init__(self, config: GPTConfig):
         super().__init__()
         self.config = config
-        self.T = config.T
-        self.embedding = Embedding(config.T, config.vocab_size, config.C)
+        self.token_embedding = TokenEmbedding(config.vocab_size, config.C)
         self.blocks = nn.Sequential(*[Block(config.T, config.C, config.num_heads, config.dropout) for _ in range(config.n_layers)])  
         self.ln_f = nn.LayerNorm(config.C)                 # 2C learnable params
         self.lm_head = nn.Linear(config.C, config.vocab_size)     # (vocab_size x C) + vocab_size learnable params
         # Weight Tying
-        self.lm_head.weight = self.embedding.token_embedding.weight
+        self.lm_head.weight = self.token_embedding.embedding.weight
         self.apply(self._init_weights)
 
     def _init_weights(self, module):
-    
+        
         if isinstance(module, nn.Linear):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
@@ -128,7 +151,7 @@ class GPT(nn.Module):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
     def forward(self, x):
-        x = self.embedding(x)
+        x = self.token_embedding(x)
         x = self.blocks(x)
         x = self.ln_f(x)
         logits = self.lm_head(x)

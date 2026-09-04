@@ -3,7 +3,6 @@ from importlib import import_module
 
 MODEL_REGISTRY = {
     "002": "experiments.exp_002.model",
-    "003": "experiments.exp_003.model",
 }
 
 
