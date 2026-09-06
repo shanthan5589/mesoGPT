@@ -72,7 +72,7 @@ echo "===== BASELINE TRAINING ====="
     --n_heads 12 \
     --dropout 0.1 \
     --global_batch_size 512 \
-    --micro_batch_size 32 \
+    --micro_batch_size 16 \
     --optimizer_steps 3726 \
     --max_lr 3e-4 \
     --min_lr 3e-5 \
@@ -81,7 +81,7 @@ echo "===== BASELINE TRAINING ====="
     --eval_interval 10 \
     --eval_iters 64 \
     --stride 1024 \
-    --num_workers 32 \
+    --num_workers 4 \
     --run_dir "$RUN_DIR"
 
 stop_gpu_monitor
