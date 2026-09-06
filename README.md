@@ -1,17 +1,15 @@
 # mesoGPT
 
 <p align="center">
-  <img src="assets/repo_banner.svg"
-  width="100%"
-  alt="mesoGPT banner">
+  <img src="assets/banner.jpg" alt="milky way" width="300">
 </p>
 
 
-mesoGPT is a successor to microGPT. This model is intended to train on more compute and data than its predecessor. 
+mesoGPT is a successor of microGPT. This model is intended to train on more compute and data than its predecessor. 
 
 Experiments:
 - [exp_001](experiments/exp_001/README.md)
-
+- [exp_002](experiments/exp_002/README.md)
 
 
 ```

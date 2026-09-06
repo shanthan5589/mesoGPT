@@ -1,5 +1,10 @@
 '''
-Fused QKV with Rotary Positional Embeddings
+Tied weights for token embedding and lm_head
+Fused QKV 
+Rotary Positional Embeddings without adding positional embedding.
+Pre-LayerNorm
+Linear and Embedding layers initialized with (mean=0, std=0.02)
+Linear layers have bias set to 0
 '''
 
 import torch
@@ -161,7 +166,7 @@ class GPT(nn.Module):
     def generate(self, idx, max_tokens=100, temperature=1.0):
         
         for _ in range(max_tokens):
-            idx_cond = idx if idx.size(1) <= self.T else idx[:, -self.T:]
+            idx_cond = idx if idx.size(1) <= self.config.T else idx[:, -self.config.T:]
 
             logits = self(idx_cond)
             logits = logits[:, -1, :] / temperature
