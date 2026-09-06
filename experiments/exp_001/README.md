@@ -1,7 +1,7 @@
 
 # Experiment 001: Scaling Tokenizer Training Data at Fixed Vocabulary Size
 
-## Research Question
+## Question
 
 How does the amount of tokenizer-training text affect the held-out
 compression efficiency of a byte-level BPE tokenizer when vocabulary size
