@@ -151,9 +151,9 @@ def train(model, tokenizer, optimizer, criterion,
             param_group['lr'] = lr
 
         # --- start of optimization step ---
-        if device.type == "cuda":
-            torch.cuda.synchronize()
-        t0 = time.perf_counter()
+        # if device.type == "cuda":
+        #     torch.cuda.synchronize()
+        # t0 = time.perf_counter()
 
         optimizer.zero_grad(set_to_none=True)
 
@@ -182,16 +182,21 @@ def train(model, tokenizer, optimizer, criterion,
         scalar.step(optimizer)
         scalar.update()
 
-        if device.type == "cuda":
-            torch.cuda.synchronize()
-        dt = time.perf_counter() - t0
+        # if device.type == "cuda":
+        #     torch.cuda.synchronize()
+        # dt = time.perf_counter() - t0
         # --- end of optimization step ---
 
-        print(f"Step: {step+1}, Time: {dt:.2f}s")
+        #print(f"Step: {step+1}, Time: {dt:.2f}s")
 
         completed_steps = step + 1
 
         if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
+
+            # --- start of evaluation step ---
+            # if device.type == "cuda":
+            #     torch.cuda.synchronize()
+            # t0 = time.perf_counter()
 
             losses = estimate_loss(
                 model=model,
@@ -204,6 +209,13 @@ def train(model, tokenizer, optimizer, criterion,
                 stride=stride,
                 num_workers=num_workers
             )
+
+            # if device.type == "cuda":
+            #     torch.cuda.synchronize()
+            # dt = time.perf_counter() - t0
+            # --- end of evaluation step ---
+
+            #print(f"Evaluation Time: {dt:.2f}s")
 
             print(f"Step: {completed_steps}: "  
                 f"Train Loss: {losses['train']['loss']:.4f}, "
@@ -244,7 +256,7 @@ def train(model, tokenizer, optimizer, criterion,
                         f"Saved new best checkpoint "
                         f"with validation loss {best_val_loss:.4f}"
                     )
-
+        print(f"Step: {completed_steps} completed")
 
 if __name__ == "__main__":
 

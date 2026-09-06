@@ -1,0 +1,4485 @@
+===== RUN INFORMATION =====
+UTC start: 2026-09-05T11:41:45Z
+Host: ip-172-31-16-155
+Python 3.12.14
+/home/ubuntu/mesoGPT/.venv-runpod/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:275: UserWarning: Failed to initialize NumPy: No module named 'numpy' (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:81.)
+  cpu = _conversion_method_template(device=torch.device("cpu"))
+PyTorch: 2.6.0+cu124
+CUDA available: True
+CUDA version: 12.4
+===== CPU INFORMATION =====
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  4
+On-line CPU(s) list:                     0-3
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD EPYC 7R13 Processor
+CPU family:                              25
+Model:                                   1
+Thread(s) per core:                      2
+Core(s) per socket:                      2
+Socket(s):                               1
+Stepping:                                1
+BogoMIPS:                                5299.99
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr rdpru wbnoinvd arat npt nrip_save vaes vpclmulqdq rdpid
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               64 KiB (2 instances)
+L1i cache:                               64 KiB (2 instances)
+L2 cache:                                1 MiB (2 instances)
+L3 cache:                                8 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-3
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Mitigation; Safe RET
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Mitigation; Clear CPU buffers
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+===== MEMORY INFORMATION =====
+               total        used        free      shared  buff/cache   available
+Mem:            30Gi       2.7Gi        25Gi       3.0Mi       2.7Gi        28Gi
+Swap:             0B          0B          0B
+===== GPU INFORMATION =====
+Sat Sep  5 11:41:46 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.91.07              Driver Version: 595.91.07      CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:30:00.0 Off |                    0 |
+| N/A   39C    P0             67W /  350W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+===== BASELINE TRAINING =====
+/home/ubuntu/mesoGPT/.venv-runpod/lib/python3.12/site-packages/torch/_subclasses/functional_tensor.py:275: UserWarning: Failed to initialize NumPy: No module named 'numpy' (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:81.)
+  cpu = _conversion_method_template(device=torch.device("cpu"))
+Using device: cuda
+Global batch size: 512
+Micro-batch size: 16
+Gradient accumulation steps: 32
+Step: 1 completed
+Step: 2 completed
+Step: 3 completed
+Step: 4 completed
+Step: 5 completed
+Step: 6 completed
+Step: 7 completed
+Step: 8 completed
+Step: 9 completed
+Step: 10: Train Loss: 8.6661, Train bpb: 2.8279, Val Loss: 8.6631, Val bpb: 2.8246
+Saved new best checkpoint with validation loss 8.6631
+Step: 10 completed
+Step: 11 completed
+Step: 12 completed
+Step: 13 completed
+Step: 14 completed
+Step: 15 completed
+Step: 16 completed
+Step: 17 completed
+Step: 18 completed
+Step: 19 completed
+Step: 20: Train Loss: 8.0475, Train bpb: 2.6261, Val Loss: 8.0412, Val bpb: 2.6218
+Saved new best checkpoint with validation loss 8.0412
+Step: 20 completed
+Step: 21 completed
+Step: 22 completed
+Step: 23 completed
+Step: 24 completed
+Step: 25 completed
+Step: 26 completed
+Step: 27 completed
+Step: 28 completed
+Step: 29 completed
+Step: 30: Train Loss: 7.6152, Train bpb: 2.4850, Val Loss: 7.6065, Val bpb: 2.4801
+Saved new best checkpoint with validation loss 7.6065
+Step: 30 completed
+Step: 31 completed
+Step: 32 completed
+Step: 33 completed
+Step: 34 completed
+Step: 35 completed
+Step: 36 completed
+Step: 37 completed
+Step: 38 completed
+Step: 39 completed
+Step: 40: Train Loss: 7.5919, Train bpb: 2.4774, Val Loss: 7.5812, Val bpb: 2.4718
+Saved new best checkpoint with validation loss 7.5812
+Step: 40 completed
+Step: 41 completed
+Step: 42 completed
+Step: 43 completed
+Step: 44 completed
+Step: 45 completed
+Step: 46 completed
+Step: 47 completed
+Step: 48 completed
+Step: 49 completed
+Step: 50: Train Loss: 7.4944, Train bpb: 2.4456, Val Loss: 7.4825, Val bpb: 2.4396
+Saved new best checkpoint with validation loss 7.4825
+Step: 50 completed
+Step: 51 completed
+Step: 52 completed
+Step: 53 completed
+Step: 54 completed
+Step: 55 completed
+Step: 56 completed
+Step: 57 completed
+Step: 58 completed
+Step: 59 completed
+Step: 60: Train Loss: 7.3900, Train bpb: 2.4115, Val Loss: 7.3780, Val bpb: 2.4056
+Saved new best checkpoint with validation loss 7.3780
+Step: 60 completed
+Step: 61 completed
+Step: 62 completed
+Step: 63 completed
+Step: 64 completed
+Step: 65 completed
+Step: 66 completed
+Step: 67 completed
+Step: 68 completed
+Step: 69 completed
+Step: 70: Train Loss: 7.2604, Train bpb: 2.3692, Val Loss: 7.2479, Val bpb: 2.3632
+Saved new best checkpoint with validation loss 7.2479
+Step: 70 completed
+Step: 71 completed
+Step: 72 completed
+Step: 73 completed
+Step: 74 completed
+Step: 75 completed
+Step: 76 completed
+Step: 77 completed
+Step: 78 completed
+Step: 79 completed
+Step: 80: Train Loss: 7.0939, Train bpb: 2.3149, Val Loss: 7.0797, Val bpb: 2.3083
+Saved new best checkpoint with validation loss 7.0797
+Step: 80 completed
+Step: 81 completed
+Step: 82 completed
+Step: 83 completed
+Step: 84 completed
+Step: 85 completed
+Step: 86 completed
+Step: 87 completed
+Step: 88 completed
+Step: 89 completed
+Step: 90: Train Loss: 6.8864, Train bpb: 2.2472, Val Loss: 6.8742, Val bpb: 2.2413
+Saved new best checkpoint with validation loss 6.8742
+Step: 90 completed
+Step: 91 completed
+Step: 92 completed
+Step: 93 completed
+Step: 94 completed
+Step: 95 completed
+Step: 96 completed
+Step: 97 completed
+Step: 98 completed
+Step: 99 completed
+Step: 100: Train Loss: 6.7308, Train bpb: 2.1964, Val Loss: 6.7175, Val bpb: 2.1902
+Saved new best checkpoint with validation loss 6.7175
+Step: 100 completed
+Step: 101 completed
+Step: 102 completed
+Step: 103 completed
+Step: 104 completed
+Step: 105 completed
+Step: 106 completed
+Step: 107 completed
+Step: 108 completed
+Step: 109 completed
+Step: 110: Train Loss: 6.5969, Train bpb: 2.1527, Val Loss: 6.5832, Val bpb: 2.1464
+Saved new best checkpoint with validation loss 6.5832
+Step: 110 completed
+Step: 111 completed
+Step: 112 completed
+Step: 113 completed
+Step: 114 completed
+Step: 115 completed
+Step: 116 completed
+Step: 117 completed
+Step: 118 completed
+Step: 119 completed
+Step: 120: Train Loss: 6.4795, Train bpb: 2.1144, Val Loss: 6.4658, Val bpb: 2.1082
+Saved new best checkpoint with validation loss 6.4658
+Step: 120 completed
+Step: 121 completed
+Step: 122 completed
+Step: 123 completed
+Step: 124 completed
+Step: 125 completed
+Step: 126 completed
+Step: 127 completed
+Step: 128 completed
+Step: 129 completed
+Step: 130: Train Loss: 6.3933, Train bpb: 2.0863, Val Loss: 6.3788, Val bpb: 2.0798
+Saved new best checkpoint with validation loss 6.3788
+Step: 130 completed
+Step: 131 completed
+Step: 132 completed
+Step: 133 completed
+Step: 134 completed
+Step: 135 completed
+Step: 136 completed
+Step: 137 completed
+Step: 138 completed
+Step: 139 completed
+Step: 140: Train Loss: 6.3137, Train bpb: 2.0603, Val Loss: 6.2994, Val bpb: 2.0539
+Saved new best checkpoint with validation loss 6.2994
+Step: 140 completed
+Step: 141 completed
+Step: 142 completed
+Step: 143 completed
+Step: 144 completed
+Step: 145 completed
+Step: 146 completed
+Step: 147 completed
+Step: 148 completed
+Step: 149 completed
+Step: 150: Train Loss: 6.2452, Train bpb: 2.0379, Val Loss: 6.2306, Val bpb: 2.0315
+Saved new best checkpoint with validation loss 6.2306
+Step: 150 completed
+Step: 151 completed
+Step: 152 completed
+Step: 153 completed
+Step: 154 completed
+Step: 155 completed
+Step: 156 completed
+Step: 157 completed
+Step: 158 completed
+Step: 159 completed
+Step: 160: Train Loss: 6.1755, Train bpb: 2.0152, Val Loss: 6.1619, Val bpb: 2.0091
+Saved new best checkpoint with validation loss 6.1619
+Step: 160 completed
+Step: 161 completed
+Step: 162 completed
+Step: 163 completed
+Step: 164 completed
+Step: 165 completed
+Step: 166 completed
+Step: 167 completed
+Step: 168 completed
+Step: 169 completed
+Step: 170: Train Loss: 6.1297, Train bpb: 2.0002, Val Loss: 6.1148, Val bpb: 1.9937
+Saved new best checkpoint with validation loss 6.1148
+Step: 170 completed
+Step: 171 completed
+Step: 172 completed
+Step: 173 completed
+Step: 174 completed
+Step: 175 completed
+Step: 176 completed
+Step: 177 completed
+Step: 178 completed
+Step: 179 completed
+Step: 180: Train Loss: 6.0614, Train bpb: 1.9780, Val Loss: 6.0453, Val bpb: 1.9710
+Saved new best checkpoint with validation loss 6.0453
+Step: 180 completed
+Step: 181 completed
+Step: 182 completed
+Step: 183 completed
+Step: 184 completed
+Step: 185 completed
+Step: 186 completed
+Step: 187 completed
+Step: 188 completed
+Step: 189 completed
+Step: 190: Train Loss: 6.0238, Train bpb: 1.9657, Val Loss: 6.0054, Val bpb: 1.9581
+Saved new best checkpoint with validation loss 6.0054
+Step: 190 completed
+Step: 191 completed
+Step: 192 completed
+Step: 193 completed
+Step: 194 completed
+Step: 195 completed
+Step: 196 completed
+Step: 197 completed
+Step: 198 completed
+Step: 199 completed
+Step: 200: Train Loss: 5.9531, Train bpb: 1.9426, Val Loss: 5.9384, Val bpb: 1.9362
+Saved new best checkpoint with validation loss 5.9384
+Step: 200 completed
+Step: 201 completed
+Step: 202 completed
+Step: 203 completed
+Step: 204 completed
+Step: 205 completed
+Step: 206 completed
+Step: 207 completed
+Step: 208 completed
+Step: 209 completed
+Step: 210: Train Loss: 5.8962, Train bpb: 1.9240, Val Loss: 5.8794, Val bpb: 1.9170
+Saved new best checkpoint with validation loss 5.8794
+Step: 210 completed
+Step: 211 completed
+Step: 212 completed
+Step: 213 completed
+Step: 214 completed
+Step: 215 completed
+Step: 216 completed
+Step: 217 completed
+Step: 218 completed
+Step: 219 completed
+Step: 220: Train Loss: 5.8592, Train bpb: 1.9120, Val Loss: 5.8413, Val bpb: 1.9045
+Saved new best checkpoint with validation loss 5.8413
+Step: 220 completed
+Step: 221 completed
+Step: 222 completed
+Step: 223 completed
+Step: 224 completed
+Step: 225 completed
+Step: 226 completed
+Step: 227 completed
+Step: 228 completed
+Step: 229 completed
+Step: 230: Train Loss: 5.8247, Train bpb: 1.9007, Val Loss: 5.8069, Val bpb: 1.8933
+Saved new best checkpoint with validation loss 5.8069
+Step: 230 completed
+Step: 231 completed
+Step: 232 completed
+Step: 233 completed
+Step: 234 completed
+Step: 235 completed
+Step: 236 completed
+Step: 237 completed
+Step: 238 completed
+Step: 239 completed
+Step: 240: Train Loss: 5.7952, Train bpb: 1.8911, Val Loss: 5.7787, Val bpb: 1.8841
+Saved new best checkpoint with validation loss 5.7787
+Step: 240 completed
+Step: 241 completed
+Step: 242 completed
+Step: 243 completed
+Step: 244 completed
+Step: 245 completed
+Step: 246 completed
+Step: 247 completed
+Step: 248 completed
+Step: 249 completed
+Step: 250: Train Loss: 5.7376, Train bpb: 1.8723, Val Loss: 5.7188, Val bpb: 1.8646
+Saved new best checkpoint with validation loss 5.7188
+Step: 250 completed
+Step: 251 completed
+Step: 252 completed
+Step: 253 completed
+Step: 254 completed
+Step: 255 completed
+Step: 256 completed
+Step: 257 completed
+Step: 258 completed
+Step: 259 completed
+Step: 260: Train Loss: 5.6817, Train bpb: 1.8541, Val Loss: 5.6606, Val bpb: 1.8456
+Saved new best checkpoint with validation loss 5.6606
+Step: 260 completed
+Step: 261 completed
+Step: 262 completed
+Step: 263 completed
+Step: 264 completed
+Step: 265 completed
+Step: 266 completed
+Step: 267 completed
+Step: 268 completed
+Step: 269 completed
+Step: 270: Train Loss: 5.6548, Train bpb: 1.8453, Val Loss: 5.6346, Val bpb: 1.8371
+Saved new best checkpoint with validation loss 5.6346
+Step: 270 completed
+Step: 271 completed
+Step: 272 completed
+Step: 273 completed
+Step: 274 completed
+Step: 275 completed
+Step: 276 completed
+Step: 277 completed
+Step: 278 completed
+Step: 279 completed
+Step: 280: Train Loss: 5.6153, Train bpb: 1.8324, Val Loss: 5.5953, Val bpb: 1.8243
+Saved new best checkpoint with validation loss 5.5953
+Step: 280 completed
+Step: 281 completed
+Step: 282 completed
+Step: 283 completed
+Step: 284 completed
+Step: 285 completed
+Step: 286 completed
+Step: 287 completed
+Step: 288 completed
+Step: 289 completed
+Step: 290: Train Loss: 5.5653, Train bpb: 1.8161, Val Loss: 5.5465, Val bpb: 1.8084
+Saved new best checkpoint with validation loss 5.5465
+Step: 290 completed
+Step: 291 completed
+Step: 292 completed
+Step: 293 completed
+Step: 294 completed
+Step: 295 completed
+Step: 296 completed
+Step: 297 completed
+Step: 298 completed
+Step: 299 completed
+Step: 300: Train Loss: 5.5338, Train bpb: 1.8058, Val Loss: 5.5156, Val bpb: 1.7984
+Saved new best checkpoint with validation loss 5.5156
+Step: 300 completed
+Step: 301 completed
+Step: 302 completed
+Step: 303 completed
+Step: 304 completed
+Step: 305 completed
+Step: 306 completed
+Step: 307 completed
+Step: 308 completed
+Step: 309 completed
+Step: 310: Train Loss: 5.4888, Train bpb: 1.7911, Val Loss: 5.4713, Val bpb: 1.7839
+Saved new best checkpoint with validation loss 5.4713
+Step: 310 completed
+Step: 311 completed
+Step: 312 completed
+Step: 313 completed
+Step: 314 completed
+Step: 315 completed
+Step: 316 completed
+Step: 317 completed
+Step: 318 completed
+Step: 319 completed
+Step: 320: Train Loss: 5.4637, Train bpb: 1.7829, Val Loss: 5.4453, Val bpb: 1.7754
+Saved new best checkpoint with validation loss 5.4453
+Step: 320 completed
+Step: 321 completed
+Step: 322 completed
+Step: 323 completed
+Step: 324 completed
+Step: 325 completed
+Step: 326 completed
+Step: 327 completed
+Step: 328 completed
+Step: 329 completed
+Step: 330: Train Loss: 5.4040, Train bpb: 1.7634, Val Loss: 5.3885, Val bpb: 1.7569
+Saved new best checkpoint with validation loss 5.3885
+Step: 330 completed
+Step: 331 completed
+Step: 332 completed
+Step: 333 completed
+Step: 334 completed
+Step: 335 completed
+Step: 336 completed
+Step: 337 completed
+Step: 338 completed
+Step: 339 completed
+Step: 340: Train Loss: 5.4265, Train bpb: 1.7708, Val Loss: 5.4128, Val bpb: 1.7648
+Step: 340 completed
+Step: 341 completed
+Step: 342 completed
+Step: 343 completed
+Step: 344 completed
+Step: 345 completed
+Step: 346 completed
+Step: 347 completed
+Step: 348 completed
+Step: 349 completed
+Step: 350: Train Loss: 5.3769, Train bpb: 1.7546, Val Loss: 5.3617, Val bpb: 1.7482
+Saved new best checkpoint with validation loss 5.3617
+Step: 350 completed
+Step: 351 completed
+Step: 352 completed
+Step: 353 completed
+Step: 354 completed
+Step: 355 completed
+Step: 356 completed
+Step: 357 completed
+Step: 358 completed
+Step: 359 completed
+Step: 360: Train Loss: 5.3287, Train bpb: 1.7389, Val Loss: 5.3138, Val bpb: 1.7325
+Saved new best checkpoint with validation loss 5.3138
+Step: 360 completed
+Step: 361 completed
+Step: 362 completed
+Step: 363 completed
+Step: 364 completed
+Step: 365 completed
+Step: 366 completed
+Step: 367 completed
+Step: 368 completed
+Step: 369 completed
+Step: 370: Train Loss: 5.2788, Train bpb: 1.7226, Val Loss: 5.2650, Val bpb: 1.7166
+Saved new best checkpoint with validation loss 5.2650
+Step: 370 completed
+Step: 371 completed
+Step: 372 completed
+Step: 373 completed
+Step: 374 completed
+Step: 375 completed
+Step: 376 completed
+Step: 377 completed
+Step: 378 completed
+Step: 379 completed
+Step: 380: Train Loss: 5.2489, Train bpb: 1.7128, Val Loss: 5.2356, Val bpb: 1.7070
+Saved new best checkpoint with validation loss 5.2356
+Step: 380 completed
+Step: 381 completed
+Step: 382 completed
+Step: 383 completed
+Step: 384 completed
+Step: 385 completed
+Step: 386 completed
+Step: 387 completed
+Step: 388 completed
+Step: 389 completed
+Step: 390: Train Loss: 5.2177, Train bpb: 1.7026, Val Loss: 5.2054, Val bpb: 1.6972
+Saved new best checkpoint with validation loss 5.2054
+Step: 390 completed
+Step: 391 completed
+Step: 392 completed
+Step: 393 completed
+Step: 394 completed
+Step: 395 completed
+Step: 396 completed
+Step: 397 completed
+Step: 398 completed
+Step: 399 completed
+Step: 400: Train Loss: 5.2089, Train bpb: 1.6998, Val Loss: 5.1956, Val bpb: 1.6940
+Saved new best checkpoint with validation loss 5.1956
+Step: 400 completed
+Step: 401 completed
+Step: 402 completed
+Step: 403 completed
+Step: 404 completed
+Step: 405 completed
+Step: 406 completed
+Step: 407 completed
+Step: 408 completed
+Step: 409 completed
+Step: 410: Train Loss: 5.1801, Train bpb: 1.6904, Val Loss: 5.1682, Val bpb: 1.6851
+Saved new best checkpoint with validation loss 5.1682
+Step: 410 completed
+Step: 411 completed
+Step: 412 completed
+Step: 413 completed
+Step: 414 completed
+Step: 415 completed
+Step: 416 completed
+Step: 417 completed
+Step: 418 completed
+Step: 419 completed
+Step: 420: Train Loss: 5.1416, Train bpb: 1.6778, Val Loss: 5.1322, Val bpb: 1.6733
+Saved new best checkpoint with validation loss 5.1322
+Step: 420 completed
+Step: 421 completed
+Step: 422 completed
+Step: 423 completed
+Step: 424 completed
+Step: 425 completed
+Step: 426 completed
+Step: 427 completed
+Step: 428 completed
+Step: 429 completed
+Step: 430: Train Loss: 5.1009, Train bpb: 1.6645, Val Loss: 5.0924, Val bpb: 1.6604
+Saved new best checkpoint with validation loss 5.0924
+Step: 430 completed
+Step: 431 completed
+Step: 432 completed
+Step: 433 completed
+Step: 434 completed
+Step: 435 completed
+Step: 436 completed
+Step: 437 completed
+Step: 438 completed
+Step: 439 completed
+Step: 440: Train Loss: 5.0814, Train bpb: 1.6582, Val Loss: 5.0725, Val bpb: 1.6539
+Saved new best checkpoint with validation loss 5.0725
+Step: 440 completed
+Step: 441 completed
+Step: 442 completed
+Step: 443 completed
+Step: 444 completed
+Step: 445 completed
+Step: 446 completed
+Step: 447 completed
+Step: 448 completed
+Step: 449 completed
+Step: 450: Train Loss: 5.0619, Train bpb: 1.6518, Val Loss: 5.0527, Val bpb: 1.6474
+Saved new best checkpoint with validation loss 5.0527
+Step: 450 completed
+Step: 451 completed
+Step: 452 completed
+Step: 453 completed
+Step: 454 completed
+Step: 455 completed
+Step: 456 completed
+Step: 457 completed
+Step: 458 completed
+Step: 459 completed
+Step: 460: Train Loss: 5.0297, Train bpb: 1.6413, Val Loss: 5.0199, Val bpb: 1.6367
+Saved new best checkpoint with validation loss 5.0199
+Step: 460 completed
+Step: 461 completed
+Step: 462 completed
+Step: 463 completed
+Step: 464 completed
+Step: 465 completed
+Step: 466 completed
+Step: 467 completed
+Step: 468 completed
+Step: 469 completed
+Step: 470: Train Loss: 5.0012, Train bpb: 1.6320, Val Loss: 4.9916, Val bpb: 1.6275
+Saved new best checkpoint with validation loss 4.9916
+Step: 470 completed
+Step: 471 completed
+Step: 472 completed
+Step: 473 completed
+Step: 474 completed
+Step: 475 completed
+Step: 476 completed
+Step: 477 completed
+Step: 478 completed
+Step: 479 completed
+Step: 480: Train Loss: 4.9767, Train bpb: 1.6240, Val Loss: 4.9681, Val bpb: 1.6198
+Saved new best checkpoint with validation loss 4.9681
+Step: 480 completed
+Step: 481 completed
+Step: 482 completed
+Step: 483 completed
+Step: 484 completed
+Step: 485 completed
+Step: 486 completed
+Step: 487 completed
+Step: 488 completed
+Step: 489 completed
+Step: 490: Train Loss: 4.9453, Train bpb: 1.6137, Val Loss: 4.9368, Val bpb: 1.6096
+Saved new best checkpoint with validation loss 4.9368
+Step: 490 completed
+Step: 491 completed
+Step: 492 completed
+Step: 493 completed
+Step: 494 completed
+Step: 495 completed
+Step: 496 completed
+Step: 497 completed
+Step: 498 completed
+Step: 499 completed
+Step: 500: Train Loss: 4.9259, Train bpb: 1.6074, Val Loss: 4.9156, Val bpb: 1.6027
+Saved new best checkpoint with validation loss 4.9156
+Step: 500 completed
+Step: 501 completed
+Step: 502 completed
+Step: 503 completed
+Step: 504 completed
+Step: 505 completed
+Step: 506 completed
+Step: 507 completed
+Step: 508 completed
+Step: 509 completed
+Step: 510: Train Loss: 4.9010, Train bpb: 1.5993, Val Loss: 4.8915, Val bpb: 1.5949
+Saved new best checkpoint with validation loss 4.8915
+Step: 510 completed
+Step: 511 completed
+Step: 512 completed
+Step: 513 completed
+Step: 514 completed
+Step: 515 completed
+Step: 516 completed
+Step: 517 completed
+Step: 518 completed
+Step: 519 completed
+Step: 520: Train Loss: 4.8756, Train bpb: 1.5910, Val Loss: 4.8670, Val bpb: 1.5869
+Saved new best checkpoint with validation loss 4.8670
+Step: 520 completed
+Step: 521 completed
+Step: 522 completed
+Step: 523 completed
+Step: 524 completed
+Step: 525 completed
+Step: 526 completed
+Step: 527 completed
+Step: 528 completed
+Step: 529 completed
+Step: 530: Train Loss: 4.8524, Train bpb: 1.5834, Val Loss: 4.8433, Val bpb: 1.5791
+Saved new best checkpoint with validation loss 4.8433
+Step: 530 completed
+Step: 531 completed
+Step: 532 completed
+Step: 533 completed
+Step: 534 completed
+Step: 535 completed
+Step: 536 completed
+Step: 537 completed
+Step: 538 completed
+Step: 539 completed
+Step: 540: Train Loss: 4.8333, Train bpb: 1.5772, Val Loss: 4.8250, Val bpb: 1.5732
+Saved new best checkpoint with validation loss 4.8250
+Step: 540 completed
+Step: 541 completed
+Step: 542 completed
+Step: 543 completed
+Step: 544 completed
+Step: 545 completed
+Step: 546 completed
+Step: 547 completed
+Step: 548 completed
+Step: 549 completed
+Step: 550: Train Loss: 4.8011, Train bpb: 1.5667, Val Loss: 4.7929, Val bpb: 1.5627
+Saved new best checkpoint with validation loss 4.7929
+Step: 550 completed
+Step: 551 completed
+Step: 552 completed
+Step: 553 completed
+Step: 554 completed
+Step: 555 completed
+Step: 556 completed
+Step: 557 completed
+Step: 558 completed
+Step: 559 completed
+Step: 560: Train Loss: 4.7726, Train bpb: 1.5574, Val Loss: 4.7644, Val bpb: 1.5534
+Saved new best checkpoint with validation loss 4.7644
+Step: 560 completed
+Step: 561 completed
+Step: 562 completed
+Step: 563 completed
+Step: 564 completed
+Step: 565 completed
+Step: 566 completed
+Step: 567 completed
+Step: 568 completed
+Step: 569 completed
+Step: 570: Train Loss: 4.7405, Train bpb: 1.5469, Val Loss: 4.7317, Val bpb: 1.5428
+Saved new best checkpoint with validation loss 4.7317
+Step: 570 completed
+Step: 571 completed
+Step: 572 completed
+Step: 573 completed
+Step: 574 completed
+Step: 575 completed
+Step: 576 completed
+Step: 577 completed
+Step: 578 completed
+Step: 579 completed
+Step: 580: Train Loss: 4.7131, Train bpb: 1.5380, Val Loss: 4.7058, Val bpb: 1.5343
+Saved new best checkpoint with validation loss 4.7058
+Step: 580 completed
+Step: 581 completed
+Step: 582 completed
+Step: 583 completed
+Step: 584 completed
+Step: 585 completed
+Step: 586 completed
+Step: 587 completed
+Step: 588 completed
+Step: 589 completed
+Step: 590: Train Loss: 4.6796, Train bpb: 1.5271, Val Loss: 4.6746, Val bpb: 1.5241
+Saved new best checkpoint with validation loss 4.6746
+Step: 590 completed
+Step: 591 completed
+Step: 592 completed
+Step: 593 completed
+Step: 594 completed
+Step: 595 completed
+Step: 596 completed
+Step: 597 completed
+Step: 598 completed
+Step: 599 completed
+Step: 600: Train Loss: 4.6402, Train bpb: 1.5142, Val Loss: 4.6343, Val bpb: 1.5110
+Saved new best checkpoint with validation loss 4.6343
+Step: 600 completed
+Step: 601 completed
+Step: 602 completed
+Step: 603 completed
+Step: 604 completed
+Step: 605 completed
+Step: 606 completed
+Step: 607 completed
+Step: 608 completed
+Step: 609 completed
+Step: 610: Train Loss: 4.6321, Train bpb: 1.5116, Val Loss: 4.6256, Val bpb: 1.5082
+Saved new best checkpoint with validation loss 4.6256
+Step: 610 completed
+Step: 611 completed
+Step: 612 completed
+Step: 613 completed
+Step: 614 completed
+Step: 615 completed
+Step: 616 completed
+Step: 617 completed
+Step: 618 completed
+Step: 619 completed
+Step: 620: Train Loss: 4.6310, Train bpb: 1.5112, Val Loss: 4.6233, Val bpb: 1.5074
+Saved new best checkpoint with validation loss 4.6233
+Step: 620 completed
+Step: 621 completed
+Step: 622 completed
+Step: 623 completed
+Step: 624 completed
+Step: 625 completed
+Step: 626 completed
+Step: 627 completed
+Step: 628 completed
+Step: 629 completed
+Step: 630: Train Loss: 5.3709, Train bpb: 1.7526, Val Loss: 5.3580, Val bpb: 1.7470
+Step: 630 completed
+Step: 631 completed
+Step: 632 completed
+Step: 633 completed
+Step: 634 completed
+Step: 635 completed
+Step: 636 completed
+Step: 637 completed
+Step: 638 completed
+Step: 639 completed
+Step: 640: Train Loss: 5.3978, Train bpb: 1.7614, Val Loss: 5.3814, Val bpb: 1.7546
+Step: 640 completed
+Step: 641 completed
+Step: 642 completed
+Step: 643 completed
+Step: 644 completed
+Step: 645 completed
+Step: 646 completed
+Step: 647 completed
+Step: 648 completed
+Step: 649 completed
+Step: 650: Train Loss: 5.1186, Train bpb: 1.6703, Val Loss: 5.1069, Val bpb: 1.6651
+Step: 650 completed
+Step: 651 completed
+Step: 652 completed
+Step: 653 completed
+Step: 654 completed
+Step: 655 completed
+Step: 656 completed
+Step: 657 completed
+Step: 658 completed
+Step: 659 completed
+Step: 660: Train Loss: 4.9224, Train bpb: 1.6063, Val Loss: 4.9110, Val bpb: 1.6012
+Step: 660 completed
+Step: 661 completed
+Step: 662 completed
+Step: 663 completed
+Step: 664 completed
+Step: 665 completed
+Step: 666 completed
+Step: 667 completed
+Step: 668 completed
+Step: 669 completed
+Step: 670: Train Loss: 5.2208, Train bpb: 1.7037, Val Loss: 5.2114, Val bpb: 1.6992
+Step: 670 completed
+Step: 671 completed
+Step: 672 completed
+Step: 673 completed
+Step: 674 completed
+Step: 675 completed
+Step: 676 completed
+Step: 677 completed
+Step: 678 completed
+Step: 679 completed
+Step: 680: Train Loss: 4.8923, Train bpb: 1.5965, Val Loss: 4.8807, Val bpb: 1.5913
+Step: 680 completed
+Step: 681 completed
+Step: 682 completed
+Step: 683 completed
+Step: 684 completed
+Step: 685 completed
+Step: 686 completed
+Step: 687 completed
+Step: 688 completed
+Step: 689 completed
+Step: 690: Train Loss: 4.7643, Train bpb: 1.5547, Val Loss: 4.7554, Val bpb: 1.5505
+Step: 690 completed
+Step: 691 completed
+Step: 692 completed
+Step: 693 completed
+Step: 694 completed
+Step: 695 completed
+Step: 696 completed
+Step: 697 completed
+Step: 698 completed
+Step: 699 completed
+Step: 700: Train Loss: 4.6878, Train bpb: 1.5297, Val Loss: 4.6773, Val bpb: 1.5250
+Step: 700 completed
+Step: 701 completed
+Step: 702 completed
+Step: 703 completed
+Step: 704 completed
+Step: 705 completed
+Step: 706 completed
+Step: 707 completed
+Step: 708 completed
+Step: 709 completed
+Step: 710: Train Loss: 4.6332, Train bpb: 1.5119, Val Loss: 4.6231, Val bpb: 1.5074
+Saved new best checkpoint with validation loss 4.6231
+Step: 710 completed
+Step: 711 completed
+Step: 712 completed
+Step: 713 completed
+Step: 714 completed
+Step: 715 completed
+Step: 716 completed
+Step: 717 completed
+Step: 718 completed
+Step: 719 completed
+Step: 720: Train Loss: 4.5929, Train bpb: 1.4987, Val Loss: 4.5827, Val bpb: 1.4942
+Saved new best checkpoint with validation loss 4.5827
+Step: 720 completed
+Step: 721 completed
+Step: 722 completed
+Step: 723 completed
+Step: 724 completed
+Step: 725 completed
+Step: 726 completed
+Step: 727 completed
+Step: 728 completed
+Step: 729 completed
+Step: 730: Train Loss: 4.5606, Train bpb: 1.4882, Val Loss: 4.5515, Val bpb: 1.4840
+Saved new best checkpoint with validation loss 4.5515
+Step: 730 completed
+Step: 731 completed
+Step: 732 completed
+Step: 733 completed
+Step: 734 completed
+Step: 735 completed
+Step: 736 completed
+Step: 737 completed
+Step: 738 completed
+Step: 739 completed
+Step: 740: Train Loss: 4.5297, Train bpb: 1.4781, Val Loss: 4.5202, Val bpb: 1.4738
+Saved new best checkpoint with validation loss 4.5202
+Step: 740 completed
+Step: 741 completed
+Step: 742 completed
+Step: 743 completed
+Step: 744 completed
+Step: 745 completed
+Step: 746 completed
+Step: 747 completed
+Step: 748 completed
+Step: 749 completed
+Step: 750: Train Loss: 4.5020, Train bpb: 1.4691, Val Loss: 4.4927, Val bpb: 1.4648
+Saved new best checkpoint with validation loss 4.4927
+Step: 750 completed
+Step: 751 completed
+Step: 752 completed
+Step: 753 completed
+Step: 754 completed
+Step: 755 completed
+Step: 756 completed
+Step: 757 completed
+Step: 758 completed
+Step: 759 completed
+Step: 760: Train Loss: 4.4807, Train bpb: 1.4622, Val Loss: 4.4721, Val bpb: 1.4581
+Saved new best checkpoint with validation loss 4.4721
+Step: 760 completed
+Step: 761 completed
+Step: 762 completed
+Step: 763 completed
+Step: 764 completed
+Step: 765 completed
+Step: 766 completed
+Step: 767 completed
+Step: 768 completed
+Step: 769 completed
+Step: 770: Train Loss: 4.4608, Train bpb: 1.4557, Val Loss: 4.4520, Val bpb: 1.4516
+Saved new best checkpoint with validation loss 4.4520
+Step: 770 completed
+Step: 771 completed
+Step: 772 completed
+Step: 773 completed
+Step: 774 completed
+Step: 775 completed
+Step: 776 completed
+Step: 777 completed
+Step: 778 completed
+Step: 779 completed
+Step: 780: Train Loss: 4.4458, Train bpb: 1.4508, Val Loss: 4.4373, Val bpb: 1.4468
+Saved new best checkpoint with validation loss 4.4373
+Step: 780 completed
+Step: 781 completed
+Step: 782 completed
+Step: 783 completed
+Step: 784 completed
+Step: 785 completed
+Step: 786 completed
+Step: 787 completed
+Step: 788 completed
+Step: 789 completed
+Step: 790: Train Loss: 4.4325, Train bpb: 1.4464, Val Loss: 4.4235, Val bpb: 1.4423
+Saved new best checkpoint with validation loss 4.4235
+Step: 790 completed
+Step: 791 completed
+Step: 792 completed
+Step: 793 completed
+Step: 794 completed
+Step: 795 completed
+Step: 796 completed
+Step: 797 completed
+Step: 798 completed
+Step: 799 completed
+Step: 800: Train Loss: 4.4271, Train bpb: 1.4447, Val Loss: 4.4182, Val bpb: 1.4405
+Saved new best checkpoint with validation loss 4.4182
+Step: 800 completed
+Step: 801 completed
+Step: 802 completed
+Step: 803 completed
+Step: 804 completed
+Step: 805 completed
+Step: 806 completed
+Step: 807 completed
+Step: 808 completed
+Step: 809 completed
+Step: 810: Train Loss: 4.4005, Train bpb: 1.4360, Val Loss: 4.3913, Val bpb: 1.4318
+Saved new best checkpoint with validation loss 4.3913
+Step: 810 completed
+Step: 811 completed
+Step: 812 completed
+Step: 813 completed
+Step: 814 completed
+Step: 815 completed
+Step: 816 completed
+Step: 817 completed
+Step: 818 completed
+Step: 819 completed
+Step: 820: Train Loss: 4.3797, Train bpb: 1.4292, Val Loss: 4.3708, Val bpb: 1.4251
+Saved new best checkpoint with validation loss 4.3708
+Step: 820 completed
+Step: 821 completed
+Step: 822 completed
+Step: 823 completed
+Step: 824 completed
+Step: 825 completed
+Step: 826 completed
+Step: 827 completed
+Step: 828 completed
+Step: 829 completed
+Step: 830: Train Loss: 4.3690, Train bpb: 1.4257, Val Loss: 4.3606, Val bpb: 1.4218
+Saved new best checkpoint with validation loss 4.3606
+Step: 830 completed
+Step: 831 completed
+Step: 832 completed
+Step: 833 completed
+Step: 834 completed
+Step: 835 completed
+Step: 836 completed
+Step: 837 completed
+Step: 838 completed
+Step: 839 completed
+Step: 840: Train Loss: 4.3827, Train bpb: 1.4302, Val Loss: 4.3755, Val bpb: 1.4266
+Step: 840 completed
+Step: 841 completed
+Step: 842 completed
+Step: 843 completed
+Step: 844 completed
+Step: 845 completed
+Step: 846 completed
+Step: 847 completed
+Step: 848 completed
+Step: 849 completed
+Step: 850: Train Loss: 4.3551, Train bpb: 1.4211, Val Loss: 4.3479, Val bpb: 1.4176
+Saved new best checkpoint with validation loss 4.3479
+Step: 850 completed
+Step: 851 completed
+Step: 852 completed
+Step: 853 completed
+Step: 854 completed
+Step: 855 completed
+Step: 856 completed
+Step: 857 completed
+Step: 858 completed
+Step: 859 completed
+Step: 860: Train Loss: 4.3339, Train bpb: 1.4142, Val Loss: 4.3263, Val bpb: 1.4106
+Saved new best checkpoint with validation loss 4.3263
+Step: 860 completed
+Step: 861 completed
+Step: 862 completed
+Step: 863 completed
+Step: 864 completed
+Step: 865 completed
+Step: 866 completed
+Step: 867 completed
+Step: 868 completed
+Step: 869 completed
+Step: 870: Train Loss: 4.3167, Train bpb: 1.4086, Val Loss: 4.3087, Val bpb: 1.4048
+Saved new best checkpoint with validation loss 4.3087
+Step: 870 completed
+Step: 871 completed
+Step: 872 completed
+Step: 873 completed
+Step: 874 completed
+Step: 875 completed
+Step: 876 completed
+Step: 877 completed
+Step: 878 completed
+Step: 879 completed
+Step: 880: Train Loss: 4.3068, Train bpb: 1.4054, Val Loss: 4.2991, Val bpb: 1.4017
+Saved new best checkpoint with validation loss 4.2991
+Step: 880 completed
+Step: 881 completed
+Step: 882 completed
+Step: 883 completed
+Step: 884 completed
+Step: 885 completed
+Step: 886 completed
+Step: 887 completed
+Step: 888 completed
+Step: 889 completed
+Step: 890: Train Loss: 4.2927, Train bpb: 1.4008, Val Loss: 4.2849, Val bpb: 1.3971
+Saved new best checkpoint with validation loss 4.2849
+Step: 890 completed
+Step: 891 completed
+Step: 892 completed
+Step: 893 completed
+Step: 894 completed
+Step: 895 completed
+Step: 896 completed
+Step: 897 completed
+Step: 898 completed
+Step: 899 completed
+Step: 900: Train Loss: 4.2845, Train bpb: 1.3981, Val Loss: 4.2765, Val bpb: 1.3943
+Saved new best checkpoint with validation loss 4.2765
+Step: 900 completed
+Step: 901 completed
+Step: 902 completed
+Step: 903 completed
+Step: 904 completed
+Step: 905 completed
+Step: 906 completed
+Step: 907 completed
+Step: 908 completed
+Step: 909 completed
+Step: 910: Train Loss: 4.2728, Train bpb: 1.3943, Val Loss: 4.2654, Val bpb: 1.3907
+Saved new best checkpoint with validation loss 4.2654
+Step: 910 completed
+Step: 911 completed
+Step: 912 completed
+Step: 913 completed
+Step: 914 completed
+Step: 915 completed
+Step: 916 completed
+Step: 917 completed
+Step: 918 completed
+Step: 919 completed
+Step: 920: Train Loss: 4.2593, Train bpb: 1.3899, Val Loss: 4.2514, Val bpb: 1.3861
+Saved new best checkpoint with validation loss 4.2514
+Step: 920 completed
+Step: 921 completed
+Step: 922 completed
+Step: 923 completed
+Step: 924 completed
+Step: 925 completed
+Step: 926 completed
+Step: 927 completed
+Step: 928 completed
+Step: 929 completed
+Step: 930: Train Loss: 4.2534, Train bpb: 1.3880, Val Loss: 4.2452, Val bpb: 1.3841
+Saved new best checkpoint with validation loss 4.2452
+Step: 930 completed
+Step: 931 completed
+Step: 932 completed
+Step: 933 completed
+Step: 934 completed
+Step: 935 completed
+Step: 936 completed
+Step: 937 completed
+Step: 938 completed
+Step: 939 completed
+Step: 940: Train Loss: 4.2398, Train bpb: 1.3835, Val Loss: 4.2321, Val bpb: 1.3799
+Saved new best checkpoint with validation loss 4.2321
+Step: 940 completed
+Step: 941 completed
+Step: 942 completed
+Step: 943 completed
+Step: 944 completed
+Step: 945 completed
+Step: 946 completed
+Step: 947 completed
+Step: 948 completed
+Step: 949 completed
+Step: 950: Train Loss: 4.2456, Train bpb: 1.3854, Val Loss: 4.2376, Val bpb: 1.3816
+Step: 950 completed
+Step: 951 completed
+Step: 952 completed
+Step: 953 completed
+Step: 954 completed
+Step: 955 completed
+Step: 956 completed
+Step: 957 completed
+Step: 958 completed
+Step: 959 completed
+Step: 960: Train Loss: 4.2278, Train bpb: 1.3796, Val Loss: 4.2204, Val bpb: 1.3760
+Saved new best checkpoint with validation loss 4.2204
+Step: 960 completed
+Step: 961 completed
+Step: 962 completed
+Step: 963 completed
+Step: 964 completed
+Step: 965 completed
+Step: 966 completed
+Step: 967 completed
+Step: 968 completed
+Step: 969 completed
+Step: 970: Train Loss: 4.2120, Train bpb: 1.3744, Val Loss: 4.2038, Val bpb: 1.3706
+Saved new best checkpoint with validation loss 4.2038
+Step: 970 completed
+Step: 971 completed
+Step: 972 completed
+Step: 973 completed
+Step: 974 completed
+Step: 975 completed
+Step: 976 completed
+Step: 977 completed
+Step: 978 completed
+Step: 979 completed
+Step: 980: Train Loss: 4.2023, Train bpb: 1.3713, Val Loss: 4.1945, Val bpb: 1.3676
+Saved new best checkpoint with validation loss 4.1945
+Step: 980 completed
+Step: 981 completed
+Step: 982 completed
+Step: 983 completed
+Step: 984 completed
+Step: 985 completed
+Step: 986 completed
+Step: 987 completed
+Step: 988 completed
+Step: 989 completed
+Step: 990: Train Loss: 4.1899, Train bpb: 1.3672, Val Loss: 4.1825, Val bpb: 1.3637
+Saved new best checkpoint with validation loss 4.1825
+Step: 990 completed
+Step: 991 completed
+Step: 992 completed
+Step: 993 completed
+Step: 994 completed
+Step: 995 completed
+Step: 996 completed
+Step: 997 completed
+Step: 998 completed
+Step: 999 completed
+Step: 1000: Train Loss: 4.1822, Train bpb: 1.3647, Val Loss: 4.1752, Val bpb: 1.3613
+Saved new best checkpoint with validation loss 4.1752
+Step: 1000 completed
+Step: 1001 completed
+Step: 1002 completed
+Step: 1003 completed
+Step: 1004 completed
+Step: 1005 completed
+Step: 1006 completed
+Step: 1007 completed
+Step: 1008 completed
+Step: 1009 completed
+Step: 1010: Train Loss: 4.1764, Train bpb: 1.3628, Val Loss: 4.1694, Val bpb: 1.3594
+Saved new best checkpoint with validation loss 4.1694
+Step: 1010 completed
+Step: 1011 completed
+Step: 1012 completed
+Step: 1013 completed
+Step: 1014 completed
+Step: 1015 completed
+Step: 1016 completed
+Step: 1017 completed
+Step: 1018 completed
+Step: 1019 completed
+Step: 1020: Train Loss: 4.1763, Train bpb: 1.3628, Val Loss: 4.1689, Val bpb: 1.3593
+Saved new best checkpoint with validation loss 4.1689
+Step: 1020 completed
+Step: 1021 completed
+Step: 1022 completed
+Step: 1023 completed
+Step: 1024 completed
+Step: 1025 completed
+Step: 1026 completed
+Step: 1027 completed
+Step: 1028 completed
+Step: 1029 completed
+Step: 1030: Train Loss: 4.1695, Train bpb: 1.3606, Val Loss: 4.1631, Val bpb: 1.3573
+Saved new best checkpoint with validation loss 4.1631
+Step: 1030 completed
+Step: 1031 completed
+Step: 1032 completed
+Step: 1033 completed
+Step: 1034 completed
+Step: 1035 completed
+Step: 1036 completed
+Step: 1037 completed
+Step: 1038 completed
+Step: 1039 completed
+Step: 1040: Train Loss: 4.1565, Train bpb: 1.3563, Val Loss: 4.1486, Val bpb: 1.3526
+Saved new best checkpoint with validation loss 4.1486
+Step: 1040 completed
+Step: 1041 completed
+Step: 1042 completed
+Step: 1043 completed
+Step: 1044 completed
+Step: 1045 completed
+Step: 1046 completed
+Step: 1047 completed
+Step: 1048 completed
+Step: 1049 completed
+Step: 1050: Train Loss: 4.1430, Train bpb: 1.3519, Val Loss: 4.1346, Val bpb: 1.3481
+Saved new best checkpoint with validation loss 4.1346
+Step: 1050 completed
+Step: 1051 completed
+Step: 1052 completed
+Step: 1053 completed
+Step: 1054 completed
+Step: 1055 completed
+Step: 1056 completed
+Step: 1057 completed
+Step: 1058 completed
+Step: 1059 completed
+Step: 1060: Train Loss: 4.1311, Train bpb: 1.3481, Val Loss: 4.1226, Val bpb: 1.3442
+Saved new best checkpoint with validation loss 4.1226
+Step: 1060 completed
+Step: 1061 completed
+Step: 1062 completed
+Step: 1063 completed
+Step: 1064 completed
+Step: 1065 completed
+Step: 1066 completed
+Step: 1067 completed
+Step: 1068 completed
+Step: 1069 completed
+Step: 1070: Train Loss: 4.1225, Train bpb: 1.3452, Val Loss: 4.1139, Val bpb: 1.3413
+Saved new best checkpoint with validation loss 4.1139
+Step: 1070 completed
+Step: 1071 completed
+Step: 1072 completed
+Step: 1073 completed
+Step: 1074 completed
+Step: 1075 completed
+Step: 1076 completed
+Step: 1077 completed
+Step: 1078 completed
+Step: 1079 completed
+Step: 1080: Train Loss: 4.1162, Train bpb: 1.3432, Val Loss: 4.1081, Val bpb: 1.3394
+Saved new best checkpoint with validation loss 4.1081
+Step: 1080 completed
+Step: 1081 completed
+Step: 1082 completed
+Step: 1083 completed
+Step: 1084 completed
+Step: 1085 completed
+Step: 1086 completed
+Step: 1087 completed
+Step: 1088 completed
+Step: 1089 completed
+Step: 1090: Train Loss: 4.1022, Train bpb: 1.3386, Val Loss: 4.0941, Val bpb: 1.3349
+Saved new best checkpoint with validation loss 4.0941
+Step: 1090 completed
+Step: 1091 completed
+Step: 1092 completed
+Step: 1093 completed
+Step: 1094 completed
+Step: 1095 completed
+Step: 1096 completed
+Step: 1097 completed
+Step: 1098 completed
+Step: 1099 completed
+Step: 1100: Train Loss: 4.0984, Train bpb: 1.3374, Val Loss: 4.0913, Val bpb: 1.3339
+Saved new best checkpoint with validation loss 4.0913
+Step: 1100 completed
+Step: 1101 completed
+Step: 1102 completed
+Step: 1103 completed
+Step: 1104 completed
+Step: 1105 completed
+Step: 1106 completed
+Step: 1107 completed
+Step: 1108 completed
+Step: 1109 completed
+Step: 1110: Train Loss: 4.0893, Train bpb: 1.3344, Val Loss: 4.0823, Val bpb: 1.3310
+Saved new best checkpoint with validation loss 4.0823
+Step: 1110 completed
+Step: 1111 completed
+Step: 1112 completed
+Step: 1113 completed
+Step: 1114 completed
+Step: 1115 completed
+Step: 1116 completed
+Step: 1117 completed
+Step: 1118 completed
+Step: 1119 completed
+Step: 1120: Train Loss: 4.0972, Train bpb: 1.3370, Val Loss: 4.0919, Val bpb: 1.3341
+Step: 1120 completed
+Step: 1121 completed
+Step: 1122 completed
+Step: 1123 completed
+Step: 1124 completed
+Step: 1125 completed
+Step: 1126 completed
+Step: 1127 completed
+Step: 1128 completed
+Step: 1129 completed
+Step: 1130: Train Loss: 4.0938, Train bpb: 1.3359, Val Loss: 4.0874, Val bpb: 1.3327
+Step: 1130 completed
+Step: 1131 completed
+Step: 1132 completed
+Step: 1133 completed
+Step: 1134 completed
+Step: 1135 completed
+Step: 1136 completed
+Step: 1137 completed
+Step: 1138 completed
+Step: 1139 completed
+Step: 1140: Train Loss: 4.0796, Train bpb: 1.3313, Val Loss: 4.0733, Val bpb: 1.3281
+Saved new best checkpoint with validation loss 4.0733
+Step: 1140 completed
+Step: 1141 completed
+Step: 1142 completed
+Step: 1143 completed
+Step: 1144 completed
+Step: 1145 completed
+Step: 1146 completed
+Step: 1147 completed
+Step: 1148 completed
+Step: 1149 completed
+Step: 1150: Train Loss: 4.0632, Train bpb: 1.3259, Val Loss: 4.0567, Val bpb: 1.3227
+Saved new best checkpoint with validation loss 4.0567
+Step: 1150 completed
+Step: 1151 completed
+Step: 1152 completed
+Step: 1153 completed
+Step: 1154 completed
+Step: 1155 completed
+Step: 1156 completed
+Step: 1157 completed
+Step: 1158 completed
+Step: 1159 completed
+Step: 1160: Train Loss: 4.0517, Train bpb: 1.3221, Val Loss: 4.0451, Val bpb: 1.3189
+Saved new best checkpoint with validation loss 4.0451
+Step: 1160 completed
+Step: 1161 completed
+Step: 1162 completed
+Step: 1163 completed
+Step: 1164 completed
+Step: 1165 completed
+Step: 1166 completed
+Step: 1167 completed
+Step: 1168 completed
+Step: 1169 completed
+Step: 1170: Train Loss: 4.0489, Train bpb: 1.3212, Val Loss: 4.0423, Val bpb: 1.3180
+Saved new best checkpoint with validation loss 4.0423
+Step: 1170 completed
+Step: 1171 completed
+Step: 1172 completed
+Step: 1173 completed
+Step: 1174 completed
+Step: 1175 completed
+Step: 1176 completed
+Step: 1177 completed
+Step: 1178 completed
+Step: 1179 completed
+Step: 1180: Train Loss: 4.0403, Train bpb: 1.3184, Val Loss: 4.0335, Val bpb: 1.3151
+Saved new best checkpoint with validation loss 4.0335
+Step: 1180 completed
+Step: 1181 completed
+Step: 1182 completed
+Step: 1183 completed
+Step: 1184 completed
+Step: 1185 completed
+Step: 1186 completed
+Step: 1187 completed
+Step: 1188 completed
+Step: 1189 completed
+Step: 1190: Train Loss: 4.0297, Train bpb: 1.3150, Val Loss: 4.0242, Val bpb: 1.3121
+Saved new best checkpoint with validation loss 4.0242
+Step: 1190 completed
+Step: 1191 completed
+Step: 1192 completed
+Step: 1193 completed
+Step: 1194 completed
+Step: 1195 completed
+Step: 1196 completed
+Step: 1197 completed
+Step: 1198 completed
+Step: 1199 completed
+Step: 1200: Train Loss: 4.0236, Train bpb: 1.3130, Val Loss: 4.0182, Val bpb: 1.3101
+Saved new best checkpoint with validation loss 4.0182
+Step: 1200 completed
+Step: 1201 completed
+Step: 1202 completed
+Step: 1203 completed
+Step: 1204 completed
+Step: 1205 completed
+Step: 1206 completed
+Step: 1207 completed
+Step: 1208 completed
+Step: 1209 completed
+Step: 1210: Train Loss: 4.0150, Train bpb: 1.3102, Val Loss: 4.0101, Val bpb: 1.3075
+Saved new best checkpoint with validation loss 4.0101
+Step: 1210 completed
+Step: 1211 completed
+Step: 1212 completed
+Step: 1213 completed
+Step: 1214 completed
+Step: 1215 completed
+Step: 1216 completed
+Step: 1217 completed
+Step: 1218 completed
+Step: 1219 completed
+Step: 1220: Train Loss: 4.0160, Train bpb: 1.3105, Val Loss: 4.0115, Val bpb: 1.3079
+Step: 1220 completed
+Step: 1221 completed
+Step: 1222 completed
+Step: 1223 completed
+Step: 1224 completed
+Step: 1225 completed
+Step: 1226 completed
+Step: 1227 completed
+Step: 1228 completed
+Step: 1229 completed
+Step: 1230: Train Loss: 4.0146, Train bpb: 1.3100, Val Loss: 4.0090, Val bpb: 1.3071
+Saved new best checkpoint with validation loss 4.0090
+Step: 1230 completed
+Step: 1231 completed
+Step: 1232 completed
+Step: 1233 completed
+Step: 1234 completed
+Step: 1235 completed
+Step: 1236 completed
+Step: 1237 completed
+Step: 1238 completed
+Step: 1239 completed
+Step: 1240: Train Loss: 4.0075, Train bpb: 1.3077, Val Loss: 4.0012, Val bpb: 1.3046
+Saved new best checkpoint with validation loss 4.0012
+Step: 1240 completed
+Step: 1241 completed
+Step: 1242 completed
+Step: 1243 completed
+Step: 1244 completed
+Step: 1245 completed
+Step: 1246 completed
+Step: 1247 completed
+Step: 1248 completed
+Step: 1249 completed
+Step: 1250: Train Loss: 4.0056, Train bpb: 1.3071, Val Loss: 3.9999, Val bpb: 1.3041
+Saved new best checkpoint with validation loss 3.9999
+Step: 1250 completed
+Step: 1251 completed
+Step: 1252 completed
+Step: 1253 completed
+Step: 1254 completed
+Step: 1255 completed
+Step: 1256 completed
+Step: 1257 completed
+Step: 1258 completed
+Step: 1259 completed
+Step: 1260: Train Loss: 3.9888, Train bpb: 1.3016, Val Loss: 3.9838, Val bpb: 1.2989
+Saved new best checkpoint with validation loss 3.9838
+Step: 1260 completed
+Step: 1261 completed
+Step: 1262 completed
+Step: 1263 completed
+Step: 1264 completed
+Step: 1265 completed
+Step: 1266 completed
+Step: 1267 completed
+Step: 1268 completed
+Step: 1269 completed
+Step: 1270: Train Loss: 3.9815, Train bpb: 1.2992, Val Loss: 3.9773, Val bpb: 1.2968
+Saved new best checkpoint with validation loss 3.9773
+Step: 1270 completed
+Step: 1271 completed
+Step: 1272 completed
+Step: 1273 completed
+Step: 1274 completed
+Step: 1275 completed
+Step: 1276 completed
+Step: 1277 completed
+Step: 1278 completed
+Step: 1279 completed
+Step: 1280: Train Loss: 3.9747, Train bpb: 1.2970, Val Loss: 3.9698, Val bpb: 1.2944
+Saved new best checkpoint with validation loss 3.9698
+Step: 1280 completed
+Step: 1281 completed
+Step: 1282 completed
+Step: 1283 completed
+Step: 1284 completed
+Step: 1285 completed
+Step: 1286 completed
+Step: 1287 completed
+Step: 1288 completed
+Step: 1289 completed
+Step: 1290: Train Loss: 3.9744, Train bpb: 1.2969, Val Loss: 3.9691, Val bpb: 1.2941
+Saved new best checkpoint with validation loss 3.9691
+Step: 1290 completed
+Step: 1291 completed
+Step: 1292 completed
+Step: 1293 completed
+Step: 1294 completed
+Step: 1295 completed
+Step: 1296 completed
+Step: 1297 completed
+Step: 1298 completed
+Step: 1299 completed
+Step: 1300: Train Loss: 3.9818, Train bpb: 1.2993, Val Loss: 3.9765, Val bpb: 1.2965
+Step: 1300 completed
+Step: 1301 completed
+Step: 1302 completed
+Step: 1303 completed
+Step: 1304 completed
+Step: 1305 completed
+Step: 1306 completed
+Step: 1307 completed
+Step: 1308 completed
+Step: 1309 completed
+Step: 1310: Train Loss: 3.9679, Train bpb: 1.2948, Val Loss: 3.9634, Val bpb: 1.2923
+Saved new best checkpoint with validation loss 3.9634
+Step: 1310 completed
+Step: 1311 completed
+Step: 1312 completed
+Step: 1313 completed
+Step: 1314 completed
+Step: 1315 completed
+Step: 1316 completed
+Step: 1317 completed
+Step: 1318 completed
+Step: 1319 completed
+Step: 1320: Train Loss: 3.9572, Train bpb: 1.2913, Val Loss: 3.9529, Val bpb: 1.2888
+Saved new best checkpoint with validation loss 3.9529
+Step: 1320 completed
+Step: 1321 completed
+Step: 1322 completed
+Step: 1323 completed
+Step: 1324 completed
+Step: 1325 completed
+Step: 1326 completed
+Step: 1327 completed
+Step: 1328 completed
+Step: 1329 completed
+Step: 1330: Train Loss: 3.9539, Train bpb: 1.2902, Val Loss: 3.9498, Val bpb: 1.2878
+Saved new best checkpoint with validation loss 3.9498
+Step: 1330 completed
+Step: 1331 completed
+Step: 1332 completed
+Step: 1333 completed
+Step: 1334 completed
+Step: 1335 completed
+Step: 1336 completed
+Step: 1337 completed
+Step: 1338 completed
+Step: 1339 completed
+Step: 1340: Train Loss: 3.9455, Train bpb: 1.2875, Val Loss: 3.9423, Val bpb: 1.2854
+Saved new best checkpoint with validation loss 3.9423
+Step: 1340 completed
+Step: 1341 completed
+Step: 1342 completed
+Step: 1343 completed
+Step: 1344 completed
+Step: 1345 completed
+Step: 1346 completed
+Step: 1347 completed
+Step: 1348 completed
+Step: 1349 completed
+Step: 1350: Train Loss: 3.9374, Train bpb: 1.2849, Val Loss: 3.9343, Val bpb: 1.2828
+Saved new best checkpoint with validation loss 3.9343
+Step: 1350 completed
+Step: 1351 completed
+Step: 1352 completed
+Step: 1353 completed
+Step: 1354 completed
+Step: 1355 completed
+Step: 1356 completed
+Step: 1357 completed
+Step: 1358 completed
+Step: 1359 completed
+Step: 1360: Train Loss: 3.9426, Train bpb: 1.2865, Val Loss: 3.9395, Val bpb: 1.2845
+Step: 1360 completed
+Step: 1361 completed
+Step: 1362 completed
+Step: 1363 completed
+Step: 1364 completed
+Step: 1365 completed
+Step: 1366 completed
+Step: 1367 completed
+Step: 1368 completed
+Step: 1369 completed
+Step: 1370: Train Loss: 3.9301, Train bpb: 1.2825, Val Loss: 3.9269, Val bpb: 1.2803
+Saved new best checkpoint with validation loss 3.9269
+Step: 1370 completed
+Step: 1371 completed
+Step: 1372 completed
+Step: 1373 completed
+Step: 1374 completed
+Step: 1375 completed
+Step: 1376 completed
+Step: 1377 completed
+Step: 1378 completed
+Step: 1379 completed
+Step: 1380: Train Loss: 3.9356, Train bpb: 1.2842, Val Loss: 3.9334, Val bpb: 1.2825
+Step: 1380 completed
+Step: 1381 completed
+Step: 1382 completed
+Step: 1383 completed
+Step: 1384 completed
+Step: 1385 completed
+Step: 1386 completed
+Step: 1387 completed
+Step: 1388 completed
+Step: 1389 completed
+Step: 1390: Train Loss: 3.9277, Train bpb: 1.2817, Val Loss: 3.9252, Val bpb: 1.2798
+Saved new best checkpoint with validation loss 3.9252
+Step: 1390 completed
+Step: 1391 completed
+Step: 1392 completed
+Step: 1393 completed
+Step: 1394 completed
+Step: 1395 completed
+Step: 1396 completed
+Step: 1397 completed
+Step: 1398 completed
+Step: 1399 completed
+Step: 1400: Train Loss: 3.9190, Train bpb: 1.2789, Val Loss: 3.9166, Val bpb: 1.2770
+Saved new best checkpoint with validation loss 3.9166
+Step: 1400 completed
+Step: 1401 completed
+Step: 1402 completed
+Step: 1403 completed
+Step: 1404 completed
+Step: 1405 completed
+Step: 1406 completed
+Step: 1407 completed
+Step: 1408 completed
+Step: 1409 completed
+Step: 1410: Train Loss: 3.9125, Train bpb: 1.2767, Val Loss: 3.9094, Val bpb: 1.2746
+Saved new best checkpoint with validation loss 3.9094
+Step: 1410 completed
+Step: 1411 completed
+Step: 1412 completed
+Step: 1413 completed
+Step: 1414 completed
+Step: 1415 completed
+Step: 1416 completed
+Step: 1417 completed
+Step: 1418 completed
+Step: 1419 completed
+Step: 1420: Train Loss: 3.9044, Train bpb: 1.2741, Val Loss: 3.9011, Val bpb: 1.2719
+Saved new best checkpoint with validation loss 3.9011
+Step: 1420 completed
+Step: 1421 completed
+Step: 1422 completed
+Step: 1423 completed
+Step: 1424 completed
+Step: 1425 completed
+Step: 1426 completed
+Step: 1427 completed
+Step: 1428 completed
+Step: 1429 completed
+Step: 1430: Train Loss: 3.8968, Train bpb: 1.2716, Val Loss: 3.8940, Val bpb: 1.2696
+Saved new best checkpoint with validation loss 3.8940
+Step: 1430 completed
+Step: 1431 completed
+Step: 1432 completed
+Step: 1433 completed
+Step: 1434 completed
+Step: 1435 completed
+Step: 1436 completed
+Step: 1437 completed
+Step: 1438 completed
+Step: 1439 completed
+Step: 1440: Train Loss: 3.8913, Train bpb: 1.2698, Val Loss: 3.8890, Val bpb: 1.2680
+Saved new best checkpoint with validation loss 3.8890
+Step: 1440 completed
+Step: 1441 completed
+Step: 1442 completed
+Step: 1443 completed
+Step: 1444 completed
+Step: 1445 completed
+Step: 1446 completed
+Step: 1447 completed
+Step: 1448 completed
+Step: 1449 completed
+Step: 1450: Train Loss: 3.8872, Train bpb: 1.2685, Val Loss: 3.8837, Val bpb: 1.2663
+Saved new best checkpoint with validation loss 3.8837
+Step: 1450 completed
+Step: 1451 completed
+Step: 1452 completed
+Step: 1453 completed
+Step: 1454 completed
+Step: 1455 completed
+Step: 1456 completed
+Step: 1457 completed
+Step: 1458 completed
+Step: 1459 completed
+Step: 1460: Train Loss: 3.8833, Train bpb: 1.2672, Val Loss: 3.8801, Val bpb: 1.2651
+Saved new best checkpoint with validation loss 3.8801
+Step: 1460 completed
+Step: 1461 completed
+Step: 1462 completed
+Step: 1463 completed
+Step: 1464 completed
+Step: 1465 completed
+Step: 1466 completed
+Step: 1467 completed
+Step: 1468 completed
+Step: 1469 completed
+Step: 1470: Train Loss: 3.8785, Train bpb: 1.2656, Val Loss: 3.8759, Val bpb: 1.2637
+Saved new best checkpoint with validation loss 3.8759
+Step: 1470 completed
+Step: 1471 completed
+Step: 1472 completed
+Step: 1473 completed
+Step: 1474 completed
+Step: 1475 completed
+Step: 1476 completed
+Step: 1477 completed
+Step: 1478 completed
+Step: 1479 completed
+Step: 1480: Train Loss: 3.8774, Train bpb: 1.2653, Val Loss: 3.8750, Val bpb: 1.2634
+Saved new best checkpoint with validation loss 3.8750
+Step: 1480 completed
+Step: 1481 completed
+Step: 1482 completed
+Step: 1483 completed
+Step: 1484 completed
+Step: 1485 completed
+Step: 1486 completed
+Step: 1487 completed
+Step: 1488 completed
+Step: 1489 completed
+Step: 1490: Train Loss: 3.8753, Train bpb: 1.2646, Val Loss: 3.8718, Val bpb: 1.2624
+Saved new best checkpoint with validation loss 3.8718
+Step: 1490 completed
+Step: 1491 completed
+Step: 1492 completed
+Step: 1493 completed
+Step: 1494 completed
+Step: 1495 completed
+Step: 1496 completed
+Step: 1497 completed
+Step: 1498 completed
+Step: 1499 completed
+Step: 1500: Train Loss: 3.8687, Train bpb: 1.2624, Val Loss: 3.8654, Val bpb: 1.2603
+Saved new best checkpoint with validation loss 3.8654
+Step: 1500 completed
+Step: 1501 completed
+Step: 1502 completed
+Step: 1503 completed
+Step: 1504 completed
+Step: 1505 completed
+Step: 1506 completed
+Step: 1507 completed
+Step: 1508 completed
+Step: 1509 completed
+Step: 1510: Train Loss: 3.8613, Train bpb: 1.2600, Val Loss: 3.8587, Val bpb: 1.2581
+Saved new best checkpoint with validation loss 3.8587
+Step: 1510 completed
+Step: 1511 completed
+Step: 1512 completed
+Step: 1513 completed
+Step: 1514 completed
+Step: 1515 completed
+Step: 1516 completed
+Step: 1517 completed
+Step: 1518 completed
+Step: 1519 completed
+Step: 1520: Train Loss: 3.8575, Train bpb: 1.2588, Val Loss: 3.8543, Val bpb: 1.2567
+Saved new best checkpoint with validation loss 3.8543
+Step: 1520 completed
+Step: 1521 completed
+Step: 1522 completed
+Step: 1523 completed
+Step: 1524 completed
+Step: 1525 completed
+Step: 1526 completed
+Step: 1527 completed
+Step: 1528 completed
+Step: 1529 completed
+Step: 1530: Train Loss: 3.8556, Train bpb: 1.2582, Val Loss: 3.8528, Val bpb: 1.2562
+Saved new best checkpoint with validation loss 3.8528
+Step: 1530 completed
+Step: 1531 completed
+Step: 1532 completed
+Step: 1533 completed
+Step: 1534 completed
+Step: 1535 completed
+Step: 1536 completed
+Step: 1537 completed
+Step: 1538 completed
+Step: 1539 completed
+Step: 1540: Train Loss: 3.8512, Train bpb: 1.2567, Val Loss: 3.8498, Val bpb: 1.2552
+Saved new best checkpoint with validation loss 3.8498
+Step: 1540 completed
+Step: 1541 completed
+Step: 1542 completed
+Step: 1543 completed
+Step: 1544 completed
+Step: 1545 completed
+Step: 1546 completed
+Step: 1547 completed
+Step: 1548 completed
+Step: 1549 completed
+Step: 1550: Train Loss: 3.8443, Train bpb: 1.2545, Val Loss: 3.8421, Val bpb: 1.2527
+Saved new best checkpoint with validation loss 3.8421
+Step: 1550 completed
+Step: 1551 completed
+Step: 1552 completed
+Step: 1553 completed
+Step: 1554 completed
+Step: 1555 completed
+Step: 1556 completed
+Step: 1557 completed
+Step: 1558 completed
+Step: 1559 completed
+Step: 1560: Train Loss: 3.8426, Train bpb: 1.2539, Val Loss: 3.8402, Val bpb: 1.2521
+Saved new best checkpoint with validation loss 3.8402
+Step: 1560 completed
+Step: 1561 completed
+Step: 1562 completed
+Step: 1563 completed
+Step: 1564 completed
+Step: 1565 completed
+Step: 1566 completed
+Step: 1567 completed
+Step: 1568 completed
+Step: 1569 completed
+Step: 1570: Train Loss: 3.8355, Train bpb: 1.2516, Val Loss: 3.8334, Val bpb: 1.2499
+Saved new best checkpoint with validation loss 3.8334
+Step: 1570 completed
+Step: 1571 completed
+Step: 1572 completed
+Step: 1573 completed
+Step: 1574 completed
+Step: 1575 completed
+Step: 1576 completed
+Step: 1577 completed
+Step: 1578 completed
+Step: 1579 completed
+Step: 1580: Train Loss: 3.8304, Train bpb: 1.2499, Val Loss: 3.8283, Val bpb: 1.2482
+Saved new best checkpoint with validation loss 3.8283
+Step: 1580 completed
+Step: 1581 completed
+Step: 1582 completed
+Step: 1583 completed
+Step: 1584 completed
+Step: 1585 completed
+Step: 1586 completed
+Step: 1587 completed
+Step: 1588 completed
+Step: 1589 completed
+Step: 1590: Train Loss: 3.8296, Train bpb: 1.2497, Val Loss: 3.8279, Val bpb: 1.2481
+Saved new best checkpoint with validation loss 3.8279
+Step: 1590 completed
+Step: 1591 completed
+Step: 1592 completed
+Step: 1593 completed
+Step: 1594 completed
+Step: 1595 completed
+Step: 1596 completed
+Step: 1597 completed
+Step: 1598 completed
+Step: 1599 completed
+Step: 1600: Train Loss: 3.8273, Train bpb: 1.2489, Val Loss: 3.8248, Val bpb: 1.2471
+Saved new best checkpoint with validation loss 3.8248
+Step: 1600 completed
+Step: 1601 completed
+Step: 1602 completed
+Step: 1603 completed
+Step: 1604 completed
+Step: 1605 completed
+Step: 1606 completed
+Step: 1607 completed
+Step: 1608 completed
+Step: 1609 completed
+Step: 1610: Train Loss: 3.8227, Train bpb: 1.2474, Val Loss: 3.8211, Val bpb: 1.2458
+Saved new best checkpoint with validation loss 3.8211
+Step: 1610 completed
+Step: 1611 completed
+Step: 1612 completed
+Step: 1613 completed
+Step: 1614 completed
+Step: 1615 completed
+Step: 1616 completed
+Step: 1617 completed
+Step: 1618 completed
+Step: 1619 completed
+Step: 1620: Train Loss: 3.8230, Train bpb: 1.2475, Val Loss: 3.8215, Val bpb: 1.2460
+Step: 1620 completed
+Step: 1621 completed
+Step: 1622 completed
+Step: 1623 completed
+Step: 1624 completed
+Step: 1625 completed
+Step: 1626 completed
+Step: 1627 completed
+Step: 1628 completed
+Step: 1629 completed
+Step: 1630: Train Loss: 3.8161, Train bpb: 1.2453, Val Loss: 3.8137, Val bpb: 1.2434
+Saved new best checkpoint with validation loss 3.8137
+Step: 1630 completed
+Step: 1631 completed
+Step: 1632 completed
+Step: 1633 completed
+Step: 1634 completed
+Step: 1635 completed
+Step: 1636 completed
+Step: 1637 completed
+Step: 1638 completed
+Step: 1639 completed
+Step: 1640: Train Loss: 3.8110, Train bpb: 1.2436, Val Loss: 3.8096, Val bpb: 1.2421
+Saved new best checkpoint with validation loss 3.8096
+Step: 1640 completed
+Step: 1641 completed
+Step: 1642 completed
+Step: 1643 completed
+Step: 1644 completed
+Step: 1645 completed
+Step: 1646 completed
+Step: 1647 completed
+Step: 1648 completed
+Step: 1649 completed
+Step: 1650: Train Loss: 3.8111, Train bpb: 1.2436, Val Loss: 3.8094, Val bpb: 1.2420
+Saved new best checkpoint with validation loss 3.8094
+Step: 1650 completed
+Step: 1651 completed
+Step: 1652 completed
+Step: 1653 completed
+Step: 1654 completed
+Step: 1655 completed
+Step: 1656 completed
+Step: 1657 completed
+Step: 1658 completed
+Step: 1659 completed
+Step: 1660: Train Loss: 3.8011, Train bpb: 1.2404, Val Loss: 3.7997, Val bpb: 1.2389
+Saved new best checkpoint with validation loss 3.7997
+Step: 1660 completed
+Step: 1661 completed
+Step: 1662 completed
+Step: 1663 completed
+Step: 1664 completed
+Step: 1665 completed
+Step: 1666 completed
+Step: 1667 completed
+Step: 1668 completed
+Step: 1669 completed
+Step: 1670: Train Loss: 3.7964, Train bpb: 1.2388, Val Loss: 3.7959, Val bpb: 1.2376
+Saved new best checkpoint with validation loss 3.7959
+Step: 1670 completed
+Step: 1671 completed
+Step: 1672 completed
+Step: 1673 completed
+Step: 1674 completed
+Step: 1675 completed
+Step: 1676 completed
+Step: 1677 completed
+Step: 1678 completed
+Step: 1679 completed
+Step: 1680: Train Loss: 3.7999, Train bpb: 1.2400, Val Loss: 3.7988, Val bpb: 1.2386
+Step: 1680 completed
+Step: 1681 completed
+Step: 1682 completed
+Step: 1683 completed
+Step: 1684 completed
+Step: 1685 completed
+Step: 1686 completed
+Step: 1687 completed
+Step: 1688 completed
+Step: 1689 completed
+Step: 1690: Train Loss: 3.7893, Train bpb: 1.2365, Val Loss: 3.7888, Val bpb: 1.2353
+Saved new best checkpoint with validation loss 3.7888
+Step: 1690 completed
+Step: 1691 completed
+Step: 1692 completed
+Step: 1693 completed
+Step: 1694 completed
+Step: 1695 completed
+Step: 1696 completed
+Step: 1697 completed
+Step: 1698 completed
+Step: 1699 completed
+Step: 1700: Train Loss: 3.7895, Train bpb: 1.2366, Val Loss: 3.7892, Val bpb: 1.2354
+Step: 1700 completed
+Step: 1701 completed
+Step: 1702 completed
+Step: 1703 completed
+Step: 1704 completed
+Step: 1705 completed
+Step: 1706 completed
+Step: 1707 completed
+Step: 1708 completed
+Step: 1709 completed
+Step: 1710: Train Loss: 3.7856, Train bpb: 1.2353, Val Loss: 3.7838, Val bpb: 1.2337
+Saved new best checkpoint with validation loss 3.7838
+Step: 1710 completed
+Step: 1711 completed
+Step: 1712 completed
+Step: 1713 completed
+Step: 1714 completed
+Step: 1715 completed
+Step: 1716 completed
+Step: 1717 completed
+Step: 1718 completed
+Step: 1719 completed
+Step: 1720: Train Loss: 3.7780, Train bpb: 1.2328, Val Loss: 3.7768, Val bpb: 1.2314
+Saved new best checkpoint with validation loss 3.7768
+Step: 1720 completed
+Step: 1721 completed
+Step: 1722 completed
+Step: 1723 completed
+Step: 1724 completed
+Step: 1725 completed
+Step: 1726 completed
+Step: 1727 completed
+Step: 1728 completed
+Step: 1729 completed
+Step: 1730: Train Loss: 3.8047, Train bpb: 1.2415, Val Loss: 3.8017, Val bpb: 1.2395
+Step: 1730 completed
+Step: 1731 completed
+Step: 1732 completed
+Step: 1733 completed
+Step: 1734 completed
+Step: 1735 completed
+Step: 1736 completed
+Step: 1737 completed
+Step: 1738 completed
+Step: 1739 completed
+Step: 1740: Train Loss: 3.8092, Train bpb: 1.2430, Val Loss: 3.8071, Val bpb: 1.2413
+Step: 1740 completed
+Step: 1741 completed
+Step: 1742 completed
+Step: 1743 completed
+Step: 1744 completed
+Step: 1745 completed
+Step: 1746 completed
+Step: 1747 completed
+Step: 1748 completed
+Step: 1749 completed
+Step: 1750: Train Loss: 3.7894, Train bpb: 1.2366, Val Loss: 3.7880, Val bpb: 1.2351
+Step: 1750 completed
+Step: 1751 completed
+Step: 1752 completed
+Step: 1753 completed
+Step: 1754 completed
+Step: 1755 completed
+Step: 1756 completed
+Step: 1757 completed
+Step: 1758 completed
+Step: 1759 completed
+Step: 1760: Train Loss: 3.7796, Train bpb: 1.2334, Val Loss: 3.7781, Val bpb: 1.2319
+Step: 1760 completed
+Step: 1761 completed
+Step: 1762 completed
+Step: 1763 completed
+Step: 1764 completed
+Step: 1765 completed
+Step: 1766 completed
+Step: 1767 completed
+Step: 1768 completed
+Step: 1769 completed
+Step: 1770: Train Loss: 3.7696, Train bpb: 1.2301, Val Loss: 3.7686, Val bpb: 1.2288
+Saved new best checkpoint with validation loss 3.7686
+Step: 1770 completed
+Step: 1771 completed
+Step: 1772 completed
+Step: 1773 completed
+Step: 1774 completed
+Step: 1775 completed
+Step: 1776 completed
+Step: 1777 completed
+Step: 1778 completed
+Step: 1779 completed
+Step: 1780: Train Loss: 3.7674, Train bpb: 1.2294, Val Loss: 3.7661, Val bpb: 1.2279
+Saved new best checkpoint with validation loss 3.7661
+Step: 1780 completed
+Step: 1781 completed
+Step: 1782 completed
+Step: 1783 completed
+Step: 1784 completed
+Step: 1785 completed
+Step: 1786 completed
+Step: 1787 completed
+Step: 1788 completed
+Step: 1789 completed
+Step: 1790: Train Loss: 3.7647, Train bpb: 1.2285, Val Loss: 3.7633, Val bpb: 1.2270
+Saved new best checkpoint with validation loss 3.7633
+Step: 1790 completed
+Step: 1791 completed
+Step: 1792 completed
+Step: 1793 completed
+Step: 1794 completed
+Step: 1795 completed
+Step: 1796 completed
+Step: 1797 completed
+Step: 1798 completed
+Step: 1799 completed
+Step: 1800: Train Loss: 3.7567, Train bpb: 1.2259, Val Loss: 3.7554, Val bpb: 1.2244
+Saved new best checkpoint with validation loss 3.7554
+Step: 1800 completed
+Step: 1801 completed
+Step: 1802 completed
+Step: 1803 completed
+Step: 1804 completed
+Step: 1805 completed
+Step: 1806 completed
+Step: 1807 completed
+Step: 1808 completed
+Step: 1809 completed
+Step: 1810: Train Loss: 3.7563, Train bpb: 1.2258, Val Loss: 3.7554, Val bpb: 1.2244
+Saved new best checkpoint with validation loss 3.7554
+Step: 1810 completed
+Step: 1811 completed
+Step: 1812 completed
+Step: 1813 completed
+Step: 1814 completed
+Step: 1815 completed
+Step: 1816 completed
+Step: 1817 completed
+Step: 1818 completed
+Step: 1819 completed
+Step: 1820: Train Loss: 3.7509, Train bpb: 1.2240, Val Loss: 3.7497, Val bpb: 1.2226
+Saved new best checkpoint with validation loss 3.7497
+Step: 1820 completed
+Step: 1821 completed
+Step: 1822 completed
+Step: 1823 completed
+Step: 1824 completed
+Step: 1825 completed
+Step: 1826 completed
+Step: 1827 completed
+Step: 1828 completed
+Step: 1829 completed
+Step: 1830: Train Loss: 3.7465, Train bpb: 1.2225, Val Loss: 3.7456, Val bpb: 1.2212
+Saved new best checkpoint with validation loss 3.7456
+Step: 1830 completed
+Step: 1831 completed
+Step: 1832 completed
+Step: 1833 completed
+Step: 1834 completed
+Step: 1835 completed
+Step: 1836 completed
+Step: 1837 completed
+Step: 1838 completed
+Step: 1839 completed
+Step: 1840: Train Loss: 3.7473, Train bpb: 1.2228, Val Loss: 3.7465, Val bpb: 1.2215
+Step: 1840 completed
+Step: 1841 completed
+Step: 1842 completed
+Step: 1843 completed
+Step: 1844 completed
+Step: 1845 completed
+Step: 1846 completed
+Step: 1847 completed
+Step: 1848 completed
+Step: 1849 completed
+Step: 1850: Train Loss: 3.7427, Train bpb: 1.2213, Val Loss: 3.7417, Val bpb: 1.2200
+Saved new best checkpoint with validation loss 3.7417
+Step: 1850 completed
+Step: 1851 completed
+Step: 1852 completed
+Step: 1853 completed
+Step: 1854 completed
+Step: 1855 completed
+Step: 1856 completed
+Step: 1857 completed
+Step: 1858 completed
+Step: 1859 completed
+Step: 1860: Train Loss: 3.7385, Train bpb: 1.2200, Val Loss: 3.7380, Val bpb: 1.2188
+Saved new best checkpoint with validation loss 3.7380
+Step: 1860 completed
+Step: 1861 completed
+Step: 1862 completed
+Step: 1863 completed
+Step: 1864 completed
+Step: 1865 completed
+Step: 1866 completed
+Step: 1867 completed
+Step: 1868 completed
+Step: 1869 completed
+Step: 1870: Train Loss: 3.7371, Train bpb: 1.2195, Val Loss: 3.7367, Val bpb: 1.2183
+Saved new best checkpoint with validation loss 3.7367
+Step: 1870 completed
+Step: 1871 completed
+Step: 1872 completed
+Step: 1873 completed
+Step: 1874 completed
+Step: 1875 completed
+Step: 1876 completed
+Step: 1877 completed
+Step: 1878 completed
+Step: 1879 completed
+Step: 1880: Train Loss: 3.7323, Train bpb: 1.2179, Val Loss: 3.7328, Val bpb: 1.2171
+Saved new best checkpoint with validation loss 3.7328
+Step: 1880 completed
+Step: 1881 completed
+Step: 1882 completed
+Step: 1883 completed
+Step: 1884 completed
+Step: 1885 completed
+Step: 1886 completed
+Step: 1887 completed
+Step: 1888 completed
+Step: 1889 completed
+Step: 1890: Train Loss: 3.7314, Train bpb: 1.2176, Val Loss: 3.7311, Val bpb: 1.2165
+Saved new best checkpoint with validation loss 3.7311
+Step: 1890 completed
+Step: 1891 completed
+Step: 1892 completed
+Step: 1893 completed
+Step: 1894 completed
+Step: 1895 completed
+Step: 1896 completed
+Step: 1897 completed
+Step: 1898 completed
+Step: 1899 completed
+Step: 1900: Train Loss: 3.7375, Train bpb: 1.2196, Val Loss: 3.7373, Val bpb: 1.2185
+Step: 1900 completed
+Step: 1901 completed
+Step: 1902 completed
+Step: 1903 completed
+Step: 1904 completed
+Step: 1905 completed
+Step: 1906 completed
+Step: 1907 completed
+Step: 1908 completed
+Step: 1909 completed
+Step: 1910: Train Loss: 3.7325, Train bpb: 1.2180, Val Loss: 3.7324, Val bpb: 1.2170
+Step: 1910 completed
+Step: 1911 completed
+Step: 1912 completed
+Step: 1913 completed
+Step: 1914 completed
+Step: 1915 completed
+Step: 1916 completed
+Step: 1917 completed
+Step: 1918 completed
+Step: 1919 completed
+Step: 1920: Train Loss: 3.7263, Train bpb: 1.2160, Val Loss: 3.7260, Val bpb: 1.2148
+Saved new best checkpoint with validation loss 3.7260
+Step: 1920 completed
+Step: 1921 completed
+Step: 1922 completed
+Step: 1923 completed
+Step: 1924 completed
+Step: 1925 completed
+Step: 1926 completed
+Step: 1927 completed
+Step: 1928 completed
+Step: 1929 completed
+Step: 1930: Train Loss: 3.7215, Train bpb: 1.2144, Val Loss: 3.7210, Val bpb: 1.2132
+Saved new best checkpoint with validation loss 3.7210
+Step: 1930 completed
+Step: 1931 completed
+Step: 1932 completed
+Step: 1933 completed
+Step: 1934 completed
+Step: 1935 completed
+Step: 1936 completed
+Step: 1937 completed
+Step: 1938 completed
+Step: 1939 completed
+Step: 1940: Train Loss: 3.7183, Train bpb: 1.2133, Val Loss: 3.7174, Val bpb: 1.2120
+Saved new best checkpoint with validation loss 3.7174
+Step: 1940 completed
+Step: 1941 completed
+Step: 1942 completed
+Step: 1943 completed
+Step: 1944 completed
+Step: 1945 completed
+Step: 1946 completed
+Step: 1947 completed
+Step: 1948 completed
+Step: 1949 completed
+Step: 1950: Train Loss: 3.7136, Train bpb: 1.2118, Val Loss: 3.7131, Val bpb: 1.2106
+Saved new best checkpoint with validation loss 3.7131
+Step: 1950 completed
+Step: 1951 completed
+Step: 1952 completed
+Step: 1953 completed
+Step: 1954 completed
+Step: 1955 completed
+Step: 1956 completed
+Step: 1957 completed
+Step: 1958 completed
+Step: 1959 completed
+Step: 1960: Train Loss: 3.7105, Train bpb: 1.2108, Val Loss: 3.7098, Val bpb: 1.2096
+Saved new best checkpoint with validation loss 3.7098
+Step: 1960 completed
+Step: 1961 completed
+Step: 1962 completed
+Step: 1963 completed
+Step: 1964 completed
+Step: 1965 completed
+Step: 1966 completed
+Step: 1967 completed
+Step: 1968 completed
+Step: 1969 completed
+Step: 1970: Train Loss: 3.7075, Train bpb: 1.2098, Val Loss: 3.7068, Val bpb: 1.2086
+Saved new best checkpoint with validation loss 3.7068
+Step: 1970 completed
+Step: 1971 completed
+Step: 1972 completed
+Step: 1973 completed
+Step: 1974 completed
+Step: 1975 completed
+Step: 1976 completed
+Step: 1977 completed
+Step: 1978 completed
+Step: 1979 completed
+Step: 1980: Train Loss: 3.7066, Train bpb: 1.2095, Val Loss: 3.7068, Val bpb: 1.2086
+Saved new best checkpoint with validation loss 3.7068
+Step: 1980 completed
+Step: 1981 completed
+Step: 1982 completed
+Step: 1983 completed
+Step: 1984 completed
+Step: 1985 completed
+Step: 1986 completed
+Step: 1987 completed
+Step: 1988 completed
+Step: 1989 completed
+Step: 1990: Train Loss: 3.7093, Train bpb: 1.2104, Val Loss: 3.7087, Val bpb: 1.2092
+Step: 1990 completed
+Step: 1991 completed
+Step: 1992 completed
+Step: 1993 completed
+Step: 1994 completed
+Step: 1995 completed
+Step: 1996 completed
+Step: 1997 completed
+Step: 1998 completed
+Step: 1999 completed
+Step: 2000: Train Loss: 3.7047, Train bpb: 1.2089, Val Loss: 3.7044, Val bpb: 1.2078
+Saved new best checkpoint with validation loss 3.7044
+Step: 2000 completed
+Step: 2001 completed
+Step: 2002 completed
+Step: 2003 completed
+Step: 2004 completed
+Step: 2005 completed
+Step: 2006 completed
+Step: 2007 completed
+Step: 2008 completed
+Step: 2009 completed
+Step: 2010: Train Loss: 3.7015, Train bpb: 1.2079, Val Loss: 3.7010, Val bpb: 1.2067
+Saved new best checkpoint with validation loss 3.7010
+Step: 2010 completed
+Step: 2011 completed
+Step: 2012 completed
+Step: 2013 completed
+Step: 2014 completed
+Step: 2015 completed
+Step: 2016 completed
+Step: 2017 completed
+Step: 2018 completed
+Step: 2019 completed
+Step: 2020: Train Loss: 3.6988, Train bpb: 1.2070, Val Loss: 3.6982, Val bpb: 1.2058
+Saved new best checkpoint with validation loss 3.6982
+Step: 2020 completed
+Step: 2021 completed
+Step: 2022 completed
+Step: 2023 completed
+Step: 2024 completed
+Step: 2025 completed
+Step: 2026 completed
+Step: 2027 completed
+Step: 2028 completed
+Step: 2029 completed
+Step: 2030: Train Loss: 3.6956, Train bpb: 1.2059, Val Loss: 3.6946, Val bpb: 1.2046
+Saved new best checkpoint with validation loss 3.6946
+Step: 2030 completed
+Step: 2031 completed
+Step: 2032 completed
+Step: 2033 completed
+Step: 2034 completed
+Step: 2035 completed
+Step: 2036 completed
+Step: 2037 completed
+Step: 2038 completed
+Step: 2039 completed
+Step: 2040: Train Loss: 3.6931, Train bpb: 1.2051, Val Loss: 3.6928, Val bpb: 1.2040
+Saved new best checkpoint with validation loss 3.6928
+Step: 2040 completed
+Step: 2041 completed
+Step: 2042 completed
+Step: 2043 completed
+Step: 2044 completed
+Step: 2045 completed
+Step: 2046 completed
+Step: 2047 completed
+Step: 2048 completed
+Step: 2049 completed
+Step: 2050: Train Loss: 3.6893, Train bpb: 1.2039, Val Loss: 3.6890, Val bpb: 1.2028
+Saved new best checkpoint with validation loss 3.6890
+Step: 2050 completed
+Step: 2051 completed
+Step: 2052 completed
+Step: 2053 completed
+Step: 2054 completed
+Step: 2055 completed
+Step: 2056 completed
+Step: 2057 completed
+Step: 2058 completed
+Step: 2059 completed
+Step: 2060: Train Loss: 3.6904, Train bpb: 1.2043, Val Loss: 3.6904, Val bpb: 1.2032
+Step: 2060 completed
+Step: 2061 completed
+Step: 2062 completed
+Step: 2063 completed
+Step: 2064 completed
+Step: 2065 completed
+Step: 2066 completed
+Step: 2067 completed
+Step: 2068 completed
+Step: 2069 completed
+Step: 2070: Train Loss: 3.6870, Train bpb: 1.2031, Val Loss: 3.6868, Val bpb: 1.2021
+Saved new best checkpoint with validation loss 3.6868
+Step: 2070 completed
+Step: 2071 completed
+Step: 2072 completed
+Step: 2073 completed
+Step: 2074 completed
+Step: 2075 completed
+Step: 2076 completed
+Step: 2077 completed
+Step: 2078 completed
+Step: 2079 completed
+Step: 2080: Train Loss: 3.6841, Train bpb: 1.2022, Val Loss: 3.6838, Val bpb: 1.2011
+Saved new best checkpoint with validation loss 3.6838
+Step: 2080 completed
+Step: 2081 completed
+Step: 2082 completed
+Step: 2083 completed
+Step: 2084 completed
+Step: 2085 completed
+Step: 2086 completed
+Step: 2087 completed
+Step: 2088 completed
+Step: 2089 completed
+Step: 2090: Train Loss: 3.6801, Train bpb: 1.2009, Val Loss: 3.6793, Val bpb: 1.1996
+Saved new best checkpoint with validation loss 3.6793
+Step: 2090 completed
+Step: 2091 completed
+Step: 2092 completed
+Step: 2093 completed
+Step: 2094 completed
+Step: 2095 completed
+Step: 2096 completed
+Step: 2097 completed
+Step: 2098 completed
+Step: 2099 completed
+Step: 2100: Train Loss: 3.6819, Train bpb: 1.2015, Val Loss: 3.6804, Val bpb: 1.2000
+Step: 2100 completed
+Step: 2101 completed
+Step: 2102 completed
+Step: 2103 completed
+Step: 2104 completed
+Step: 2105 completed
+Step: 2106 completed
+Step: 2107 completed
+Step: 2108 completed
+Step: 2109 completed
+Step: 2110: Train Loss: 3.6782, Train bpb: 1.2003, Val Loss: 3.6775, Val bpb: 1.1990
+Saved new best checkpoint with validation loss 3.6775
+Step: 2110 completed
+Step: 2111 completed
+Step: 2112 completed
+Step: 2113 completed
+Step: 2114 completed
+Step: 2115 completed
+Step: 2116 completed
+Step: 2117 completed
+Step: 2118 completed
+Step: 2119 completed
+Step: 2120: Train Loss: 3.6757, Train bpb: 1.1995, Val Loss: 3.6754, Val bpb: 1.1984
+Saved new best checkpoint with validation loss 3.6754
+Step: 2120 completed
+Step: 2121 completed
+Step: 2122 completed
+Step: 2123 completed
+Step: 2124 completed
+Step: 2125 completed
+Step: 2126 completed
+Step: 2127 completed
+Step: 2128 completed
+Step: 2129 completed
+Step: 2130: Train Loss: 3.6741, Train bpb: 1.1989, Val Loss: 3.6742, Val bpb: 1.1980
+Saved new best checkpoint with validation loss 3.6742
+Step: 2130 completed
+Step: 2131 completed
+Step: 2132 completed
+Step: 2133 completed
+Step: 2134 completed
+Step: 2135 completed
+Step: 2136 completed
+Step: 2137 completed
+Step: 2138 completed
+Step: 2139 completed
+Step: 2140: Train Loss: 3.6765, Train bpb: 1.1997, Val Loss: 3.6754, Val bpb: 1.1984
+Step: 2140 completed
+Step: 2141 completed
+Step: 2142 completed
+Step: 2143 completed
+Step: 2144 completed
+Step: 2145 completed
+Step: 2146 completed
+Step: 2147 completed
+Step: 2148 completed
+Step: 2149 completed
+Step: 2150: Train Loss: 3.6700, Train bpb: 1.1976, Val Loss: 3.6704, Val bpb: 1.1967
+Saved new best checkpoint with validation loss 3.6704
+Step: 2150 completed
+Step: 2151 completed
+Step: 2152 completed
+Step: 2153 completed
+Step: 2154 completed
+Step: 2155 completed
+Step: 2156 completed
+Step: 2157 completed
+Step: 2158 completed
+Step: 2159 completed
+Step: 2160: Train Loss: 3.6663, Train bpb: 1.1964, Val Loss: 3.6666, Val bpb: 1.1955
+Saved new best checkpoint with validation loss 3.6666
+Step: 2160 completed
+Step: 2161 completed
+Step: 2162 completed
+Step: 2163 completed
+Step: 2164 completed
+Step: 2165 completed
+Step: 2166 completed
+Step: 2167 completed
+Step: 2168 completed
+Step: 2169 completed
+Step: 2170: Train Loss: 3.6687, Train bpb: 1.1972, Val Loss: 3.6686, Val bpb: 1.1961
+Step: 2170 completed
+Step: 2171 completed
+Step: 2172 completed
+Step: 2173 completed
+Step: 2174 completed
+Step: 2175 completed
+Step: 2176 completed
+Step: 2177 completed
+Step: 2178 completed
+Step: 2179 completed
+Step: 2180: Train Loss: 3.6718, Train bpb: 1.1982, Val Loss: 3.6725, Val bpb: 1.1974
+Step: 2180 completed
+Step: 2181 completed
+Step: 2182 completed
+Step: 2183 completed
+Step: 2184 completed
+Step: 2185 completed
+Step: 2186 completed
+Step: 2187 completed
+Step: 2188 completed
+Step: 2189 completed
+Step: 2190: Train Loss: 3.6663, Train bpb: 1.1964, Val Loss: 3.6671, Val bpb: 1.1957
+Step: 2190 completed
+Step: 2191 completed
+Step: 2192 completed
+Step: 2193 completed
+Step: 2194 completed
+Step: 2195 completed
+Step: 2196 completed
+Step: 2197 completed
+Step: 2198 completed
+Step: 2199 completed
+Step: 2200: Train Loss: 3.6765, Train bpb: 1.1997, Val Loss: 3.6770, Val bpb: 1.1989
+Step: 2200 completed
+Step: 2201 completed
+Step: 2202 completed
+Step: 2203 completed
+Step: 2204 completed
+Step: 2205 completed
+Step: 2206 completed
+Step: 2207 completed
+Step: 2208 completed
+Step: 2209 completed
+Step: 2210: Train Loss: 3.6707, Train bpb: 1.1978, Val Loss: 3.6713, Val bpb: 1.1970
+Step: 2210 completed
+Step: 2211 completed
+Step: 2212 completed
+Step: 2213 completed
+Step: 2214 completed
+Step: 2215 completed
+Step: 2216 completed
+Step: 2217 completed
+Step: 2218 completed
+Step: 2219 completed
+Step: 2220: Train Loss: 3.6659, Train bpb: 1.1963, Val Loss: 3.6669, Val bpb: 1.1956
+Step: 2220 completed
+Step: 2221 completed
+Step: 2222 completed
+Step: 2223 completed
+Step: 2224 completed
+Step: 2225 completed
+Step: 2226 completed
+Step: 2227 completed
+Step: 2228 completed
+Step: 2229 completed
+Step: 2230: Train Loss: 3.6626, Train bpb: 1.1952, Val Loss: 3.6636, Val bpb: 1.1945
+Saved new best checkpoint with validation loss 3.6636
+Step: 2230 completed
+Step: 2231 completed
+Step: 2232 completed
+Step: 2233 completed
+Step: 2234 completed
+Step: 2235 completed
+Step: 2236 completed
+Step: 2237 completed
+Step: 2238 completed
+Step: 2239 completed
+Step: 2240: Train Loss: 3.6580, Train bpb: 1.1937, Val Loss: 3.6586, Val bpb: 1.1929
+Saved new best checkpoint with validation loss 3.6586
+Step: 2240 completed
+Step: 2241 completed
+Step: 2242 completed
+Step: 2243 completed
+Step: 2244 completed
+Step: 2245 completed
+Step: 2246 completed
+Step: 2247 completed
+Step: 2248 completed
+Step: 2249 completed
+Step: 2250: Train Loss: 3.6522, Train bpb: 1.1918, Val Loss: 3.6528, Val bpb: 1.1910
+Saved new best checkpoint with validation loss 3.6528
+Step: 2250 completed
+Step: 2251 completed
+Step: 2252 completed
+Step: 2253 completed
+Step: 2254 completed
+Step: 2255 completed
+Step: 2256 completed
+Step: 2257 completed
+Step: 2258 completed
+Step: 2259 completed
+Step: 2260: Train Loss: 3.6499, Train bpb: 1.1911, Val Loss: 3.6503, Val bpb: 1.1902
+Saved new best checkpoint with validation loss 3.6503
+Step: 2260 completed
+Step: 2261 completed
+Step: 2262 completed
+Step: 2263 completed
+Step: 2264 completed
+Step: 2265 completed
+Step: 2266 completed
+Step: 2267 completed
+Step: 2268 completed
+Step: 2269 completed
+Step: 2270: Train Loss: 3.6453, Train bpb: 1.1895, Val Loss: 3.6458, Val bpb: 1.1887
+Saved new best checkpoint with validation loss 3.6458
+Step: 2270 completed
+Step: 2271 completed
+Step: 2272 completed
+Step: 2273 completed
+Step: 2274 completed
+Step: 2275 completed
+Step: 2276 completed
+Step: 2277 completed
+Step: 2278 completed
+Step: 2279 completed
+Step: 2280: Train Loss: 3.6486, Train bpb: 1.1906, Val Loss: 3.6493, Val bpb: 1.1898
+Step: 2280 completed
+Step: 2281 completed
+Step: 2282 completed
+Step: 2283 completed
+Step: 2284 completed
+Step: 2285 completed
+Step: 2286 completed
+Step: 2287 completed
+Step: 2288 completed
+Step: 2289 completed
+Step: 2290: Train Loss: 3.6424, Train bpb: 1.1886, Val Loss: 3.6438, Val bpb: 1.1880
+Saved new best checkpoint with validation loss 3.6438
+Step: 2290 completed
+Step: 2291 completed
+Step: 2292 completed
+Step: 2293 completed
+Step: 2294 completed
+Step: 2295 completed
+Step: 2296 completed
+Step: 2297 completed
+Step: 2298 completed
+Step: 2299 completed
+Step: 2300: Train Loss: 3.6440, Train bpb: 1.1891, Val Loss: 3.6450, Val bpb: 1.1884
+Step: 2300 completed
+Step: 2301 completed
+Step: 2302 completed
+Step: 2303 completed
+Step: 2304 completed
+Step: 2305 completed
+Step: 2306 completed
+Step: 2307 completed
+Step: 2308 completed
+Step: 2309 completed
+Step: 2310: Train Loss: 3.6416, Train bpb: 1.1883, Val Loss: 3.6423, Val bpb: 1.1876
+Saved new best checkpoint with validation loss 3.6423
+Step: 2310 completed
+Step: 2311 completed
+Step: 2312 completed
+Step: 2313 completed
+Step: 2314 completed
+Step: 2315 completed
+Step: 2316 completed
+Step: 2317 completed
+Step: 2318 completed
+Step: 2319 completed
+Step: 2320: Train Loss: 3.6426, Train bpb: 1.1886, Val Loss: 3.6437, Val bpb: 1.1880
+Step: 2320 completed
+Step: 2321 completed
+Step: 2322 completed
+Step: 2323 completed
+Step: 2324 completed
+Step: 2325 completed
+Step: 2326 completed
+Step: 2327 completed
+Step: 2328 completed
+Step: 2329 completed
+Step: 2330: Train Loss: 3.6385, Train bpb: 1.1873, Val Loss: 3.6390, Val bpb: 1.1865
+Saved new best checkpoint with validation loss 3.6390
+Step: 2330 completed
+Step: 2331 completed
+Step: 2332 completed
+Step: 2333 completed
+Step: 2334 completed
+Step: 2335 completed
+Step: 2336 completed
+Step: 2337 completed
+Step: 2338 completed
+Step: 2339 completed
+Step: 2340: Train Loss: 3.6355, Train bpb: 1.1863, Val Loss: 3.6359, Val bpb: 1.1855
+Saved new best checkpoint with validation loss 3.6359
+Step: 2340 completed
+Step: 2341 completed
+Step: 2342 completed
+Step: 2343 completed
+Step: 2344 completed
+Step: 2345 completed
+Step: 2346 completed
+Step: 2347 completed
+Step: 2348 completed
+Step: 2349 completed
+Step: 2350: Train Loss: 3.6334, Train bpb: 1.1856, Val Loss: 3.6342, Val bpb: 1.1849
+Saved new best checkpoint with validation loss 3.6342
+Step: 2350 completed
+Step: 2351 completed
+Step: 2352 completed
+Step: 2353 completed
+Step: 2354 completed
+Step: 2355 completed
+Step: 2356 completed
+Step: 2357 completed
+Step: 2358 completed
+Step: 2359 completed
+Step: 2360: Train Loss: 3.6296, Train bpb: 1.1844, Val Loss: 3.6303, Val bpb: 1.1836
+Saved new best checkpoint with validation loss 3.6303
+Step: 2360 completed
+Step: 2361 completed
+Step: 2362 completed
+Step: 2363 completed
+Step: 2364 completed
+Step: 2365 completed
+Step: 2366 completed
+Step: 2367 completed
+Step: 2368 completed
+Step: 2369 completed
+Step: 2370: Train Loss: 3.6285, Train bpb: 1.1840, Val Loss: 3.6294, Val bpb: 1.1834
+Saved new best checkpoint with validation loss 3.6294
+Step: 2370 completed
+Step: 2371 completed
+Step: 2372 completed
+Step: 2373 completed
+Step: 2374 completed
+Step: 2375 completed
+Step: 2376 completed
+Step: 2377 completed
+Step: 2378 completed
+Step: 2379 completed
+Step: 2380: Train Loss: 3.6288, Train bpb: 1.1842, Val Loss: 3.6294, Val bpb: 1.1834
+Step: 2380 completed
+Step: 2381 completed
+Step: 2382 completed
+Step: 2383 completed
+Step: 2384 completed
+Step: 2385 completed
+Step: 2386 completed
+Step: 2387 completed
+Step: 2388 completed
+Step: 2389 completed
+Step: 2390: Train Loss: 3.6262, Train bpb: 1.1833, Val Loss: 3.6272, Val bpb: 1.1826
+Saved new best checkpoint with validation loss 3.6272
+Step: 2390 completed
+Step: 2391 completed
+Step: 2392 completed
+Step: 2393 completed
+Step: 2394 completed
+Step: 2395 completed
+Step: 2396 completed
+Step: 2397 completed
+Step: 2398 completed
+Step: 2399 completed
+Step: 2400: Train Loss: 3.6319, Train bpb: 1.1852, Val Loss: 3.6327, Val bpb: 1.1844
+Step: 2400 completed
+Step: 2401 completed
+Step: 2402 completed
+Step: 2403 completed
+Step: 2404 completed
+Step: 2405 completed
+Step: 2406 completed
+Step: 2407 completed
+Step: 2408 completed
+Step: 2409 completed
+Step: 2410: Train Loss: 3.7856, Train bpb: 1.2353, Val Loss: 3.7868, Val bpb: 1.2347
+Step: 2410 completed
+Step: 2411 completed
+Step: 2412 completed
+Step: 2413 completed
+Step: 2414 completed
+Step: 2415 completed
+Step: 2416 completed
+Step: 2417 completed
+Step: 2418 completed
+Step: 2419 completed
+Step: 2420: Train Loss: 3.7155, Train bpb: 1.2124, Val Loss: 3.7167, Val bpb: 1.2118
+Step: 2420 completed
+Step: 2421 completed
+Step: 2422 completed
+Step: 2423 completed
+Step: 2424 completed
+Step: 2425 completed
+Step: 2426 completed
+Step: 2427 completed
+Step: 2428 completed
+Step: 2429 completed
+Step: 2430: Train Loss: 3.6796, Train bpb: 1.2007, Val Loss: 3.6799, Val bpb: 1.1998
+Step: 2430 completed
+Step: 2431 completed
+Step: 2432 completed
+Step: 2433 completed
+Step: 2434 completed
+Step: 2435 completed
+Step: 2436 completed
+Step: 2437 completed
+Step: 2438 completed
+Step: 2439 completed
+Step: 2440: Train Loss: 3.6607, Train bpb: 1.1946, Val Loss: 3.6609, Val bpb: 1.1936
+Step: 2440 completed
+Step: 2441 completed
+Step: 2442 completed
+Step: 2443 completed
+Step: 2444 completed
+Step: 2445 completed
+Step: 2446 completed
+Step: 2447 completed
+Step: 2448 completed
+Step: 2449 completed
+Step: 2450: Train Loss: 3.6514, Train bpb: 1.1915, Val Loss: 3.6515, Val bpb: 1.1906
+Step: 2450 completed
+Step: 2451 completed
+Step: 2452 completed
+Step: 2453 completed
+Step: 2454 completed
+Step: 2455 completed
+Step: 2456 completed
+Step: 2457 completed
+Step: 2458 completed
+Step: 2459 completed
+Step: 2460: Train Loss: 3.6464, Train bpb: 1.1899, Val Loss: 3.6469, Val bpb: 1.1890
+Step: 2460 completed
+Step: 2461 completed
+Step: 2462 completed
+Step: 2463 completed
+Step: 2464 completed
+Step: 2465 completed
+Step: 2466 completed
+Step: 2467 completed
+Step: 2468 completed
+Step: 2469 completed
+Step: 2470: Train Loss: 3.6377, Train bpb: 1.1871, Val Loss: 3.6385, Val bpb: 1.1863
+Step: 2470 completed
+Step: 2471 completed
+Step: 2472 completed
+Step: 2473 completed
+Step: 2474 completed
+Step: 2475 completed
+Step: 2476 completed
+Step: 2477 completed
+Step: 2478 completed
+Step: 2479 completed
+Step: 2480: Train Loss: 3.6331, Train bpb: 1.1856, Val Loss: 3.6339, Val bpb: 1.1848
+Step: 2480 completed
+Step: 2481 completed
+Step: 2482 completed
+Step: 2483 completed
+Step: 2484 completed
+Step: 2485 completed
+Step: 2486 completed
+Step: 2487 completed
+Step: 2488 completed
+Step: 2489 completed
+Step: 2490: Train Loss: 3.6294, Train bpb: 1.1844, Val Loss: 3.6297, Val bpb: 1.1835
+Step: 2490 completed
+Step: 2491 completed
+Step: 2492 completed
+Step: 2493 completed
+Step: 2494 completed
+Step: 2495 completed
+Step: 2496 completed
+Step: 2497 completed
+Step: 2498 completed
+Step: 2499 completed
+Step: 2500: Train Loss: 3.6273, Train bpb: 1.1836, Val Loss: 3.6276, Val bpb: 1.1828
+Step: 2500 completed
+Step: 2501 completed
+Step: 2502 completed
+Step: 2503 completed
+Step: 2504 completed
+Step: 2505 completed
+Step: 2506 completed
+Step: 2507 completed
+Step: 2508 completed
+Step: 2509 completed
+Step: 2510: Train Loss: 3.6233, Train bpb: 1.1824, Val Loss: 3.6238, Val bpb: 1.1815
+Saved new best checkpoint with validation loss 3.6238
+Step: 2510 completed
+Step: 2511 completed
+Step: 2512 completed
+Step: 2513 completed
+Step: 2514 completed
+Step: 2515 completed
+Step: 2516 completed
+Step: 2517 completed
+Step: 2518 completed
+Step: 2519 completed
+Step: 2520: Train Loss: 3.6196, Train bpb: 1.1811, Val Loss: 3.6197, Val bpb: 1.1802
+Saved new best checkpoint with validation loss 3.6197
+Step: 2520 completed
+Step: 2521 completed
+Step: 2522 completed
+Step: 2523 completed
+Step: 2524 completed
+Step: 2525 completed
+Step: 2526 completed
+Step: 2527 completed
+Step: 2528 completed
+Step: 2529 completed
+Step: 2530: Train Loss: 3.6194, Train bpb: 1.1811, Val Loss: 3.6198, Val bpb: 1.1802
+Step: 2530 completed
+Step: 2531 completed
+Step: 2532 completed
+Step: 2533 completed
+Step: 2534 completed
+Step: 2535 completed
+Step: 2536 completed
+Step: 2537 completed
+Step: 2538 completed
+Step: 2539 completed
+Step: 2540: Train Loss: 3.6179, Train bpb: 1.1806, Val Loss: 3.6179, Val bpb: 1.1796
+Saved new best checkpoint with validation loss 3.6179
+Step: 2540 completed
+Step: 2541 completed
+Step: 2542 completed
+Step: 2543 completed
+Step: 2544 completed
+Step: 2545 completed
+Step: 2546 completed
+Step: 2547 completed
+Step: 2548 completed
+Step: 2549 completed
+Step: 2550: Train Loss: 3.6155, Train bpb: 1.1798, Val Loss: 3.6157, Val bpb: 1.1789
+Saved new best checkpoint with validation loss 3.6157
+Step: 2550 completed
+Step: 2551 completed
+Step: 2552 completed
+Step: 2553 completed
+Step: 2554 completed
+Step: 2555 completed
+Step: 2556 completed
+Step: 2557 completed
+Step: 2558 completed
+Step: 2559 completed
+Step: 2560: Train Loss: 3.6130, Train bpb: 1.1790, Val Loss: 3.6139, Val bpb: 1.1783
+Saved new best checkpoint with validation loss 3.6139
+Step: 2560 completed
+Step: 2561 completed
+Step: 2562 completed
+Step: 2563 completed
+Step: 2564 completed
+Step: 2565 completed
+Step: 2566 completed
+Step: 2567 completed
+Step: 2568 completed
+Step: 2569 completed
+Step: 2570: Train Loss: 3.6131, Train bpb: 1.1790, Val Loss: 3.6143, Val bpb: 1.1784
+Step: 2570 completed
+Step: 2571 completed
+Step: 2572 completed
+Step: 2573 completed
+Step: 2574 completed
+Step: 2575 completed
+Step: 2576 completed
+Step: 2577 completed
+Step: 2578 completed
+Step: 2579 completed
+Step: 2580: Train Loss: 3.6099, Train bpb: 1.1780, Val Loss: 3.6106, Val bpb: 1.1772
+Saved new best checkpoint with validation loss 3.6106
+Step: 2580 completed
+Step: 2581 completed
+Step: 2582 completed
+Step: 2583 completed
+Step: 2584 completed
+Step: 2585 completed
+Step: 2586 completed
+Step: 2587 completed
+Step: 2588 completed
+Step: 2589 completed
+Step: 2590: Train Loss: 3.6080, Train bpb: 1.1774, Val Loss: 3.6087, Val bpb: 1.1766
+Saved new best checkpoint with validation loss 3.6087
+Step: 2590 completed
+Step: 2591 completed
+Step: 2592 completed
+Step: 2593 completed
+Step: 2594 completed
+Step: 2595 completed
+Step: 2596 completed
+Step: 2597 completed
+Step: 2598 completed
+Step: 2599 completed
+Step: 2600: Train Loss: 3.6070, Train bpb: 1.1770, Val Loss: 3.6078, Val bpb: 1.1763
+Saved new best checkpoint with validation loss 3.6078
+Step: 2600 completed
+Step: 2601 completed
+Step: 2602 completed
+Step: 2603 completed
+Step: 2604 completed
+Step: 2605 completed
+Step: 2606 completed
+Step: 2607 completed
+Step: 2608 completed
+Step: 2609 completed
+Step: 2610: Train Loss: 3.6053, Train bpb: 1.1765, Val Loss: 3.6072, Val bpb: 1.1761
+Saved new best checkpoint with validation loss 3.6072
+Step: 2610 completed
+Step: 2611 completed
+Step: 2612 completed
+Step: 2613 completed
+Step: 2614 completed
+Step: 2615 completed
+Step: 2616 completed
+Step: 2617 completed
+Step: 2618 completed
+Step: 2619 completed
+Step: 2620: Train Loss: 3.6050, Train bpb: 1.1764, Val Loss: 3.6063, Val bpb: 1.1758
+Saved new best checkpoint with validation loss 3.6063
+Step: 2620 completed
+Step: 2621 completed
+Step: 2622 completed
+Step: 2623 completed
+Step: 2624 completed
+Step: 2625 completed
+Step: 2626 completed
+Step: 2627 completed
+Step: 2628 completed
+Step: 2629 completed
+Step: 2630: Train Loss: 3.6039, Train bpb: 1.1760, Val Loss: 3.6050, Val bpb: 1.1754
+Saved new best checkpoint with validation loss 3.6050
+Step: 2630 completed
+Step: 2631 completed
+Step: 2632 completed
+Step: 2633 completed
+Step: 2634 completed
+Step: 2635 completed
+Step: 2636 completed
+Step: 2637 completed
+Step: 2638 completed
+Step: 2639 completed
+Step: 2640: Train Loss: 3.5995, Train bpb: 1.1746, Val Loss: 3.6005, Val bpb: 1.1739
+Saved new best checkpoint with validation loss 3.6005
+Step: 2640 completed
+Step: 2641 completed
+Step: 2642 completed
+Step: 2643 completed
+Step: 2644 completed
+Step: 2645 completed
+Step: 2646 completed
+Step: 2647 completed
+Step: 2648 completed
+Step: 2649 completed
+Step: 2650: Train Loss: 3.6058, Train bpb: 1.1766, Val Loss: 3.6065, Val bpb: 1.1759
+Step: 2650 completed
+Step: 2651 completed
+Step: 2652 completed
+Step: 2653 completed
+Step: 2654 completed
+Step: 2655 completed
+Step: 2656 completed
+Step: 2657 completed
+Step: 2658 completed
+Step: 2659 completed
+Step: 2660: Train Loss: 3.6000, Train bpb: 1.1748, Val Loss: 3.6007, Val bpb: 1.1740
+Step: 2660 completed
+Step: 2661 completed
+Step: 2662 completed
+Step: 2663 completed
+Step: 2664 completed
+Step: 2665 completed
+Step: 2666 completed
+Step: 2667 completed
+Step: 2668 completed
+Step: 2669 completed
+Step: 2670: Train Loss: 3.5977, Train bpb: 1.1740, Val Loss: 3.5988, Val bpb: 1.1734
+Saved new best checkpoint with validation loss 3.5988
+Step: 2670 completed
+Step: 2671 completed
+Step: 2672 completed
+Step: 2673 completed
+Step: 2674 completed
+Step: 2675 completed
+Step: 2676 completed
+Step: 2677 completed
+Step: 2678 completed
+Step: 2679 completed
+Step: 2680: Train Loss: 3.5950, Train bpb: 1.1731, Val Loss: 3.5963, Val bpb: 1.1726
+Saved new best checkpoint with validation loss 3.5963
+Step: 2680 completed
+Step: 2681 completed
+Step: 2682 completed
+Step: 2683 completed
+Step: 2684 completed
+Step: 2685 completed
+Step: 2686 completed
+Step: 2687 completed
+Step: 2688 completed
+Step: 2689 completed
+Step: 2690: Train Loss: 3.5954, Train bpb: 1.1732, Val Loss: 3.5969, Val bpb: 1.1727
+Step: 2690 completed
+Step: 2691 completed
+Step: 2692 completed
+Step: 2693 completed
+Step: 2694 completed
+Step: 2695 completed
+Step: 2696 completed
+Step: 2697 completed
+Step: 2698 completed
+Step: 2699 completed
+Step: 2700: Train Loss: 3.5961, Train bpb: 1.1735, Val Loss: 3.5974, Val bpb: 1.1729
+Step: 2700 completed
+Step: 2701 completed
+Step: 2702 completed
+Step: 2703 completed
+Step: 2704 completed
+Step: 2705 completed
+Step: 2706 completed
+Step: 2707 completed
+Step: 2708 completed
+Step: 2709 completed
+Step: 2710: Train Loss: 3.5924, Train bpb: 1.1723, Val Loss: 3.5939, Val bpb: 1.1718
+Saved new best checkpoint with validation loss 3.5939
+Step: 2710 completed
+Step: 2711 completed
+Step: 2712 completed
+Step: 2713 completed
+Step: 2714 completed
+Step: 2715 completed
+Step: 2716 completed
+Step: 2717 completed
+Step: 2718 completed
+Step: 2719 completed
+Step: 2720: Train Loss: 3.5921, Train bpb: 1.1722, Val Loss: 3.5933, Val bpb: 1.1716
+Saved new best checkpoint with validation loss 3.5933
+Step: 2720 completed
+Step: 2721 completed
+Step: 2722 completed
+Step: 2723 completed
+Step: 2724 completed
+Step: 2725 completed
+Step: 2726 completed
+Step: 2727 completed
+Step: 2728 completed
+Step: 2729 completed
+Step: 2730: Train Loss: 3.5903, Train bpb: 1.1716, Val Loss: 3.5919, Val bpb: 1.1711
+Saved new best checkpoint with validation loss 3.5919
+Step: 2730 completed
+Step: 2731 completed
+Step: 2732 completed
+Step: 2733 completed
+Step: 2734 completed
+Step: 2735 completed
+Step: 2736 completed
+Step: 2737 completed
+Step: 2738 completed
+Step: 2739 completed
+Step: 2740: Train Loss: 3.5883, Train bpb: 1.1709, Val Loss: 3.5896, Val bpb: 1.1704
+Saved new best checkpoint with validation loss 3.5896
+Step: 2740 completed
+Step: 2741 completed
+Step: 2742 completed
+Step: 2743 completed
+Step: 2744 completed
+Step: 2745 completed
+Step: 2746 completed
+Step: 2747 completed
+Step: 2748 completed
+Step: 2749 completed
+Step: 2750: Train Loss: 3.5875, Train bpb: 1.1707, Val Loss: 3.5889, Val bpb: 1.1701
+Saved new best checkpoint with validation loss 3.5889
+Step: 2750 completed
+Step: 2751 completed
+Step: 2752 completed
+Step: 2753 completed
+Step: 2754 completed
+Step: 2755 completed
+Step: 2756 completed
+Step: 2757 completed
+Step: 2758 completed
+Step: 2759 completed
+Step: 2760: Train Loss: 3.5869, Train bpb: 1.1705, Val Loss: 3.5887, Val bpb: 1.1701
+Saved new best checkpoint with validation loss 3.5887
+Step: 2760 completed
+Step: 2761 completed
+Step: 2762 completed
+Step: 2763 completed
+Step: 2764 completed
+Step: 2765 completed
+Step: 2766 completed
+Step: 2767 completed
+Step: 2768 completed
+Step: 2769 completed
+Step: 2770: Train Loss: 3.5851, Train bpb: 1.1699, Val Loss: 3.5864, Val bpb: 1.1693
+Saved new best checkpoint with validation loss 3.5864
+Step: 2770 completed
+Step: 2771 completed
+Step: 2772 completed
+Step: 2773 completed
+Step: 2774 completed
+Step: 2775 completed
+Step: 2776 completed
+Step: 2777 completed
+Step: 2778 completed
+Step: 2779 completed
+Step: 2780: Train Loss: 3.5836, Train bpb: 1.1694, Val Loss: 3.5852, Val bpb: 1.1689
+Saved new best checkpoint with validation loss 3.5852
+Step: 2780 completed
+Step: 2781 completed
+Step: 2782 completed
+Step: 2783 completed
+Step: 2784 completed
+Step: 2785 completed
+Step: 2786 completed
+Step: 2787 completed
+Step: 2788 completed
+Step: 2789 completed
+Step: 2790: Train Loss: 3.5823, Train bpb: 1.1690, Val Loss: 3.5837, Val bpb: 1.1685
+Saved new best checkpoint with validation loss 3.5837
+Step: 2790 completed
+Step: 2791 completed
+Step: 2792 completed
+Step: 2793 completed
+Step: 2794 completed
+Step: 2795 completed
+Step: 2796 completed
+Step: 2797 completed
+Step: 2798 completed
+Step: 2799 completed
+Step: 2800: Train Loss: 3.5837, Train bpb: 1.1694, Val Loss: 3.5853, Val bpb: 1.1690
+Step: 2800 completed
+Step: 2801 completed
+Step: 2802 completed
+Step: 2803 completed
+Step: 2804 completed
+Step: 2805 completed
+Step: 2806 completed
+Step: 2807 completed
+Step: 2808 completed
+Step: 2809 completed
+Step: 2810: Train Loss: 3.5819, Train bpb: 1.1688, Val Loss: 3.5833, Val bpb: 1.1683
+Saved new best checkpoint with validation loss 3.5833
+Step: 2810 completed
+Step: 2811 completed
+Step: 2812 completed
+Step: 2813 completed
+Step: 2814 completed
+Step: 2815 completed
+Step: 2816 completed
+Step: 2817 completed
+Step: 2818 completed
+Step: 2819 completed
+Step: 2820: Train Loss: 3.5798, Train bpb: 1.1682, Val Loss: 3.5815, Val bpb: 1.1677
+Saved new best checkpoint with validation loss 3.5815
+Step: 2820 completed
+Step: 2821 completed
+Step: 2822 completed
+Step: 2823 completed
+Step: 2824 completed
+Step: 2825 completed
+Step: 2826 completed
+Step: 2827 completed
+Step: 2828 completed
+Step: 2829 completed
+Step: 2830: Train Loss: 3.5779, Train bpb: 1.1675, Val Loss: 3.5799, Val bpb: 1.1672
+Saved new best checkpoint with validation loss 3.5799
+Step: 2830 completed
+Step: 2831 completed
+Step: 2832 completed
+Step: 2833 completed
+Step: 2834 completed
+Step: 2835 completed
+Step: 2836 completed
+Step: 2837 completed
+Step: 2838 completed
+Step: 2839 completed
+Step: 2840: Train Loss: 3.5789, Train bpb: 1.1679, Val Loss: 3.5806, Val bpb: 1.1674
+Step: 2840 completed
+Step: 2841 completed
+Step: 2842 completed
+Step: 2843 completed
+Step: 2844 completed
+Step: 2845 completed
+Step: 2846 completed
+Step: 2847 completed
+Step: 2848 completed
+Step: 2849 completed
+Step: 2850: Train Loss: 3.5760, Train bpb: 1.1669, Val Loss: 3.5775, Val bpb: 1.1664
+Saved new best checkpoint with validation loss 3.5775
+Step: 2850 completed
+Step: 2851 completed
+Step: 2852 completed
+Step: 2853 completed
+Step: 2854 completed
+Step: 2855 completed
+Step: 2856 completed
+Step: 2857 completed
+Step: 2858 completed
+Step: 2859 completed
+Step: 2860: Train Loss: 3.5748, Train bpb: 1.1665, Val Loss: 3.5767, Val bpb: 1.1662
+Saved new best checkpoint with validation loss 3.5767
+Step: 2860 completed
+Step: 2861 completed
+Step: 2862 completed
+Step: 2863 completed
+Step: 2864 completed
+Step: 2865 completed
+Step: 2866 completed
+Step: 2867 completed
+Step: 2868 completed
+Step: 2869 completed
+Step: 2870: Train Loss: 3.5753, Train bpb: 1.1667, Val Loss: 3.5775, Val bpb: 1.1664
+Step: 2870 completed
+Step: 2871 completed
+Step: 2872 completed
+Step: 2873 completed
+Step: 2874 completed
+Step: 2875 completed
+Step: 2876 completed
+Step: 2877 completed
+Step: 2878 completed
+Step: 2879 completed
+Step: 2880: Train Loss: 3.5758, Train bpb: 1.1668, Val Loss: 3.5778, Val bpb: 1.1665
+Step: 2880 completed
+Step: 2881 completed
+Step: 2882 completed
+Step: 2883 completed
+Step: 2884 completed
+Step: 2885 completed
+Step: 2886 completed
+Step: 2887 completed
+Step: 2888 completed
+Step: 2889 completed
+Step: 2890: Train Loss: 3.5740, Train bpb: 1.1663, Val Loss: 3.5761, Val bpb: 1.1660
+Saved new best checkpoint with validation loss 3.5761
+Step: 2890 completed
+Step: 2891 completed
+Step: 2892 completed
+Step: 2893 completed
+Step: 2894 completed
+Step: 2895 completed
+Step: 2896 completed
+Step: 2897 completed
+Step: 2898 completed
+Step: 2899 completed
+Step: 2900: Train Loss: 3.5709, Train bpb: 1.1653, Val Loss: 3.5730, Val bpb: 1.1650
+Saved new best checkpoint with validation loss 3.5730
+Step: 2900 completed
+Step: 2901 completed
+Step: 2902 completed
+Step: 2903 completed
+Step: 2904 completed
+Step: 2905 completed
+Step: 2906 completed
+Step: 2907 completed
+Step: 2908 completed
+Step: 2909 completed
+Step: 2910: Train Loss: 3.5708, Train bpb: 1.1652, Val Loss: 3.5729, Val bpb: 1.1649
+Saved new best checkpoint with validation loss 3.5729
+Step: 2910 completed
+Step: 2911 completed
+Step: 2912 completed
+Step: 2913 completed
+Step: 2914 completed
+Step: 2915 completed
+Step: 2916 completed
+Step: 2917 completed
+Step: 2918 completed
+Step: 2919 completed
+Step: 2920: Train Loss: 3.5735, Train bpb: 1.1661, Val Loss: 3.5754, Val bpb: 1.1657
+Step: 2920 completed
+Step: 2921 completed
+Step: 2922 completed
+Step: 2923 completed
+Step: 2924 completed
+Step: 2925 completed
+Step: 2926 completed
+Step: 2927 completed
+Step: 2928 completed
+Step: 2929 completed
+Step: 2930: Train Loss: 3.5680, Train bpb: 1.1643, Val Loss: 3.5703, Val bpb: 1.1641
+Saved new best checkpoint with validation loss 3.5703
+Step: 2930 completed
+Step: 2931 completed
+Step: 2932 completed
+Step: 2933 completed
+Step: 2934 completed
+Step: 2935 completed
+Step: 2936 completed
+Step: 2937 completed
+Step: 2938 completed
+Step: 2939 completed
+Step: 2940: Train Loss: 3.5686, Train bpb: 1.1645, Val Loss: 3.5711, Val bpb: 1.1644
+Step: 2940 completed
+Step: 2941 completed
+Step: 2942 completed
+Step: 2943 completed
+Step: 2944 completed
+Step: 2945 completed
+Step: 2946 completed
+Step: 2947 completed
+Step: 2948 completed
+Step: 2949 completed
+Step: 2950: Train Loss: 3.5670, Train bpb: 1.1640, Val Loss: 3.5693, Val bpb: 1.1638
+Saved new best checkpoint with validation loss 3.5693
+Step: 2950 completed
+Step: 2951 completed
+Step: 2952 completed
+Step: 2953 completed
+Step: 2954 completed
+Step: 2955 completed
+Step: 2956 completed
+Step: 2957 completed
+Step: 2958 completed
+Step: 2959 completed
+Step: 2960: Train Loss: 3.5681, Train bpb: 1.1644, Val Loss: 3.5702, Val bpb: 1.1640
+Step: 2960 completed
+Step: 2961 completed
+Step: 2962 completed
+Step: 2963 completed
+Step: 2964 completed
+Step: 2965 completed
+Step: 2966 completed
+Step: 2967 completed
+Step: 2968 completed
+Step: 2969 completed
+Step: 2970: Train Loss: 3.5658, Train bpb: 1.1636, Val Loss: 3.5680, Val bpb: 1.1633
+Saved new best checkpoint with validation loss 3.5680
+Step: 2970 completed
+Step: 2971 completed
+Step: 2972 completed
+Step: 2973 completed
+Step: 2974 completed
+Step: 2975 completed
+Step: 2976 completed
+Step: 2977 completed
+Step: 2978 completed
+Step: 2979 completed
+Step: 2980: Train Loss: 3.5657, Train bpb: 1.1636, Val Loss: 3.5676, Val bpb: 1.1632
+Saved new best checkpoint with validation loss 3.5676
+Step: 2980 completed
+Step: 2981 completed
+Step: 2982 completed
+Step: 2983 completed
+Step: 2984 completed
+Step: 2985 completed
+Step: 2986 completed
+Step: 2987 completed
+Step: 2988 completed
+Step: 2989 completed
+Step: 2990: Train Loss: 3.5651, Train bpb: 1.1634, Val Loss: 3.5672, Val bpb: 1.1631
+Saved new best checkpoint with validation loss 3.5672
+Step: 2990 completed
+Step: 2991 completed
+Step: 2992 completed
+Step: 2993 completed
+Step: 2994 completed
+Step: 2995 completed
+Step: 2996 completed
+Step: 2997 completed
+Step: 2998 completed
+Step: 2999 completed
+Step: 3000: Train Loss: 3.5627, Train bpb: 1.1626, Val Loss: 3.5647, Val bpb: 1.1623
+Saved new best checkpoint with validation loss 3.5647
+Step: 3000 completed
+Step: 3001 completed
+Step: 3002 completed
+Step: 3003 completed
+Step: 3004 completed
+Step: 3005 completed
+Step: 3006 completed
+Step: 3007 completed
+Step: 3008 completed
+Step: 3009 completed
+Step: 3010: Train Loss: 3.5632, Train bpb: 1.1627, Val Loss: 3.5655, Val bpb: 1.1625
+Step: 3010 completed
+Step: 3011 completed
+Step: 3012 completed
+Step: 3013 completed
+Step: 3014 completed
+Step: 3015 completed
+Step: 3016 completed
+Step: 3017 completed
+Step: 3018 completed
+Step: 3019 completed
+Step: 3020: Train Loss: 3.5621, Train bpb: 1.1624, Val Loss: 3.5642, Val bpb: 1.1621
+Saved new best checkpoint with validation loss 3.5642
+Step: 3020 completed
+Step: 3021 completed
+Step: 3022 completed
+Step: 3023 completed
+Step: 3024 completed
+Step: 3025 completed
+Step: 3026 completed
+Step: 3027 completed
+Step: 3028 completed
+Step: 3029 completed
+Step: 3030: Train Loss: 3.5595, Train bpb: 1.1615, Val Loss: 3.5618, Val bpb: 1.1613
+Saved new best checkpoint with validation loss 3.5618
+Step: 3030 completed
+Step: 3031 completed
+Step: 3032 completed
+Step: 3033 completed
+Step: 3034 completed
+Step: 3035 completed
+Step: 3036 completed
+Step: 3037 completed
+Step: 3038 completed
+Step: 3039 completed
+Step: 3040: Train Loss: 3.5601, Train bpb: 1.1617, Val Loss: 3.5627, Val bpb: 1.1616
+Step: 3040 completed
+Step: 3041 completed
+Step: 3042 completed
+Step: 3043 completed
+Step: 3044 completed
+Step: 3045 completed
+Step: 3046 completed
+Step: 3047 completed
+Step: 3048 completed
+Step: 3049 completed
+Step: 3050: Train Loss: 3.5610, Train bpb: 1.1620, Val Loss: 3.5633, Val bpb: 1.1618
+Step: 3050 completed
+Step: 3051 completed
+Step: 3052 completed
+Step: 3053 completed
+Step: 3054 completed
+Step: 3055 completed
+Step: 3056 completed
+Step: 3057 completed
+Step: 3058 completed
+Step: 3059 completed
+Step: 3060: Train Loss: 3.5593, Train bpb: 1.1615, Val Loss: 3.5613, Val bpb: 1.1612
+Saved new best checkpoint with validation loss 3.5613
+Step: 3060 completed
+Step: 3061 completed
+Step: 3062 completed
+Step: 3063 completed
+Step: 3064 completed
+Step: 3065 completed
+Step: 3066 completed
+Step: 3067 completed
+Step: 3068 completed
+Step: 3069 completed
+Step: 3070: Train Loss: 3.5598, Train bpb: 1.1616, Val Loss: 3.5616, Val bpb: 1.1613
+Step: 3070 completed
+Step: 3071 completed
+Step: 3072 completed
+Step: 3073 completed
+Step: 3074 completed
+Step: 3075 completed
+Step: 3076 completed
+Step: 3077 completed
+Step: 3078 completed
+Step: 3079 completed
+Step: 3080: Train Loss: 3.5585, Train bpb: 1.1612, Val Loss: 3.5598, Val bpb: 1.1607
+Saved new best checkpoint with validation loss 3.5598
+Step: 3080 completed
+Step: 3081 completed
+Step: 3082 completed
+Step: 3083 completed
+Step: 3084 completed
+Step: 3085 completed
+Step: 3086 completed
+Step: 3087 completed
+Step: 3088 completed
+Step: 3089 completed
+Step: 3090: Train Loss: 3.5595, Train bpb: 1.1615, Val Loss: 3.5611, Val bpb: 1.1611
+Step: 3090 completed
+Step: 3091 completed
+Step: 3092 completed
+Step: 3093 completed
+Step: 3094 completed
+Step: 3095 completed
+Step: 3096 completed
+Step: 3097 completed
+Step: 3098 completed
+Step: 3099 completed
+Step: 3100: Train Loss: 3.5596, Train bpb: 1.1616, Val Loss: 3.5611, Val bpb: 1.1611
+Step: 3100 completed
+Step: 3101 completed
+Step: 3102 completed
+Step: 3103 completed
+Step: 3104 completed
+Step: 3105 completed
+Step: 3106 completed
+Step: 3107 completed
+Step: 3108 completed
+Step: 3109 completed
+Step: 3110: Train Loss: 3.5564, Train bpb: 1.1605, Val Loss: 3.5584, Val bpb: 1.1602
+Saved new best checkpoint with validation loss 3.5584
+Step: 3110 completed
+Step: 3111 completed
+Step: 3112 completed
+Step: 3113 completed
+Step: 3114 completed
+Step: 3115 completed
+Step: 3116 completed
+Step: 3117 completed
+Step: 3118 completed
+Step: 3119 completed
+Step: 3120: Train Loss: 3.5553, Train bpb: 1.1602, Val Loss: 3.5570, Val bpb: 1.1598
+Saved new best checkpoint with validation loss 3.5570
+Step: 3120 completed
+Step: 3121 completed
+Step: 3122 completed
+Step: 3123 completed
+Step: 3124 completed
+Step: 3125 completed
+Step: 3126 completed
+Step: 3127 completed
+Step: 3128 completed
+Step: 3129 completed
+Step: 3130: Train Loss: 3.5543, Train bpb: 1.1598, Val Loss: 3.5564, Val bpb: 1.1595
+Saved new best checkpoint with validation loss 3.5564
+Step: 3130 completed
+Step: 3131 completed
+Step: 3132 completed
+Step: 3133 completed
+Step: 3134 completed
+Step: 3135 completed
+Step: 3136 completed
+Step: 3137 completed
+Step: 3138 completed
+Step: 3139 completed
+Step: 3140: Train Loss: 3.5538, Train bpb: 1.1597, Val Loss: 3.5558, Val bpb: 1.1594
+Saved new best checkpoint with validation loss 3.5558
+Step: 3140 completed
+Step: 3141 completed
+Step: 3142 completed
+Step: 3143 completed
+Step: 3144 completed
+Step: 3145 completed
+Step: 3146 completed
+Step: 3147 completed
+Step: 3148 completed
+Step: 3149 completed
+Step: 3150: Train Loss: 3.5540, Train bpb: 1.1598, Val Loss: 3.5560, Val bpb: 1.1594
+Step: 3150 completed
+Step: 3151 completed
+Step: 3152 completed
+Step: 3153 completed
+Step: 3154 completed
+Step: 3155 completed
+Step: 3156 completed
+Step: 3157 completed
+Step: 3158 completed
+Step: 3159 completed
+Step: 3160: Train Loss: 3.5549, Train bpb: 1.1600, Val Loss: 3.5572, Val bpb: 1.1598
+Step: 3160 completed
+Step: 3161 completed
+Step: 3162 completed
+Step: 3163 completed
+Step: 3164 completed
+Step: 3165 completed
+Step: 3166 completed
+Step: 3167 completed
+Step: 3168 completed
+Step: 3169 completed
+Step: 3170: Train Loss: 3.5538, Train bpb: 1.1597, Val Loss: 3.5556, Val bpb: 1.1593
+Saved new best checkpoint with validation loss 3.5556
+Step: 3170 completed
+Step: 3171 completed
+Step: 3172 completed
+Step: 3173 completed
+Step: 3174 completed
+Step: 3175 completed
+Step: 3176 completed
+Step: 3177 completed
+Step: 3178 completed
+Step: 3179 completed
+Step: 3180: Train Loss: 3.5521, Train bpb: 1.1591, Val Loss: 3.5540, Val bpb: 1.1588
+Saved new best checkpoint with validation loss 3.5540
+Step: 3180 completed
+Step: 3181 completed
+Step: 3182 completed
+Step: 3183 completed
+Step: 3184 completed
+Step: 3185 completed
+Step: 3186 completed
+Step: 3187 completed
+Step: 3188 completed
+Step: 3189 completed
+Step: 3190: Train Loss: 3.5498, Train bpb: 1.1584, Val Loss: 3.5518, Val bpb: 1.1581
+Saved new best checkpoint with validation loss 3.5518
+Step: 3190 completed
+Step: 3191 completed
+Step: 3192 completed
+Step: 3193 completed
+Step: 3194 completed
+Step: 3195 completed
+Step: 3196 completed
+Step: 3197 completed
+Step: 3198 completed
+Step: 3199 completed
+Step: 3200: Train Loss: 3.5501, Train bpb: 1.1585, Val Loss: 3.5523, Val bpb: 1.1582
+Step: 3200 completed
+Step: 3201 completed
+Step: 3202 completed
+Step: 3203 completed
+Step: 3204 completed
+Step: 3205 completed
+Step: 3206 completed
+Step: 3207 completed
+Step: 3208 completed
+Step: 3209 completed
+Step: 3210: Train Loss: 3.5506, Train bpb: 1.1586, Val Loss: 3.5525, Val bpb: 1.1583
+Step: 3210 completed
+Step: 3211 completed
+Step: 3212 completed
+Step: 3213 completed
+Step: 3214 completed
+Step: 3215 completed
+Step: 3216 completed
+Step: 3217 completed
+Step: 3218 completed
+Step: 3219 completed
+Step: 3220: Train Loss: 3.5501, Train bpb: 1.1585, Val Loss: 3.5523, Val bpb: 1.1582
+Step: 3220 completed
+Step: 3221 completed
+Step: 3222 completed
+Step: 3223 completed
+Step: 3224 completed
+Step: 3225 completed
+Step: 3226 completed
+Step: 3227 completed
+Step: 3228 completed
+Step: 3229 completed
+Step: 3230: Train Loss: 3.5473, Train bpb: 1.1575, Val Loss: 3.5493, Val bpb: 1.1572
+Saved new best checkpoint with validation loss 3.5493
+Step: 3230 completed
+Step: 3231 completed
+Step: 3232 completed
+Step: 3233 completed
+Step: 3234 completed
+Step: 3235 completed
+Step: 3236 completed
+Step: 3237 completed
+Step: 3238 completed
+Step: 3239 completed
+Step: 3240: Train Loss: 3.5461, Train bpb: 1.1572, Val Loss: 3.5486, Val bpb: 1.1570
+Saved new best checkpoint with validation loss 3.5486
+Step: 3240 completed
+Step: 3241 completed
+Step: 3242 completed
+Step: 3243 completed
+Step: 3244 completed
+Step: 3245 completed
+Step: 3246 completed
+Step: 3247 completed
+Step: 3248 completed
+Step: 3249 completed
+Step: 3250: Train Loss: 3.5460, Train bpb: 1.1571, Val Loss: 3.5484, Val bpb: 1.1570
+Saved new best checkpoint with validation loss 3.5484
+Step: 3250 completed
+Step: 3251 completed
+Step: 3252 completed
+Step: 3253 completed
+Step: 3254 completed
+Step: 3255 completed
+Step: 3256 completed
+Step: 3257 completed
+Step: 3258 completed
+Step: 3259 completed
+Step: 3260: Train Loss: 3.5466, Train bpb: 1.1573, Val Loss: 3.5492, Val bpb: 1.1572
+Step: 3260 completed
+Step: 3261 completed
+Step: 3262 completed
+Step: 3263 completed
+Step: 3264 completed
+Step: 3265 completed
+Step: 3266 completed
+Step: 3267 completed
+Step: 3268 completed
+Step: 3269 completed
+Step: 3270: Train Loss: 3.5521, Train bpb: 1.1591, Val Loss: 3.5546, Val bpb: 1.1590
+Step: 3270 completed
+Step: 3271 completed
+Step: 3272 completed
+Step: 3273 completed
+Step: 3274 completed
+Step: 3275 completed
+Step: 3276 completed
+Step: 3277 completed
+Step: 3278 completed
+Step: 3279 completed
+Step: 3280: Train Loss: 3.5468, Train bpb: 1.1574, Val Loss: 3.5493, Val bpb: 1.1572
+Step: 3280 completed
+Step: 3281 completed
+Step: 3282 completed
+Step: 3283 completed
+Step: 3284 completed
+Step: 3285 completed
+Step: 3286 completed
+Step: 3287 completed
+Step: 3288 completed
+Step: 3289 completed
+Step: 3290: Train Loss: 3.5440, Train bpb: 1.1565, Val Loss: 3.5464, Val bpb: 1.1563
+Saved new best checkpoint with validation loss 3.5464
+Step: 3290 completed
+Step: 3291 completed
+Step: 3292 completed
+Step: 3293 completed
+Step: 3294 completed
+Step: 3295 completed
+Step: 3296 completed
+Step: 3297 completed
+Step: 3298 completed
+Step: 3299 completed
+Step: 3300: Train Loss: 3.5430, Train bpb: 1.1561, Val Loss: 3.5456, Val bpb: 1.1560
+Saved new best checkpoint with validation loss 3.5456
+Step: 3300 completed
+Step: 3301 completed
+Step: 3302 completed
+Step: 3303 completed
+Step: 3304 completed
+Step: 3305 completed
+Step: 3306 completed
+Step: 3307 completed
+Step: 3308 completed
+Step: 3309 completed
+Step: 3310: Train Loss: 3.5434, Train bpb: 1.1563, Val Loss: 3.5456, Val bpb: 1.1560
+Step: 3310 completed
+Step: 3311 completed
+Step: 3312 completed
+Step: 3313 completed
+Step: 3314 completed
+Step: 3315 completed
+Step: 3316 completed
+Step: 3317 completed
+Step: 3318 completed
+Step: 3319 completed
+Step: 3320: Train Loss: 3.5438, Train bpb: 1.1564, Val Loss: 3.5467, Val bpb: 1.1564
+Step: 3320 completed
+Step: 3321 completed
+Step: 3322 completed
+Step: 3323 completed
+Step: 3324 completed
+Step: 3325 completed
+Step: 3326 completed
+Step: 3327 completed
+Step: 3328 completed
+Step: 3329 completed
+Step: 3330: Train Loss: 3.5425, Train bpb: 1.1560, Val Loss: 3.5448, Val bpb: 1.1558
+Saved new best checkpoint with validation loss 3.5448
+Step: 3330 completed
+Step: 3331 completed
+Step: 3332 completed
+Step: 3333 completed
+Step: 3334 completed
+Step: 3335 completed
+Step: 3336 completed
+Step: 3337 completed
+Step: 3338 completed
+Step: 3339 completed
+Step: 3340: Train Loss: 3.5407, Train bpb: 1.1554, Val Loss: 3.5433, Val bpb: 1.1553
+Saved new best checkpoint with validation loss 3.5433
+Step: 3340 completed
+Step: 3341 completed
+Step: 3342 completed
+Step: 3343 completed
+Step: 3344 completed
+Step: 3345 completed
+Step: 3346 completed
+Step: 3347 completed
+Step: 3348 completed
+Step: 3349 completed
+Step: 3350: Train Loss: 3.5424, Train bpb: 1.1559, Val Loss: 3.5450, Val bpb: 1.1558
+Step: 3350 completed
+Step: 3351 completed
+Step: 3352 completed
+Step: 3353 completed
+Step: 3354 completed
+Step: 3355 completed
+Step: 3356 completed
+Step: 3357 completed
+Step: 3358 completed
+Step: 3359 completed
+Step: 3360: Train Loss: 3.5408, Train bpb: 1.1554, Val Loss: 3.5433, Val bpb: 1.1553
+Saved new best checkpoint with validation loss 3.5433
+Step: 3360 completed
+Step: 3361 completed
+Step: 3362 completed
+Step: 3363 completed
+Step: 3364 completed
+Step: 3365 completed
+Step: 3366 completed
+Step: 3367 completed
+Step: 3368 completed
+Step: 3369 completed
+Step: 3370: Train Loss: 3.5403, Train bpb: 1.1553, Val Loss: 3.5428, Val bpb: 1.1551
+Saved new best checkpoint with validation loss 3.5428
+Step: 3370 completed
+Step: 3371 completed
+Step: 3372 completed
+Step: 3373 completed
+Step: 3374 completed
+Step: 3375 completed
+Step: 3376 completed
+Step: 3377 completed
+Step: 3378 completed
+Step: 3379 completed
+Step: 3380: Train Loss: 3.5396, Train bpb: 1.1551, Val Loss: 3.5420, Val bpb: 1.1549
+Saved new best checkpoint with validation loss 3.5420
+Step: 3380 completed
+Step: 3381 completed
+Step: 3382 completed
+Step: 3383 completed
+Step: 3384 completed
+Step: 3385 completed
+Step: 3386 completed
+Step: 3387 completed
+Step: 3388 completed
+Step: 3389 completed
+Step: 3390: Train Loss: 3.5397, Train bpb: 1.1551, Val Loss: 3.5423, Val bpb: 1.1550
+Step: 3390 completed
+Step: 3391 completed
+Step: 3392 completed
+Step: 3393 completed
+Step: 3394 completed
+Step: 3395 completed
+Step: 3396 completed
+Step: 3397 completed
+Step: 3398 completed
+Step: 3399 completed
+Step: 3400: Train Loss: 3.5389, Train bpb: 1.1548, Val Loss: 3.5415, Val bpb: 1.1547
+Saved new best checkpoint with validation loss 3.5415
+Step: 3400 completed
+Step: 3401 completed
+Step: 3402 completed
+Step: 3403 completed
+Step: 3404 completed
+Step: 3405 completed
+Step: 3406 completed
+Step: 3407 completed
+Step: 3408 completed
+Step: 3409 completed
+Step: 3410: Train Loss: 3.5382, Train bpb: 1.1546, Val Loss: 3.5409, Val bpb: 1.1545
+Saved new best checkpoint with validation loss 3.5409
+Step: 3410 completed
+Step: 3411 completed
+Step: 3412 completed
+Step: 3413 completed
+Step: 3414 completed
+Step: 3415 completed
+Step: 3416 completed
+Step: 3417 completed
+Step: 3418 completed
+Step: 3419 completed
+Step: 3420: Train Loss: 3.5378, Train bpb: 1.1545, Val Loss: 3.5406, Val bpb: 1.1544
+Saved new best checkpoint with validation loss 3.5406
+Step: 3420 completed
+Step: 3421 completed
+Step: 3422 completed
+Step: 3423 completed
+Step: 3424 completed
+Step: 3425 completed
+Step: 3426 completed
+Step: 3427 completed
+Step: 3428 completed
+Step: 3429 completed
+Step: 3430: Train Loss: 3.5376, Train bpb: 1.1544, Val Loss: 3.5402, Val bpb: 1.1543
+Saved new best checkpoint with validation loss 3.5402
+Step: 3430 completed
+Step: 3431 completed
+Step: 3432 completed
+Step: 3433 completed
+Step: 3434 completed
+Step: 3435 completed
+Step: 3436 completed
+Step: 3437 completed
+Step: 3438 completed
+Step: 3439 completed
+Step: 3440: Train Loss: 3.5367, Train bpb: 1.1541, Val Loss: 3.5392, Val bpb: 1.1540
+Saved new best checkpoint with validation loss 3.5392
+Step: 3440 completed
+Step: 3441 completed
+Step: 3442 completed
+Step: 3443 completed
+Step: 3444 completed
+Step: 3445 completed
+Step: 3446 completed
+Step: 3447 completed
+Step: 3448 completed
+Step: 3449 completed
+Step: 3450: Train Loss: 3.5359, Train bpb: 1.1538, Val Loss: 3.5382, Val bpb: 1.1536
+Saved new best checkpoint with validation loss 3.5382
+Step: 3450 completed
+Step: 3451 completed
+Step: 3452 completed
+Step: 3453 completed
+Step: 3454 completed
+Step: 3455 completed
+Step: 3456 completed
+Step: 3457 completed
+Step: 3458 completed
+Step: 3459 completed
+Step: 3460: Train Loss: 3.5354, Train bpb: 1.1537, Val Loss: 3.5380, Val bpb: 1.1535
+Saved new best checkpoint with validation loss 3.5380
+Step: 3460 completed
+Step: 3461 completed
+Step: 3462 completed
+Step: 3463 completed
+Step: 3464 completed
+Step: 3465 completed
+Step: 3466 completed
+Step: 3467 completed
+Step: 3468 completed
+Step: 3469 completed
+Step: 3470: Train Loss: 3.5348, Train bpb: 1.1535, Val Loss: 3.5373, Val bpb: 1.1533
+Saved new best checkpoint with validation loss 3.5373
+Step: 3470 completed
+Step: 3471 completed
+Step: 3472 completed
+Step: 3473 completed
+Step: 3474 completed
+Step: 3475 completed
+Step: 3476 completed
+Step: 3477 completed
+Step: 3478 completed
+Step: 3479 completed
+Step: 3480: Train Loss: 3.5347, Train bpb: 1.1535, Val Loss: 3.5372, Val bpb: 1.1533
+Saved new best checkpoint with validation loss 3.5372
+Step: 3480 completed
+Step: 3481 completed
+Step: 3482 completed
+Step: 3483 completed
+Step: 3484 completed
+Step: 3485 completed
+Step: 3486 completed
+Step: 3487 completed
+Step: 3488 completed
+Step: 3489 completed
+Step: 3490: Train Loss: 3.5361, Train bpb: 1.1539, Val Loss: 3.5387, Val bpb: 1.1538
+Step: 3490 completed
+Step: 3491 completed
+Step: 3492 completed
+Step: 3493 completed
+Step: 3494 completed
+Step: 3495 completed
+Step: 3496 completed
+Step: 3497 completed
+Step: 3498 completed
+Step: 3499 completed
+Step: 3500: Train Loss: 3.5338, Train bpb: 1.1532, Val Loss: 3.5364, Val bpb: 1.1530
+Saved new best checkpoint with validation loss 3.5364
+Step: 3500 completed
+Step: 3501 completed
+Step: 3502 completed
+Step: 3503 completed
+Step: 3504 completed
+Step: 3505 completed
+Step: 3506 completed
+Step: 3507 completed
+Step: 3508 completed
+Step: 3509 completed
+Step: 3510: Train Loss: 3.5339, Train bpb: 1.1532, Val Loss: 3.5368, Val bpb: 1.1532
+Step: 3510 completed
+Step: 3511 completed
+Step: 3512 completed
+Step: 3513 completed
+Step: 3514 completed
+Step: 3515 completed
+Step: 3516 completed
+Step: 3517 completed
+Step: 3518 completed
+Step: 3519 completed
+Step: 3520: Train Loss: 3.5333, Train bpb: 1.1530, Val Loss: 3.5360, Val bpb: 1.1529
+Saved new best checkpoint with validation loss 3.5360
+Step: 3520 completed
+Step: 3521 completed
+Step: 3522 completed
+Step: 3523 completed
+Step: 3524 completed
+Step: 3525 completed
+Step: 3526 completed
+Step: 3527 completed
+Step: 3528 completed
+Step: 3529 completed
+Step: 3530: Train Loss: 3.5320, Train bpb: 1.1526, Val Loss: 3.5346, Val bpb: 1.1524
+Saved new best checkpoint with validation loss 3.5346
+Step: 3530 completed
+Step: 3531 completed
+Step: 3532 completed
+Step: 3533 completed
+Step: 3534 completed
+Step: 3535 completed
+Step: 3536 completed
+Step: 3537 completed
+Step: 3538 completed
+Step: 3539 completed
+Step: 3540: Train Loss: 3.5317, Train bpb: 1.1525, Val Loss: 3.5344, Val bpb: 1.1524
+Saved new best checkpoint with validation loss 3.5344
+Step: 3540 completed
+Step: 3541 completed
+Step: 3542 completed
+Step: 3543 completed
+Step: 3544 completed
+Step: 3545 completed
+Step: 3546 completed
+Step: 3547 completed
+Step: 3548 completed
+Step: 3549 completed
+Step: 3550: Train Loss: 3.5325, Train bpb: 1.1527, Val Loss: 3.5352, Val bpb: 1.1526
+Step: 3550 completed
+Step: 3551 completed
+Step: 3552 completed
+Step: 3553 completed
+Step: 3554 completed
+Step: 3555 completed
+Step: 3556 completed
+Step: 3557 completed
+Step: 3558 completed
+Step: 3559 completed
+Step: 3560: Train Loss: 3.5320, Train bpb: 1.1526, Val Loss: 3.5345, Val bpb: 1.1524
+Step: 3560 completed
+Step: 3561 completed
+Step: 3562 completed
+Step: 3563 completed
+Step: 3564 completed
+Step: 3565 completed
+Step: 3566 completed
+Step: 3567 completed
+Step: 3568 completed
+Step: 3569 completed
+Step: 3570: Train Loss: 3.5300, Train bpb: 1.1519, Val Loss: 3.5328, Val bpb: 1.1519
+Saved new best checkpoint with validation loss 3.5328
+Step: 3570 completed
+Step: 3571 completed
+Step: 3572 completed
+Step: 3573 completed
+Step: 3574 completed
+Step: 3575 completed
+Step: 3576 completed
+Step: 3577 completed
+Step: 3578 completed
+Step: 3579 completed
+Step: 3580: Train Loss: 3.5293, Train bpb: 1.1517, Val Loss: 3.5322, Val bpb: 1.1517
+Saved new best checkpoint with validation loss 3.5322
+Step: 3580 completed
+Step: 3581 completed
+Step: 3582 completed
+Step: 3583 completed
+Step: 3584 completed
+Step: 3585 completed
+Step: 3586 completed
+Step: 3587 completed
+Step: 3588 completed
+Step: 3589 completed
+Step: 3590: Train Loss: 3.5286, Train bpb: 1.1514, Val Loss: 3.5314, Val bpb: 1.1514
+Saved new best checkpoint with validation loss 3.5314
+Step: 3590 completed
+Step: 3591 completed
+Step: 3592 completed
+Step: 3593 completed
+Step: 3594 completed
+Step: 3595 completed
+Step: 3596 completed
+Step: 3597 completed
+Step: 3598 completed
+Step: 3599 completed
+Step: 3600: Train Loss: 3.5296, Train bpb: 1.1518, Val Loss: 3.5327, Val bpb: 1.1518
+Step: 3600 completed
+Step: 3601 completed
+Step: 3602 completed
+Step: 3603 completed
+Step: 3604 completed
+Step: 3605 completed
+Step: 3606 completed
+Step: 3607 completed
+Step: 3608 completed
+Step: 3609 completed
+Step: 3610: Train Loss: 3.5543, Train bpb: 1.1598, Val Loss: 3.5571, Val bpb: 1.1598
+Step: 3610 completed
+Step: 3611 completed
+Step: 3612 completed
+Step: 3613 completed
+Step: 3614 completed
+Step: 3615 completed
+Step: 3616 completed
+Step: 3617 completed
+Step: 3618 completed
+Step: 3619 completed
+Step: 3620: Train Loss: 3.5466, Train bpb: 1.1573, Val Loss: 3.5494, Val bpb: 1.1573
+Step: 3620 completed
+Step: 3621 completed
+Step: 3622 completed
+Step: 3623 completed
+Step: 3624 completed
+Step: 3625 completed
+Step: 3626 completed
+Step: 3627 completed
+Step: 3628 completed
+Step: 3629 completed
+Step: 3630: Train Loss: 3.5411, Train bpb: 1.1555, Val Loss: 3.5438, Val bpb: 1.1555
+Step: 3630 completed
+Step: 3631 completed
+Step: 3632 completed
+Step: 3633 completed
+Step: 3634 completed
+Step: 3635 completed
+Step: 3636 completed
+Step: 3637 completed
+Step: 3638 completed
+Step: 3639 completed
+Step: 3640: Train Loss: 3.5377, Train bpb: 1.1544, Val Loss: 3.5403, Val bpb: 1.1543
+Step: 3640 completed
+Step: 3641 completed
+Step: 3642 completed
+Step: 3643 completed
+Step: 3644 completed
+Step: 3645 completed
+Step: 3646 completed
+Step: 3647 completed
+Step: 3648 completed
+Step: 3649 completed
+Step: 3650: Train Loss: 3.5349, Train bpb: 1.1535, Val Loss: 3.5376, Val bpb: 1.1534
+Step: 3650 completed
+Step: 3651 completed
+Step: 3652 completed
+Step: 3653 completed
+Step: 3654 completed
+Step: 3655 completed
+Step: 3656 completed
+Step: 3657 completed
+Step: 3658 completed
+Step: 3659 completed
+Step: 3660: Train Loss: 3.5335, Train bpb: 1.1530, Val Loss: 3.5368, Val bpb: 1.1532
+Step: 3660 completed
+Step: 3661 completed
+Step: 3662 completed
+Step: 3663 completed
+Step: 3664 completed
+Step: 3665 completed
+Step: 3666 completed
+Step: 3667 completed
+Step: 3668 completed
+Step: 3669 completed
+Step: 3670: Train Loss: 3.5313, Train bpb: 1.1523, Val Loss: 3.5345, Val bpb: 1.1524
+Step: 3670 completed
+Step: 3671 completed
+Step: 3672 completed
+Step: 3673 completed
+Step: 3674 completed
+Step: 3675 completed
+Step: 3676 completed
+Step: 3677 completed
+Step: 3678 completed
+Step: 3679 completed
+Step: 3680: Train Loss: 3.5312, Train bpb: 1.1523, Val Loss: 3.5342, Val bpb: 1.1523
+Step: 3680 completed
+Step: 3681 completed
+Step: 3682 completed
+Step: 3683 completed
+Step: 3684 completed
+Step: 3685 completed
+Step: 3686 completed
+Step: 3687 completed
+Step: 3688 completed
+Step: 3689 completed
+Step: 3690: Train Loss: 3.5302, Train bpb: 1.1520, Val Loss: 3.5337, Val bpb: 1.1522
+Step: 3690 completed
+Step: 3691 completed
+Step: 3692 completed
+Step: 3693 completed
+Step: 3694 completed
+Step: 3695 completed
+Step: 3696 completed
+Step: 3697 completed
+Step: 3698 completed
+Step: 3699 completed
+Step: 3700: Train Loss: 3.5301, Train bpb: 1.1520, Val Loss: 3.5332, Val bpb: 1.1520
+Step: 3700 completed
+Step: 3701 completed
+Step: 3702 completed
+Step: 3703 completed
+Step: 3704 completed
+Step: 3705 completed
+Step: 3706 completed
+Step: 3707 completed
+Step: 3708 completed
+Step: 3709 completed
+Step: 3710: Train Loss: 3.5295, Train bpb: 1.1517, Val Loss: 3.5325, Val bpb: 1.1518
+Step: 3710 completed
+Step: 3711 completed
+Step: 3712 completed
+Step: 3713 completed
+Step: 3714 completed
+Step: 3715 completed
+Step: 3716 completed
+Step: 3717 completed
+Step: 3718 completed
+Step: 3719 completed
+Step: 3720: Train Loss: 3.5266, Train bpb: 1.1508, Val Loss: 3.5299, Val bpb: 1.1509
+Saved new best checkpoint with validation loss 3.5299
+Step: 3720 completed
+Step: 3721 completed
+Step: 3722 completed
+Step: 3723 completed
+Step: 3724 completed
+Step: 3725 completed
+Step: 3726: Train Loss: 3.5274, Train bpb: 1.1510, Val Loss: 3.5306, Val bpb: 1.1512
+Step: 3726 completed
+	Command being timed: "python -u experiments/exp_002/base_train.py --context_length 1024 --n_embed 768 --n_layers 12 --n_heads 12 --dropout 0.1 --global_batch_size 512 --micro_batch_size 16 --optimizer_steps 3726 --max_lr 3e-4 --min_lr 3e-5 --warmup_steps 40 --max_lr_schedule_steps 3726 --eval_interval 10 --eval_iters 64 --stride 1024 --num_workers 4 --run_dir /home/ubuntu/mesoGPT/experiments/exp_002/runs/2026-09-05_11-41-45_UTC"
+	User time (seconds): 57775.84
+	System time (seconds): 17273.60
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 20:47:48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1294884
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 91
+	Minor (reclaiming a frame) page faults: 80667305
+	Voluntary context switches: 12765734
+	Involuntary context switches: 742140
+	Swaps: 0
+	File system inputs: 6099944
+	File system outputs: 651773304
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== RUN COMPLETE =====
+UTC end: 2026-09-06T08:29:36Z
+Run directory: /home/ubuntu/mesoGPT/experiments/exp_002/runs/2026-09-05_11-41-45_UTC
+Training log: /home/ubuntu/mesoGPT/experiments/exp_002/runs/2026-09-05_11-41-45_UTC/train.log
+GPU metrics: /home/ubuntu/mesoGPT/experiments/exp_002/runs/2026-09-05_11-41-45_UTC/gpu_metrics.csv

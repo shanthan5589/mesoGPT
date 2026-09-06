@@ -1,0 +1,4 @@
+timestamp, index, name, utilization.gpu [%], utilization.memory [%], memory.used [MiB], memory.total [MiB], temperature.gpu, power.draw [W]
+2026/09/05 10:21:40.055, 0, NVIDIA L40S, 0 %, 0 %, 0 MiB, 46068 MiB, 37, 70.44 W
+2026/09/05 10:21:45.061, 0, NVIDIA L40S, 0 %, 0 %, 887 MiB, 46068 MiB, 36, 68.50 W
+2026/09/05 10:21:50.062, 0, NVIDIA L40S, 99 %, 100 %, 26943 MiB, 46068 MiB, 41, 222.77 W

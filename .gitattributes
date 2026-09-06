@@ -1,0 +1,2 @@
+experiments/exp_002/runs/**/model_optimizer.pt filter=lfs diff=lfs merge=lfs -text
+experiments/exp_002/runs/**/model.pt filter=lfs diff=lfs merge=lfs -text
