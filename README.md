@@ -128,13 +128,13 @@ mesoGPT/
 
 ## Installation
 
-mesoGPT requires Python 3.11 or 3.12. Python 3.13 and newer are not currently supported.
+mesoGPT requires Python 3.11 through 3.14.
 
 On Ubuntu or WSL, install the system prerequisites first:
 
 ```bash
 sudo apt update
-sudo apt install -y git python3.12 python3.12-venv time
+sudo apt install -y git git-lfs python3 python3-venv time
 ```
 
 ### Setup
@@ -150,7 +150,7 @@ source .venv/bin/activate
 PyTorch installation when one is already available, installs missing
 dependencies, and checks whether CUDA is available. CPU-only environments are supported for development, although full pretraining requires a suitable GPU.
 
-If multiple Python versions are installed, select Python 3.11 or 3.12 explicitly:
+If multiple Python versions are installed, select one explicitly:
 
 ```bash
 PYTHON_BIN=python3.12 bash setup.sh
