@@ -9,6 +9,18 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
+if [[ ! -x /usr/bin/time ]]; then
+    echo "/usr/bin/time not found. Run: sudo apt update && sudo apt install -y time" >&2
+    exit 1
+fi
+
+VENV_DIR="$PROJECT_ROOT/.venv"
+if [[ ! -x "$VENV_DIR/bin/python" ]]; then
+    echo "Virtual environment not found. Run: bash setup.sh" >&2
+    exit 1
+fi
+source "$VENV_DIR/bin/activate"
+
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
 RUNS_DIR="$PROJECT_ROOT/experiments/exp_001/runs"
 RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
@@ -17,10 +29,6 @@ mkdir -p "$RUN_DIR"
 LOG_FILE="$RUN_DIR/tokenizer.log"
 
 exec > >(tee "$LOG_FILE") 2>&1
-
-eval "$(conda shell.bash hook)"
-conda activate mesogpt
-
 
 echo "===== DATASET DOWNLOAD ====="
 /usr/bin/time -v python -m mesoGPT.dataset -n 15

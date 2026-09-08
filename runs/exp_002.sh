@@ -10,9 +10,8 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 if [[ ! -x /usr/bin/time ]]; then
-    echo "/usr/bin/time not found. Installing..."
-    apt-get update
-    apt-get install -y time
+    echo "/usr/bin/time not found. Run: sudo apt update && sudo apt install -y time" >&2
+    exit 1
 fi
 
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
@@ -26,7 +25,12 @@ GPU_LOG="$RUN_DIR/gpu_metrics.csv"
 
 exec > >(tee "$RUN_LOG") 2>&1
 
-source "$PROJECT_ROOT/.venv-runpod/bin/activate"
+VENV_DIR="$PROJECT_ROOT/.venv"
+if [[ ! -x "$VENV_DIR/bin/python" ]]; then
+    echo "Virtual environment not found. Run: bash setup.sh" >&2
+    exit 1
+fi
+source "$VENV_DIR/bin/activate"
 
 echo "===== RUN INFORMATION ====="
 echo "UTC start: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
