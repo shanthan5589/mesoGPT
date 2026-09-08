@@ -6,6 +6,11 @@ This experiment trained a **97.7M-parameter decoder-only Transformer** from scra
 
 Training completed successfully on a single NVIDIA L40S in **20h 47m 48s**. The best checkpoint reached a validation loss of **3.5299** and validation BPB of **1.1509** at step 3,720.
 
+![Losses](./assets/losses.png)
+*Figure 1. **Left**:  Training and validation loss throughout pretraining. **Right**: (Train loss - Validation loss) throughout pretraining.*
+
+*Note: The train and validation curves almost perfectly overlap because validation shard was drawn from the same distribution as the training shards. It is not because of evaluating the same tensors twice (see graph on the right).*
+
 | Result | Value |
 |---|---:|
 | Trainable parameters | 97,655,296 |
