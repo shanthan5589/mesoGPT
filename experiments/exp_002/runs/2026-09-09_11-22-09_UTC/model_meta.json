@@ -1,0 +1,37 @@
+{
+  "checkpoint_format_version": 1,
+  "run_id": "2026-09-09_11-22-09_UTC",
+  "exp_no": "002",
+  "model_config": {
+    "T": 1024,
+    "C": 768,
+    "vocab_size": 16384,
+    "num_heads": 12,
+    "n_layers": 12,
+    "dropout": 0.1
+  },
+  "training_config": {
+    "context_length": 1024,
+    "n_embed": 768,
+    "n_layers": 12,
+    "n_heads": 12,
+    "dropout": 0.1,
+    "global_batch_size": 512,
+    "micro_batch_size": 16,
+    "learning_rate": 0.001,
+    "optimizer_steps": 15,
+    "max_lr": 0.0003,
+    "min_lr": 3e-05,
+    "warmup_steps": 10,
+    "max_lr_schedule_steps": 15,
+    "eval_interval": 100,
+    "eval_iters": 64,
+    "stride": 1024,
+    "num_workers": 4,
+    "run_dir": "/root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-22-09_UTC",
+    "gradient_accumulation_steps": 32
+  },
+  "tokenizer_name": "tok-v16384-c450.00m",
+  "step": 15,
+  "val_loss": 7.756487041711807
+}

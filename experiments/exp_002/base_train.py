@@ -148,7 +148,7 @@ def train(model, tokenizer, optimizer, criterion,
 
     with profile(
         activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=torch.profiler.schedule(wait=9, warmup=1, active=1, repeat=1),
+        schedule=torch.profiler.schedule(wait=9, warmup=1, active=5, repeat=1),
         on_trace_ready=lambda p: p.export_chrome_trace(str(run_dir / "trace.json")),
     ) as prof:
 
@@ -201,51 +201,51 @@ def train(model, tokenizer, optimizer, criterion,
 
             completed_steps = step + 1
 
-            if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
+            # if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
 
-                # --- start of evaluation step ---
-                # if device.type == "cuda":
-                #     torch.cuda.synchronize()
-                # t0 = time.perf_counter()
+            #     # --- start of evaluation step ---
+            #     # if device.type == "cuda":
+            #     #     torch.cuda.synchronize()
+            #     # t0 = time.perf_counter()
 
-                losses = estimate_loss(
-                    model=model,
-                    tokenizer=tokenizer,
-                    criterion=criterion,
-                    eval_iters=eval_iters,
-                    batch_size=micro_batch_size,
-                    vocab_size=vocab_size,
-                    context_length=context_length,
-                    stride=stride,
-                    num_workers=num_workers
-                )
+            #     losses = estimate_loss(
+            #         model=model,
+            #         tokenizer=tokenizer,
+            #         criterion=criterion,
+            #         eval_iters=eval_iters,
+            #         batch_size=micro_batch_size,
+            #         vocab_size=vocab_size,
+            #         context_length=context_length,
+            #         stride=stride,
+            #         num_workers=num_workers
+            #     )
 
-                # if device.type == "cuda":
-                #     torch.cuda.synchronize()
-                # dt = time.perf_counter() - t0
-                # --- end of evaluation step ---
+            #     # if device.type == "cuda":
+            #     #     torch.cuda.synchronize()
+            #     # dt = time.perf_counter() - t0
+            #     # --- end of evaluation step ---
 
-                #print(f"Evaluation Time: {dt:.2f}s")
+            #     #print(f"Evaluation Time: {dt:.2f}s")
 
-                print(f"Step: {completed_steps}: "  
-                    f"Train Loss: {losses['train']['loss']:.4f}, "
-                    f"Train bpb: {losses['train']['bpb']:.4f}, "
-                    f"Val Loss: {losses['val']['loss']:.4f}, "
-                    f"Val bpb: {losses['val']['bpb']:.4f}")
+            #     print(f"Step: {completed_steps}: "  
+            #         f"Train Loss: {losses['train']['loss']:.4f}, "
+            #         f"Train bpb: {losses['train']['bpb']:.4f}, "
+            #         f"Val Loss: {losses['val']['loss']:.4f}, "
+            #         f"Val bpb: {losses['val']['bpb']:.4f}")
                 
-                if losses['val']['loss'] < best_val_loss:
+            #     if losses['val']['loss'] < best_val_loss:
 
-                    best_val_loss = losses['val']['loss']
+            #         best_val_loss = losses['val']['loss']
 
-                    model_path = run_dir / "model.pt"
-                    optimizer_path = run_dir / "model_optimizer.pt"
-                    metadata_path = run_dir / "model_meta.json"
+            #         model_path = run_dir / "model.pt"
+            #         optimizer_path = run_dir / "model_optimizer.pt"
+            #         metadata_path = run_dir / "model_meta.json"
 
-                    # Model weights only.
-                    torch.save(model.state_dict(), model_path)
+            #         # Model weights only.
+            #         torch.save(model.state_dict(), model_path)
 
-                    # Optimizer state kept separately for resuming training.
-                    torch.save(optimizer.state_dict(), optimizer_path)
+            #         # Optimizer state kept separately for resuming training.
+            #         torch.save(optimizer.state_dict(), optimizer_path)
 
                     # Human-readable model and training metadata.
                     metadata = {
@@ -262,10 +262,10 @@ def train(model, tokenizer, optimizer, criterion,
                     with metadata_path.open("w", encoding="utf-8") as file:
                         json.dump(metadata, file, indent=2)
 
-                    print(
-                            f"Saved new best checkpoint "
-                            f"with validation loss {best_val_loss:.4f}"
-                        )
+                    # print(
+                    #         f"Saved new best checkpoint "
+                    #         f"with validation loss {best_val_loss:.4f}"
+                    #     )
                     
             print(f"Step: {completed_steps} completed")
 
