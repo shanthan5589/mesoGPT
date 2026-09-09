@@ -1,3 +1,4 @@
 experiments/exp_002/runs/**/model_optimizer.pt filter=lfs diff=lfs merge=lfs -text
 experiments/exp_002/runs/**/model.pt filter=lfs diff=lfs merge=lfs -text
 experiments/exp_002/runs/2026-09-09_11-22-09_UTC/trace.json filter=lfs diff=lfs merge=lfs -text
+experiments/exp_002/runs/2026-09-09_11-52-03_UTC/trace.json filter=lfs diff=lfs merge=lfs -text

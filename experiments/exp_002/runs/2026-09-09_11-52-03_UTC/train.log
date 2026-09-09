@@ -1,0 +1,189 @@
+===== RUN INFORMATION =====
+UTC start: 2026-09-09T11:52:03Z
+Host: 27f91f81cce2
+Python 3.11.10
+PyTorch: 2.14.0+cu130
+CUDA available: True
+CUDA version: 13.0
+===== CPU INFORMATION =====
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           52 bits physical, 57 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  256
+On-line CPU(s) list:                     0-255
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD EPYC 9554 64-Core Processor
+CPU family:                              25
+Model:                                   17
+Thread(s) per core:                      2
+Core(s) per socket:                      64
+Socket(s):                               2
+Stepping:                                1
+Frequency boost:                         enabled
+CPU max MHz:                             3764.2019
+CPU min MHz:                             1500.0000
+BogoMIPS:                                6199.93
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpuid_fault cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d debug_swap
+Virtualization:                          AMD-V
+L1d cache:                               4 MiB (128 instances)
+L1i cache:                               4 MiB (128 instances)
+L2 cache:                                128 MiB (128 instances)
+L3 cache:                                512 MiB (16 instances)
+NUMA node(s):                            2
+NUMA node0 CPU(s):                       0-63,128-191
+NUMA node1 CPU(s):                       64-127,192-255
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Mitigation; Safe RET
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Mitigation; Clear CPU buffers
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Mitigation; IBPB before exit to userspace
+===== MEMORY INFORMATION =====
+               total        used        free      shared  buff/cache   available
+Mem:           1.0Ti        92Gi       338Gi       408Mi       576Gi       908Gi
+Swap:             0B          0B          0B
+===== GPU INFORMATION =====
+Wed Sep  9 11:52:05 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.159.03             Driver Version: 580.159.03     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:03:00.0 Off |                    0 |
+| N/A   36C    P8             40W /  315W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+===== BASELINE TRAINING =====
+Using device: cuda
+Global batch size: 512
+Micro-batch size: 16
+Gradient accumulation steps: 32
+Step: 1 completed
+Step: 2 completed
+Step: 3 completed
+Step: 4 completed
+Step: 5 completed
+Step: 6 completed
+Step: 7 completed
+Step: 8 completed
+Step: 9 completed
+USDT:2026-09-09 11:55:00 17304:17304 SyncActivityProfilerHandler.cpp:39] profiler_start
+Step: 10 completed
+Step: 11 completed
+Step: 12 completed
+Step: 13 completed
+Step: 14 completed
+USDT:2026-09-09 11:56:29 17304:17304 SyncActivityProfilerHandler.cpp:46] profiler_stop
+Step: 15 completed
+Step: 16 completed
+Step: 17 completed
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                          ProfilerStep*         0.00%       0.000us         0.00%       0.000us       0.000us       84.323s        98.19%       84.323s       16.865s             5  
+                                          ProfilerStep*         4.97%        6.314s        67.65%       86.003s       17.201s       0.000us         0.00%       33.989s        6.798s             5  
+                                            aten::copy_         0.36%     457.990ms        40.54%       51.531s     480.700us       21.920s        25.52%       21.920s     204.477us        107200  
+                                               aten::to         0.05%      57.583ms        36.86%       46.853s     698.827us       0.000us         0.00%       15.687s     233.980us         67045  
+                                         aten::_to_copy         0.13%     164.160ms        36.81%       46.795s     790.461us       0.000us         0.00%       15.687s     264.987us         59200  
+autograd::engine::evaluate_function: SoftmaxBackward...         0.01%      10.416ms         0.50%     637.584ms     332.075us       0.000us         0.00%       14.440s       7.521ms          1920  
+                                       SoftmaxBackward0         0.01%       7.229ms         0.49%     627.168ms     326.650us       0.000us         0.00%       14.440s       7.521ms          1920  
+                           aten::_softmax_backward_data         0.02%      19.485ms         0.49%     619.940ms     322.885us        7.288s         8.49%       14.440s       7.521ms          1920  
+                                              aten::mul         0.20%     256.493ms         3.29%        4.183s     114.659us       12.440s        14.49%       12.440s     341.015us         36480  
+                                      aten::masked_fill         0.02%      25.006ms         0.80%        1.013s     263.836us       0.000us         0.00%        9.180s       2.391ms          3840  
+                                          aten::softmax         0.01%       7.866ms         0.05%      65.700ms      34.219us       0.000us         0.00%        8.629s       4.494ms          1920  
+                                           aten::matmul         0.03%      37.527ms         0.48%     615.712ms     106.895us       0.000us         0.00%        8.433s       1.464ms          5760  
+                                              aten::bmm         0.43%     545.033ms         2.02%        2.563s     222.489us        8.109s         9.44%        8.109s     703.913us         11520  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us        7.920s         9.22%        7.920s     224.809us         35228  
+autograd::engine::evaluate_function: ToCopyBackward0...         0.09%     111.022ms         4.37%        5.559s     234.772us       0.000us         0.00%        7.836s     330.933us         23680  
+                                        ToCopyBackward0         0.02%      26.862ms         4.29%        5.448s     230.083us       0.000us         0.00%        7.836s     330.933us         23680  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us        7.803s         9.09%        7.803s     328.087us         23782  
+void (anonymous namespace)::softmax_warp_backward<fl...         0.00%       0.000us         0.00%       0.000us       0.000us        7.326s         8.53%        7.326s       3.796ms          1930  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us        7.190s         8.37%        7.190s       3.725ms          1930  
+    autograd::engine::evaluate_function: AddmmBackward0         0.09%     120.087ms         6.03%        7.666s     977.807us       0.000us         0.00%        5.824s     742.851us          7840  
+                                           aten::linear         0.04%      56.239ms         0.71%     899.734ms      57.381us       0.000us         0.00%        5.703s     363.683us         15680  
+                                          aten::dropout         0.01%       7.680ms         0.12%     154.036ms      26.742us       0.000us         0.00%        5.601s     972.435us          5760  
+                                   aten::native_dropout         0.05%      62.481ms         0.12%     146.356ms      25.409us        5.601s         6.52%        5.601s     972.435us          5760  
+autograd::engine::evaluate_function: NativeDropoutBa...         0.02%      31.546ms         0.76%     964.559ms     167.458us       0.000us         0.00%        5.596s     971.598us          5760  
+                                 NativeDropoutBackward0         0.01%      12.084ms         0.73%     933.014ms     161.982us       0.000us         0.00%        5.596s     971.598us          5760  
+                          aten::native_dropout_backward         0.03%      36.598ms         0.72%     920.929ms     159.884us        5.596s         6.52%        5.596s     971.598us          5760  
+void at::native::(anonymous namespace)::fused_dropou...         0.00%       0.000us         0.00%       0.000us       0.000us        5.483s         6.38%        5.483s       2.856ms          1920  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us        5.436s         6.33%        5.436s       2.818ms          1929  
+                                            aten::clone         0.04%      47.193ms         1.72%        2.190s     103.678us       0.000us         0.00%        5.406s     255.988us         21120  
+      autograd::engine::evaluate_function: BmmBackward0         0.04%      44.499ms         1.91%        2.432s     633.336us       0.000us         0.00%        5.333s       1.389ms          3840  
+                                           BmmBackward0         0.02%      29.796ms         1.88%        2.388s     621.748us       0.000us         0.00%        5.333s       1.389ms          3840  
+                                         AddmmBackward0         0.05%      61.995ms         2.97%        3.774s     481.358us       0.000us         0.00%        5.331s     679.939us          7840  
+                                               aten::mm         0.22%     277.857ms         2.87%        3.644s     232.373us        5.331s         6.21%        5.331s     339.969us         15680  
+                                         aten::_softmax         0.01%      18.891ms         0.02%      26.209ms      13.650us        5.104s         5.94%        5.104s       2.658ms          1920  
+void (anonymous namespace)::softmax_warp_forward<flo...         0.00%       0.000us         0.00%       0.000us       0.000us        5.104s         5.94%        5.104s       2.658ms          1920  
+                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us        4.711s         5.49%        4.711s     610.966us          7710  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us        4.641s         5.40%        4.641s       1.205ms          3850  
+autograd::engine::evaluate_function: MaskedFillBackw...         0.01%      16.881ms         0.75%     952.569ms     496.130us       0.000us         0.00%        4.571s       2.381ms          1920  
+                                    MaskedFillBackward0         0.00%       4.278ms         0.74%     935.688ms     487.337us       0.000us         0.00%        4.571s       2.381ms          1920  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us        4.542s         5.29%        4.542s       1.180ms          3850  
+                                     aten::masked_fill_         0.02%      31.200ms         0.30%     383.860ms      99.964us        4.530s         5.27%        4.530s       1.180ms          3840  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us        2.835s         3.30%        2.835s     734.528us          3859  
+                                            aten::addmm         0.13%     164.859ms         0.16%     200.946ms      25.631us        2.680s         3.12%        2.680s     341.799us          7840  
+      autograd::engine::evaluate_function: MulBackward0         0.08%     107.968ms         4.27%        5.423s     313.835us       0.000us         0.00%        2.604s     150.695us         17280  
+                                           MulBackward0         0.02%      27.393ms         2.91%        3.704s     214.377us       0.000us         0.00%        2.509s     145.210us         17280  
+ampere_bf16_s1688gemm_bf16_128x128_ldg8_f2f_stages_3...         0.00%       0.000us         0.00%       0.000us       0.000us        2.280s         2.66%        2.280s     393.927us          5788  
+autograd::engine::evaluate_function: NativeLayerNorm...         0.05%      66.752ms         1.15%        1.459s     364.665us       0.000us         0.00%        2.279s     569.692us          4000  
+ampere_bf16_s1688gemm_bf16_128x128_ldg8_f2f_stages_3...         0.00%       0.000us         0.00%       0.000us       0.000us        2.130s         2.48%        2.130s     553.329us          3849  
+                               NativeLayerNormBackward0         0.01%      16.319ms         0.71%     906.816ms     226.704us       0.000us         0.00%        1.633s     408.326us          4000  
+                       aten::native_layer_norm_backward         0.03%      39.377ms         0.70%     890.497ms     222.624us        1.633s         1.90%        1.633s     408.326us          4000  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 127.127s
+Self CUDA time total: 85.877s
+
+Profiler table saved to /root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-52-03_UTC/profiler_table.txt
+	Command being timed: "python -u experiments/exp_002/base_train.py --context_length 1024 --n_embed 768 --n_layers 12 --n_heads 12 --dropout 0.1 --global_batch_size 512 --micro_batch_size 16 --optimizer_steps 17 --max_lr 3e-4 --min_lr 3e-5 --warmup_steps 10 --max_lr_schedule_steps 17 --eval_interval 100 --eval_iters 64 --stride 1024 --num_workers 4 --run_dir /root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-52-03_UTC"
+	User time (seconds): 365.04
+	System time (seconds): 99.54
+	Percent of CPU this job got: 107%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:11.99
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 12654508
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 8296848
+	Voluntary context switches: 37086
+	Involuntary context switches: 2714
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 2039456
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+===== RUN COMPLETE =====
+UTC end: 2026-09-09T11:59:17Z
+Run directory: /root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-52-03_UTC
+Training log: /root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-52-03_UTC/train.log
+GPU metrics: /root/mesoGPT/experiments/exp_002/runs/2026-09-09_11-52-03_UTC/gpu_metrics.csv
