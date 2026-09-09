@@ -274,8 +274,7 @@ def train(model, tokenizer, optimizer, criterion,
     )
 
     profiler_log_path = run_dir / "profiler_table.txt"
-    with profiler_log_path.open("a", encoding="utf-8") as file:
-        file.write("\n\n" + profiler_table)
+    profiler_log_path.write_text(profiler_table, encoding="utf-8")
 
     print(profiler_table)
     print(f"Profiler table saved to {profiler_log_path}")
