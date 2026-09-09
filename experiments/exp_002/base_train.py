@@ -14,8 +14,6 @@ from mesoGPT.dataloader import create_dataloader
 from mesoGPT.tokenizer import BPETokenizer
 from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
 
-from torch.profiler import profile, ProfilerActivity, record_function
-
 
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
@@ -146,140 +144,120 @@ def train(model, tokenizer, optimizer, criterion,
 
     best_val_loss = float("inf")
 
-    with profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=torch.profiler.schedule(wait=9, warmup=1, active=5, repeat=1),
-        on_trace_ready=lambda p: p.export_chrome_trace(str(run_dir / "trace.json")),
-    ) as prof:
+    for step in range(optimizer_steps):
 
-        for step in range(optimizer_steps):
+        lr = getlr(step, args.max_lr_schedule_steps, args.warmup_steps, args.max_lr, args.min_lr)
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr
 
-            lr = getlr(step, args.max_lr_schedule_steps, args.warmup_steps, args.max_lr, args.min_lr)
-            for param_group in optimizer.param_groups:
-                param_group['lr'] = lr
+        # --- start of optimization step ---
+        # if device.type == "cuda":
+        #     torch.cuda.synchronize()
+        # t0 = time.perf_counter()
 
-            # --- start of optimization step ---
+        optimizer.zero_grad(set_to_none=True)
+
+        for _ in range(gradient_accumulation_steps):
+
+            xb, yb, num_bytes, yb_length = next(train_iterator)
+
+            # Asynchronous
+            xb = xb.to(device)
+            yb = yb.to(device)
+
+            with torch.autocast(
+                device_type=device.type,
+                dtype=amp_dtype,
+                enabled=amp_enabled,
+            ):
+
+                logits = model(xb)      
+
+                loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
+
+                loss = loss / gradient_accumulation_steps
+
+            scalar.scale(loss).backward()
+
+        scalar.step(optimizer)
+        scalar.update()
+
+        # if device.type == "cuda":
+        #     torch.cuda.synchronize()
+        # dt = time.perf_counter() - t0
+        # --- end of optimization step ---
+
+        #print(f"Step: {step+1}, Time: {dt:.2f}s")
+
+        completed_steps = step + 1
+
+        if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
+
+            # --- start of evaluation step ---
             # if device.type == "cuda":
             #     torch.cuda.synchronize()
             # t0 = time.perf_counter()
 
-            optimizer.zero_grad(set_to_none=True)
-
-            for _ in range(gradient_accumulation_steps):
-
-                xb, yb, num_bytes, yb_length = next(train_iterator)
-
-                # Asynchronous
-                xb = xb.to(device)
-                yb = yb.to(device)
-
-                with torch.autocast(
-                    device_type=device.type,
-                    dtype=amp_dtype,
-                    enabled=amp_enabled,
-                ):
-
-                    logits = model(xb)      
-
-                    loss = criterion(logits.view(-1, vocab_size), yb.view(-1))
-
-                    loss = loss / gradient_accumulation_steps
-
-                scalar.scale(loss).backward()
-
-            scalar.step(optimizer)
-            scalar.update()
-
-            prof.step()
+            losses = estimate_loss(
+                model=model,
+                tokenizer=tokenizer,
+                criterion=criterion,
+                eval_iters=eval_iters,
+                batch_size=micro_batch_size,
+                vocab_size=vocab_size,
+                context_length=context_length,
+                stride=stride,
+                num_workers=num_workers
+            )
 
             # if device.type == "cuda":
             #     torch.cuda.synchronize()
             # dt = time.perf_counter() - t0
-            # --- end of optimization step ---
+            # --- end of evaluation step ---
 
-            #print(f"Step: {step+1}, Time: {dt:.2f}s")
+            #print(f"Evaluation Time: {dt:.2f}s")
 
-            completed_steps = step + 1
+            print(f"Step: {completed_steps}: "  
+                f"Train Loss: {losses['train']['loss']:.4f}, "
+                f"Train bpb: {losses['train']['bpb']:.4f}, "
+                f"Val Loss: {losses['val']['loss']:.4f}, "
+                f"Val bpb: {losses['val']['bpb']:.4f}")
+            
+            if losses['val']['loss'] < best_val_loss:
 
-            # if completed_steps % eval_interval == 0 or completed_steps == optimizer_steps:
+                best_val_loss = losses['val']['loss']
 
-            #     # --- start of evaluation step ---
-            #     # if device.type == "cuda":
-            #     #     torch.cuda.synchronize()
-            #     # t0 = time.perf_counter()
+                model_path = run_dir / "model.pt"
+                optimizer_path = run_dir / "model_optimizer.pt"
+                metadata_path = run_dir / "model_meta.json"
 
-            #     losses = estimate_loss(
-            #         model=model,
-            #         tokenizer=tokenizer,
-            #         criterion=criterion,
-            #         eval_iters=eval_iters,
-            #         batch_size=micro_batch_size,
-            #         vocab_size=vocab_size,
-            #         context_length=context_length,
-            #         stride=stride,
-            #         num_workers=num_workers
-            #     )
+                # Model weights only.
+                torch.save(model.state_dict(), model_path)
 
-            #     # if device.type == "cuda":
-            #     #     torch.cuda.synchronize()
-            #     # dt = time.perf_counter() - t0
-            #     # --- end of evaluation step ---
+                # Optimizer state kept separately for resuming training.
+                torch.save(optimizer.state_dict(), optimizer_path)
 
-            #     #print(f"Evaluation Time: {dt:.2f}s")
+                # Human-readable model and training metadata.
+                metadata = {
+                    "checkpoint_format_version": 1,
+                    "run_id": run_dir.name,
+                    "exp_no": "002",
+                    "model_config": asdict(model.config),
+                    "training_config": vars(args).copy(),
+                    "tokenizer_name": TOKENIZER_NAME,
+                    "step": completed_steps,
+                    "val_loss": best_val_loss,
+                }
 
-            #     print(f"Step: {completed_steps}: "  
-            #         f"Train Loss: {losses['train']['loss']:.4f}, "
-            #         f"Train bpb: {losses['train']['bpb']:.4f}, "
-            #         f"Val Loss: {losses['val']['loss']:.4f}, "
-            #         f"Val bpb: {losses['val']['bpb']:.4f}")
+                with metadata_path.open("w", encoding="utf-8") as file:
+                    json.dump(metadata, file, indent=2)
+
+                print(
+                        f"Saved new best checkpoint "
+                        f"with validation loss {best_val_loss:.4f}"
+                    )
                 
-            #     if losses['val']['loss'] < best_val_loss:
-
-            #         best_val_loss = losses['val']['loss']
-
-            #         model_path = run_dir / "model.pt"
-            #         optimizer_path = run_dir / "model_optimizer.pt"
-            #         metadata_path = run_dir / "model_meta.json"
-
-            #         # Model weights only.
-            #         torch.save(model.state_dict(), model_path)
-
-            #         # Optimizer state kept separately for resuming training.
-            #         torch.save(optimizer.state_dict(), optimizer_path)
-
-                    # Human-readable model and training metadata.
-                    metadata = {
-                        "checkpoint_format_version": 1,
-                        "run_id": run_dir.name,
-                        "exp_no": "002",
-                        "model_config": asdict(model.config),
-                        "training_config": vars(args).copy(),
-                        "tokenizer_name": TOKENIZER_NAME,
-                        "step": completed_steps,
-                        "val_loss": best_val_loss,
-                    }
-
-                    with metadata_path.open("w", encoding="utf-8") as file:
-                        json.dump(metadata, file, indent=2)
-
-                    # print(
-                    #         f"Saved new best checkpoint "
-                    #         f"with validation loss {best_val_loss:.4f}"
-                    #     )
-                    
-            print(f"Step: {completed_steps} completed")
-
-    profiler_table = prof.key_averages().table(
-            sort_by="cuda_time_total",
-            row_limit=50,
-    )
-
-    profiler_log_path = run_dir / "profiler_table.txt"
-    with profiler_log_path.open("a", encoding="utf-8") as file:
-        file.write("\n\n" + profiler_table)
-    
-    print(profiler_table)
-    print(f"Profiler table saved to {profiler_log_path}")
+        print(f"Step: {completed_steps} completed")
 
 if __name__ == "__main__":
 
