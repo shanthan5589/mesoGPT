@@ -12,3 +12,4 @@ temp-trash/
 temp-trash-1/
 scripts/count_params.py
 experiments/exp_002/exp_2_oldreadme.md
+*.egg-info/

@@ -148,7 +148,7 @@ def train(model, tokenizer, optimizer, criterion,
 
     with profile(
         activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=torch.profiler.schedule(wait=9, warmup=1, active=1, repeat=1),
+        schedule=torch.profiler.schedule(wait=1, warmup=1, active=1, repeat=1),
         on_trace_ready=lambda p: p.export_chrome_trace(str(run_dir / "trace.json")),
     ) as prof:
 
@@ -165,7 +165,7 @@ def train(model, tokenizer, optimizer, criterion,
 
             optimizer.zero_grad(set_to_none=True)
 
-            for _ in range(gradient_accumulation_steps):
+            for batch_index in range(gradient_accumulation_steps):
 
                 xb, yb, num_bytes, yb_length = next(train_iterator)
 
@@ -251,7 +251,7 @@ def train(model, tokenizer, optimizer, criterion,
                     metadata = {
                         "checkpoint_format_version": 1,
                         "run_id": run_dir.name,
-                        "exp_no": "002",
+                        "exp_no": "003",
                         "model_config": asdict(model.config),
                         "training_config": vars(args).copy(),
                         "tokenizer_name": TOKENIZER_NAME,
@@ -266,18 +266,17 @@ def train(model, tokenizer, optimizer, criterion,
                             f"Saved new best checkpoint "
                             f"with validation loss {best_val_loss:.4f}"
                         )
-                    
             print(f"Step: {completed_steps} completed")
 
     profiler_table = prof.key_averages().table(
-            sort_by="cuda_time_total",
-            row_limit=50,
+        sort_by="cuda_time_total",
+        row_limit=50,
     )
 
     profiler_log_path = run_dir / "profiler_table.txt"
     with profiler_log_path.open("a", encoding="utf-8") as file:
         file.write("\n\n" + profiler_table)
-    
+
     print(profiler_table)
     print(f"Profiler table saved to {profiler_log_path}")
 

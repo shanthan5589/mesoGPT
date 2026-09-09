@@ -13,6 +13,7 @@ Training completed successfully on a single NVIDIA L40S in **20h 47m 48s**. The 
 
 | Result | Value |
 |---|---:|
+| Commit | `18f0519` |
 | Trainable parameters | 97,655,296 |
 | Optimizer steps | 3,726 |
 | Estimated tokens processed | 1,953,497,088 |
