@@ -88,6 +88,8 @@ Pretrained a 97.7M-parameter decoder-only transformer on approximately 1.95B tok
 
 The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 after 3,720 optimizer steps.
 
+Refer [Compute and Cost estimations](./training_compute_estimation.md) to understand how the training compute budget, efficiency, performance, time, cost and other metrics were estimated and calculated in detail.
+
 ## Model architecture
 
 | Component           | Configuration |
