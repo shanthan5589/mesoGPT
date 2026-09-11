@@ -11,6 +11,9 @@ Training completed successfully on a single NVIDIA L40S in **20h 47m 48s**. The 
 
 *Note: The train and validation curves almost perfectly overlap because validation shard was drawn from the same distribution as the training shards. It is not because of evaluating the same tensors twice (see graph on the right).*
 
+Refer [Compute and Cost estimations](./training_compute_estimation.md) to understand how the training compute budget, efficiency, performance, time, cost and other metrics were estimated and calculated in detail.
+
+
 | Result | Value |
 |---|---:|
 | Commit | `18f0519` |
