@@ -1,11 +1,20 @@
-# mesoGPT
+<div align="center">
+  <div>
+      <img src="assets/banner.jpg" alt="mesoGPT" width="300px">
+  </div>
 
-<p align="center">
-  <img src="assets/banner.jpg" alt="milky way" width="300">
-</p>
+  <h1>
+    mesoGPT
+  </h1>
+        
+  <h2>
+    Building and training large language models from scratch.
+  </h2>
+
+</div>
 
 
-**mesoGPT is a language-model pretraining project built from-scratch to study tokenizer design, transformer training, and LLM systems efficiency at a manageable scale.**
+mesoGPT is a language-model built from scratch to understand transformer architecture, training and its efficiency at a manageable scale.
 
 The current baseline is a 97.7M-parameter decoder-only Transformer pretrained on approximately 1.95B tokens using a single NVIDIA L40S.
 
