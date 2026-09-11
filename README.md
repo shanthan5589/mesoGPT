@@ -78,13 +78,13 @@ Text generation
 
 Measured how tokenizer-training corpus size affects held-out compression while keeping the vocabulary fixed at 16,384 tokens.
 
-Eleven tokenizers were trained using between 25M and 500M characters. The 250M-character tokenizer captured approximately 97.2% of the total compression improvement observed between the 25M and best-performing 450M conditions.
+Eleven tokenizers were trained using between 25M and 500M characters. The 250M-character tokenizer captured approximately 97.2% of the total compression improvement observed between the 25M and best-performing 450M tokenizer.
 
 ### [Experiment 002: Baseline language-model pretraining](experiments/exp_002/README.md)
 
 ![Losses](./assets/losses.png)
 
-Pretrained a 97.7M-parameter GPT-style model on approximately 1.95B tokens.
+Pretrained a 97.7M-parameter decoder-only Transformer on approximately 1.95B tokens.
 
 The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 after 3,720 optimizer steps.
 
