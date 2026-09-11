@@ -84,7 +84,7 @@ Eleven tokenizers were trained using between 25M and 500M characters. The 250M-c
 
 ![Losses](./assets/losses.png)
 
-Pretrained a 97.7M-parameter decoder-only Transformer on approximately 1.95B tokens.
+Pretrained a 97.7M-parameter decoder-only transformer on approximately 1.95B tokens.
 
 The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 after 3,720 optimizer steps.
 
