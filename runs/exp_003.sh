@@ -71,21 +71,21 @@ fi
 echo "===== BASELINE TRAINING ====="
 /usr/bin/time -v python -u experiments/exp_003/base_train.py \
     --context_length 1024 \
-    --n_embed 512 \
+    --n_embed 768 \
     --n_layers 12 \
-    --n_heads 8 \
+    --n_heads 12 \
     --dropout 0.1 \
-    --global_batch_size 1 \
-    --micro_batch_size 1 \
-    --optimizer_steps 4 \
+    --global_batch_size 512 \
+    --micro_batch_size 64 \
+    --optimizer_steps 3726 \
     --max_lr 3e-4 \
     --min_lr 3e-5 \
-    --warmup_steps 1 \
-    --max_lr_schedule_steps 4 \
-    --eval_interval 100 \
-    --eval_iters 100 \
+    --warmup_steps 40 \
+    --max_lr_schedule_steps 3726 \
+    --eval_interval 10 \
+    --eval_iters 64 \
     --stride 1024 \
-    --num_workers 0 \
+    --num_workers 4 \
     --run_dir "$RUN_DIR"
 
 stop_gpu_monitor
