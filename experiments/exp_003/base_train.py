@@ -165,7 +165,7 @@ def train(model, tokenizer, optimizer, criterion,
 
             optimizer.zero_grad(set_to_none=True)
 
-            for batch_index in range(gradient_accumulation_steps):
+            for _ in range(gradient_accumulation_steps):
 
                 xb, yb, num_bytes, yb_length = next(train_iterator)
 

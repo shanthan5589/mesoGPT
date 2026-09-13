@@ -9,6 +9,7 @@ Linear layers have bias set to 0
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from dataclasses import dataclass
 
@@ -81,7 +82,6 @@ class MultiHeadAttention(nn.Module):
         self.qkv = nn.Linear(C, 3 * C)      # (3C, C) 
         self.rope = RotaryEmbedding(T, self.head_size)
         self.dropout = nn.Dropout(dropout)
-        self.register_buffer('tril', torch.tril(torch.ones(T, T)))  # (T, T)
         self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
 
     def forward(self, x):
@@ -93,11 +93,14 @@ class MultiHeadAttention(nn.Module):
         k = k.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
         v = v.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
         q, k = self.rope(q), self.rope(k)                                       # (B, num_heads, T, head_size) x 2     
-        weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)            # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)      
-        weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))    # (B, num_heads, T, T) Dynamic causal-mask slicing
-        weights = torch.softmax(weights, dim=-1)
-        weights = self.dropout(weights)
-        out = weights @ v                                                       # (B, num_heads, T, head_size)
+        out = F.scaled_dot_product_attention(
+            q,
+            k,
+            v,
+            attn_mask=None,
+            dropout_p=self.dropout.p if self.training else 0.0,
+            is_causal=True,
+        )
         out = out.transpose(1, 2).contiguous()                                  # (B, T, num_heads, head_size)
         out = out.view(B, T, C)                                                 # (B, T, C) because num_heads * head_size = C                  
         out = self.proj(out) 
