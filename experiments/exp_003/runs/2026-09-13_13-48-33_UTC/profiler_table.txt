@@ -1,0 +1,56 @@
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                          ProfilerStep*         0.00%       0.000us         0.00%       0.000us       0.000us        4.650s        85.93%        4.650s        4.650s             1  
+                                          ProfilerStep*         3.05%     230.221ms        67.27%        5.085s        5.085s       0.000us         0.00%        1.696s        1.696s             1  
+                                           aten::linear         0.04%       2.729ms         0.56%      42.213ms      53.844us       0.000us         0.00%        1.120s       1.429ms           784  
+    autograd::engine::evaluate_function: AddmmBackward0         0.06%       4.380ms         6.73%     508.518ms       1.297ms       0.000us         0.00%        1.083s       2.761ms           392  
+                                            aten::copy_         0.22%      16.944ms        43.82%        3.312s     769.518us        1.033s        19.09%        1.033s     240.079us          4304  
+                                         AddmmBackward0         0.03%       2.401ms         4.22%     319.030ms     813.853us       0.000us         0.00%     934.702ms       2.384ms           392  
+                                               aten::mm         0.18%      13.907ms         4.15%     313.346ms     399.676us     934.702ms        17.27%     934.702ms       1.192ms           784  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     530.739ms         9.81%     530.739ms     365.020us          1454  
+                                            aten::addmm         0.11%       8.128ms         0.13%       9.674ms      24.677us     509.920ms         9.42%     509.920ms       1.301ms           392  
+autograd::engine::evaluate_function: NativeLayerNorm...         0.03%       2.515ms         1.52%     114.983ms     574.913us       0.000us         0.00%     470.008ms       2.350ms           200  
+ampere_bf16_s16816gemm_bf16_256x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us     445.111ms         8.22%     445.111ms       1.361ms           327  
+                                               aten::to         0.03%       2.092ms        39.70%        3.001s       1.011ms       0.000us         0.00%     427.279ms     143.913us          2969  
+                                         aten::_to_copy         0.08%       6.385ms        39.68%        2.999s       1.164ms       0.000us         0.00%     427.279ms     165.869us          2576  
+                               NativeLayerNormBackward0         0.01%     610.435us         1.11%      83.975ms     419.875us       0.000us         0.00%     319.418ms       1.597ms           200  
+                       aten::native_layer_norm_backward         0.02%       1.771ms         1.10%      83.365ms     416.823us     319.418ms         5.90%     319.418ms       1.597ms           200  
+autograd::engine::evaluate_function: ScaledDotProduc...         0.02%       1.187ms         0.96%      72.336ms     753.499us       0.000us         0.00%     316.517ms       3.297ms            96  
+                ScaledDotProductFlashAttentionBackward0         0.01%     539.753us         0.94%      71.149ms     741.137us       0.000us         0.00%     316.517ms       3.297ms            96  
+     aten::_scaled_dot_product_flash_attention_backward         0.01%       1.090ms         0.93%      70.609ms     735.514us       0.000us         0.00%     316.517ms       3.297ms            96  
+                        aten::_flash_attention_backward         0.02%       1.471ms         0.91%      68.745ms     716.095us     316.517ms         5.85%     316.517ms       3.297ms            96  
+                                             aten::add_         0.12%       9.160ms         4.66%     351.993ms     179.588us     298.038ms         5.51%     298.038ms     152.060us          1960  
+    autograd::engine::evaluate_function: SliceBackward0         0.02%       1.730ms         3.50%     264.808ms     689.604us       0.000us         0.00%     293.689ms     764.815us           384  
+autograd::engine::evaluate_function: torch::autograd...         0.03%       2.058ms         3.85%     291.006ms     757.827us       0.000us         0.00%     293.525ms     764.388us           384  
+                            torch::autograd::CopySlices         0.04%       2.775ms         3.82%     288.948ms     752.468us       0.000us         0.00%     293.525ms     764.388us           384  
+void at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     289.646ms         5.35%     289.646ms     178.353us          1624  
+ampere_bf16_s1688gemm_bf16_128x128_ldg8_relu_f2f_sta...         0.00%       0.000us         0.00%       0.000us       0.000us     278.336ms         5.14%     278.336ms       1.450ms           192  
+                                              aten::mul         0.14%      10.282ms         2.13%     161.227ms     104.965us     278.220ms         5.14%     278.220ms     181.133us          1536  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     278.076ms         5.14%     278.076ms     174.233us          1596  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     254.366ms         4.70%     254.366ms       1.194ms           213  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     235.466ms         4.35%     235.466ms     229.499us          1026  
+ampere_bf16_s1688gemm_bf16_128x128_ldg8_f2f_stages_3...         0.00%       0.000us         0.00%       0.000us       0.000us     222.439ms         4.11%     222.439ms       1.049ms           212  
+void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_par...         0.00%       0.000us         0.00%       0.000us       0.000us     214.548ms         3.96%     214.548ms       2.005ms           107  
+                                         SliceBackward0         0.01%     467.715us         2.34%     176.684ms     460.116us       0.000us         0.00%     213.763ms     556.674us           384  
+                                   aten::slice_backward         0.02%       1.400ms         2.33%     176.217ms     458.898us       0.000us         0.00%     213.763ms     556.674us           384  
+void at::native::(anonymous namespace)::layer_norm_g...         0.00%       0.000us         0.00%       0.000us       0.000us     207.581ms         3.84%     207.581ms     939.279us           221  
+                                              aten::add         0.03%       2.626ms         0.05%       3.883ms      10.113us     187.740ms         3.47%     187.740ms     488.907us           384  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     185.135ms         3.42%     185.135ms       1.747ms           106  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     177.138ms         3.27%     177.138ms     127.898us          1385  
+     autograd::engine::evaluate_function: GeluBackward0         0.01%     498.445us         0.34%      25.364ms     264.210us       0.000us         0.00%     167.665ms       1.747ms            96  
+                                          GeluBackward0         0.00%     195.854us         0.33%      24.866ms     259.018us       0.000us         0.00%     167.665ms       1.747ms            96  
+                                    aten::gelu_backward         0.01%     720.986us         0.33%      24.670ms     256.978us     167.665ms         3.10%     167.665ms       1.747ms            96  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     166.307ms         3.07%     166.307ms     150.504us          1105  
+void cutlass::Kernel2<cutlass_80_tensorop_bf16_s1681...         0.00%       0.000us         0.00%       0.000us       0.000us     166.247ms         3.07%     166.247ms     865.871us           192  
+void at::native::reduce_kernel<128, 4, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us     160.826ms         2.97%     160.826ms     370.567us           434  
+autograd::engine::evaluate_function: ToCopyBackward0...         0.05%       3.432ms         2.15%     162.313ms     163.622us       0.000us         0.00%     158.932ms     160.214us           992  
+                                        ToCopyBackward0         0.01%     835.681us         2.10%     158.882ms     160.163us       0.000us         0.00%     158.932ms     160.214us           992  
+      autograd::engine::evaluate_function: MulBackward0         0.05%       4.020ms         2.72%     205.500ms     267.578us       0.000us         0.00%     158.453ms     206.319us           768  
+                                              aten::sum         0.08%       5.952ms         2.44%     184.678ms     471.118us     147.801ms         2.73%     147.801ms     377.044us           392  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     146.827ms         2.71%     146.827ms     764.727us           192  
+void at::native::(anonymous namespace)::GammaBetaBac...         0.00%       0.000us         0.00%       0.000us       0.000us     145.370ms         2.69%     145.370ms     657.781us           221  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us     132.401ms         2.45%     132.401ms       1.237ms           107  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.559s
+Self CUDA time total: 5.412s
