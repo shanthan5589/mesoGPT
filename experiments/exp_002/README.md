@@ -27,7 +27,7 @@ Refer [Compute and Cost estimations](./training_compute_estimation.md) to unders
 | Average end-to-end throughput | ~26,093 tokens/s |
 | Training compute budget | ~1.145 EFLOP |
 | Achieved model throughput | ~15.3 TFLOP/s |
-| Achieved model FLOP utilization | 4% (~15.3 TFLOP/s) |
+| Achieved model FLOP utilization (MFU) | 4.94% |
 | Training cost | $39.08 |
 
 ## Objective
@@ -152,8 +152,7 @@ Derived runtime values:
 |---|---:|
 | Amortized wall time per optimizer step | ~20.09 s |
 | Estimated end-to-end token throughput | ~26,093 tokens/s |
-| Model's FLOP rate | ~15.3 TFLOP/s (4% MFU) |
-| Estimated cost per million tokens | ~$0.020 |
+| Model's FLOP rate | ~15.3 TFLOP/s (4.94% MFU) |
 
 
 ## Hardware and Software
@@ -198,11 +197,11 @@ Peak observed memory usage was approximately **27.31 GiB**, or **60.7%** of the 
 
 ## Findings
 
-1. **Model FLOP Utilization is low.** Despite a 96.4% average GPU-utilization reading, the MFU was only 4%, indicating substantial headroom in increasing arithmetic throughput.
+1. **Model FLOP Utilization is low.** Despite a 96.4% average GPU-utilization reading, the MFU was only 4.94%, indicating substantial headroom in increasing arithmetic throughput.
 2. **The baseline converged successfully.** Validation loss fell from 8.6631 to 3.5299.
 3. **Generalization remained stable.** Training and validation losses tracked one another closely without showing any signs of overfitting.
 
 
 ## Conclusion
 
-This experiment provides a successful, compute-constrained baseline for a roughly 100M-parameter language model. It achieved a best validation BPB of **1.1509** after processing approximately **1.953B tokens** on one L40S. The loss trajectory was stable and showed no signs of overfitting, a low MFU of 4% revealed that future work should prioritize training-system efficiency.
+This experiment provides a successful, compute-constrained baseline for a roughly 100M-parameter language model. It achieved a best validation BPB of **1.1509** after processing approximately **1.953B tokens** on one L40S. The loss trajectory was stable and showed no signs of overfitting, a low MFU of 4.94% revealed that future work should prioritize training-system efficiency.
