@@ -15,6 +15,7 @@ from mesoGPT.tokenizer import BPETokenizer
 from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
 
 from torch.profiler import profile, ProfilerActivity, record_function
+from contextlib import nullcontext
 
 
 device = torch.device(
@@ -146,11 +147,17 @@ def train(model, tokenizer, optimizer, criterion,
 
     best_val_loss = float("inf")
 
-    with profile(
-        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
-        schedule=torch.profiler.schedule(wait=1, warmup=1, active=1, repeat=1),
-        on_trace_ready=lambda p: p.export_chrome_trace(str(run_dir / "trace.json")),
-    ) as prof:
+    profiling_enabled = False
+    profiler_context = (
+        profile(
+            activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA],
+            schedule=torch.profiler.schedule(wait=1, warmup=1, active=1, repeat=1),
+        )
+        if profiling_enabled
+        else nullcontext()
+    )
+
+    with profiler_context as prof:
 
         for step in range(optimizer_steps):
 
@@ -190,7 +197,8 @@ def train(model, tokenizer, optimizer, criterion,
             scalar.step(optimizer)
             scalar.update()
 
-            prof.step()
+            if profiling_enabled:
+                prof.step()
 
             # if device.type == "cuda":
             #     torch.cuda.synchronize()
@@ -268,16 +276,18 @@ def train(model, tokenizer, optimizer, criterion,
                         )
             print(f"Step: {completed_steps} completed")
 
-    profiler_table = prof.key_averages().table(
-        sort_by="cuda_time_total",
-        row_limit=50,
-    )
+    if profiling_enabled:
 
-    profiler_log_path = run_dir / "profiler_table.txt"
-    profiler_log_path.write_text(profiler_table, encoding="utf-8")
+        profiler_table = prof.key_averages().table(
+            sort_by="cuda_time_total",
+            row_limit=50,
+        )
 
-    print(profiler_table)
-    print(f"Profiler table saved to {profiler_log_path}")
+        profiler_log_path = run_dir / "profiler_table.txt"
+        profiler_log_path.write_text(profiler_table, encoding="utf-8")
+
+        print(profiler_table)
+        print(f"Profiler table saved to {profiler_log_path}")
 
 if __name__ == "__main__":
 
