@@ -18,8 +18,6 @@ mesoGPT is a language-model built from scratch to understand transformer archite
 
 The current baseline is a 97.7M-parameter decoder-only Transformer pretrained on approximately 1.95B tokens using a single NVIDIA L40S.
 
-> Status: baseline pretraining is complete. The next phase focuses on profiling and improving training efficiency.
-
 ## Baseline results
 
 | Metric                    |           Result |
@@ -72,7 +70,7 @@ Text generation
 
 ## Experiments
 
-### [Experiment 001: Tokenizer training-data scaling](experiments/exp_001/README.md)
+### [Experiment 1: Tokenizer training-data scaling](experiments/exp_001/README.md)
 
 ![Marginal Gain](assets/quality_and_marginal_gain.png)
 
@@ -80,15 +78,26 @@ Measured how tokenizer-training corpus size affects held-out compression while k
 
 Eleven tokenizers were trained using between 25M and 500M characters. The 250M-character tokenizer captured approximately 97.2% of the total compression improvement observed between the 25M and best-performing 450M tokenizer.
 
-### [Experiment 002: Baseline language-model pretraining](experiments/exp_002/README.md)
+### [Experiment 2: Baseline language-model pretraining](experiments/exp_002/README.md)
 
 ![Losses](./assets/losses.png)
 
 Pretrained a 97.7M-parameter decoder-only transformer on approximately 1.95B tokens.
 
-The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 after 3,720 optimizer steps.
+The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 after 3,720 optimizer steps. Model FLOP utilization (MFU) of 4.22% was achieved, indicating substantial headroom for improving training-system efficiency.
 
 Refer [Compute and Cost estimations](/experiments/exp_002/training_compute_estimation.md) to understand how the training compute budget, efficiency, performance, time, cost and other metrics were estimated and calculated in detail.
+
+### [Experiment 3:  Accelerating Attention with PyTorch SDPA](experiments/exp_003/README.md)
+
+Replaced the model’s explicit causal-attention implementation with PyTorch scaled dot-product attention (SDPA) and benchmarked micro-batch sizes of 16, 32, and 64 while keeping the global batch size fixed at 512 sequences.
+
+The best configuration, with a micro-batch size of 16, achieved a throughput of 124,831 tokens/s and a MFU of 20.20% which is approximately 4.09× higher throughput and 4.09× faster optimizer-update time than the baseline. Peak GPU memory usage decreased from 27,969 to 12,457 MiB (2.25× lower).
+
+This is a short performance run rather than a complete pretraining run. Consequently, this experiment evaluates training-system efficiency not final model quality or convergence.
+
+Overall this experiment demonstrates that PyTorch SDPA can significantly improve training throughput and efficiency for the baseline model architecture.
+
 
 ## Model architecture
 
