@@ -468,9 +468,22 @@ As expected, the calculated training time and cost are higher than the planning 
 
 ## Actual Training Results
 
-After the complete training is completed, the measured end-to-end results were:
-- Total time for training: 20.796 hours (~21 hours)
-- Cost of training: $39.08
+Complete training took 20.796 hours which is 34 minutes longer than the measured estimate of 20.230 hours. The training cost increased to $38.70 which is $1.05 higher than the measured estimate of $37.65.
+
+Since training took longer than expected, MFU should be lower than the measured value of 4.94%. The actual MFU is therefore:
+
+$$
+\begin{aligned}
+	Actual  {MFU}
+&= \frac{C_{\text{train}} / (20.796 \times 3600)}
+{P_{\text{GPU,peak}}} \times 100 \\
+&= \frac{1{,}144{,}386.82\ \text{TFLOP} / 74{,}865.6\ \text{s}}
+{362.05\ \text{TFLOP/s}} \times 100 \\
+&= \frac{15.284\ \text{TFLOP/s}}
+{362.05\ \text{TFLOP/s}} \times 100 \\
+&\approx 4.22\%
+\end{aligned}
+$$
 
 
 ## 8. Notes:

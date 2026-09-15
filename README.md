@@ -31,7 +31,7 @@ The current baseline is a 97.7M-parameter decoder-only Transformer pretrained on
 | Training time             |      20h 47m 48s |
 | Throughput                | ~26,093 tokens/s |
 | Hardware                  |   1× NVIDIA L40S |
-| Training cost   |           $39.08 |
+| Training cost   |           $38.70 |
 
 ## What is implemented
 
@@ -88,15 +88,17 @@ The model reached a best validation loss of 3.5299 and validation BPB of 1.1509 
 
 Refer [Compute and Cost estimations](/experiments/exp_002/training_compute_estimation.md) to understand how the training compute budget, efficiency, performance, time, cost and other metrics were estimated and calculated in detail.
 
-### [Experiment 3:  Accelerating Attention with PyTorch SDPA](experiments/exp_003/README.md)
+### [Experiment 3:  Accelerating Attention with Flash Attention](experiments/exp_003/README.md)
 
-Replaced the model’s explicit causal-attention implementation with PyTorch scaled dot-product attention (SDPA) and benchmarked micro-batch sizes of 16, 32, and 64 while keeping the global batch size fixed at 512 sequences.
+![performance_overview](./assets/mfu_and_throughput.png)
+
+Replaced the model’s explicit causal-attention implementation with PyTorch's SDPA (which used its built-in Flash attention implementation) and benchmarked micro-batch sizes of 16, 32, and 64 while keeping the global batch size fixed at 512 sequences.
 
 The best configuration, with a micro-batch size of 16, achieved a throughput of 124,831 tokens/s and a MFU of 20.20% which is approximately 4.09× higher throughput and 4.09× faster optimizer-update time than the baseline. Peak GPU memory usage decreased from 27,969 to 12,457 MiB (2.25× lower).
 
 This is a short performance run rather than a complete pretraining run. Consequently, this experiment evaluates training-system efficiency not final model quality or convergence.
 
-Overall this experiment demonstrates that PyTorch SDPA can significantly improve training throughput and efficiency for the baseline model architecture.
+Overall this experiment demonstrates that Flash attention can significantly improve training throughput and efficiency for the baseline model architecture.
 
 
 ## Model architecture

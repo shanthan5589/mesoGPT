@@ -28,7 +28,7 @@ Refer [Compute and Cost estimations](./training_compute_estimation.md) to unders
 | Training compute budget | ~1.145 EFLOP |
 | Achieved model throughput | ~15.3 TFLOP/s |
 | Achieved model FLOP utilization (MFU) | 4.22% |
-| Training cost | $39.08 |
+| Training cost | $38.70 |
 
 ## Objective
 
