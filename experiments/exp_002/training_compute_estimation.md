@@ -140,7 +140,7 @@ $$
 | Quantity | Symbol | Value |
 |---|---:|---:|
 | Maximum theoretical GPU performance | $P_{\mathrm{GPU,max}}$ | $362.05\ \text{TFLOP/s}$ |
-| GPU rental price | $R_{\mathrm{GPU}}$ | $\$1.861/\text{hour}$ |
+| GPU rental price | $R_{\mathrm{GPU}}$ | $\text{\$1.861/hour}$ |
 | Total training-compute budget | $C_{\mathrm{train}}$ | $1.144 \times 10^6\ \text{TFLOP}$ |
 | Total number of optimizer updates | $N_{\mathrm{updates}}$ | $3{,}726$ |
 | Evaluation cadence | $K_{\mathrm{eval}}$ |  Run evaluation after every 10 completed optimizer steps |
@@ -461,7 +461,7 @@ The measurement-based estimate is therefore **20.230 hours** and **$37.65**.
 | Duration of one evaluation run over all 128 batches | $20.00\ \text{s}$ assumed | $23.83\ \text{s}$ measured |
 | Total evaluation time | $2.072\ \text{hours}$ | $2.469\ \text{hours}$ |
 | Total runtime | **$10.849\ \text{hours}$** | **$20.230\ \text{hours}$** |
-| Total GPU rental cost | **$\$20.19$** | **$\$37.65$** |
+| Total GPU rental cost | **$\text{\$20.19}$** | **$\text{\$37.65}$** |
 
 As expected, the calculated training time and cost are higher than the planning estimates. The measured MFU was lower than the assumed MFU, which led to a longer training duration and higher rental cost.
 
