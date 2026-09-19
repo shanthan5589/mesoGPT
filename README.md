@@ -150,27 +150,40 @@ mesoGPT/
 
 ## Installation
 
-On Ubuntu or Debian, install Git and Python with `venv` support:
+This installation guide assumes you are using Linux, macOS or WSL. Windows users can use WSL or a Linux virtual machine.
+
+Clone the project:
+
+```bash
+git clone https://github.com/shanthan5589/mesoGPT.git   # HTTPS
+git clone git@github.com:shanthan5589/mesoGPT.git       # SSH
+gh repo clone shanthan5589/mesoGPT                      # Github CLI
+cd mesoGPT
+```
+
+Install the system prerequisites if they are not already installed:
 
 ```bash
 sudo apt update
-sudo apt install -y git python3 python3-venv
+sudo apt install -y git python3 python3-venv time
 python3 --version
 ```
 
-Check that Python reports version 3.11–3.14. If it does not, install a supported Python and its matching `venv` package, then use that interpreter in the venv command below.
+Then verify if the Python version is between 3.11 and 3.14. If it is not, install a supported Python version with `venv` support using your operating system's package manager or the [official Python installers](https://www.python.org/downloads/). Then replace `python3.11` in the command below with the version you installed; for example, use `python3.12` if you installed Python 3.12.
 
-Then clone the project and set up the environment:
+Create and activate the virtual environment:
 
 ```bash
-git clone https://github.com/shanthan5589/mesoGPT.git
-cd mesoGPT
-python3 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-bash setup.sh gpu
 ```
 
-The GPU command selects the CUDA 12.6 PyTorch build. For CPU-only setup, run `bash setup.sh cpu` instead. Setup installs the selected PyTorch build and the remaining dependencies from `pyproject.toml`. It does not download data or run experiments.
+Install dependencies:
+
+```bash
+bash setup.sh gpu       # GPU
+bash setup.sh cpu       # CPU-only
+```
 
 ## Downloading the dataset
 
