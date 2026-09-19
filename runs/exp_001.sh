@@ -16,7 +16,7 @@ fi
 
 VENV_DIR="$PROJECT_ROOT/.venv"
 if [[ ! -x "$VENV_DIR/bin/python" ]]; then
-    echo "Virtual environment not found. Run: bash setup.sh" >&2
+    echo "Virtual environment not found. Create .venv and run bash setup.sh cpu or gpu (see README.md)." >&2
     exit 1
 fi
 source "$VENV_DIR/bin/activate"

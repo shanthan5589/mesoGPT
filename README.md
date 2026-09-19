@@ -150,33 +150,27 @@ mesoGPT/
 
 ## Installation
 
-mesoGPT requires Python 3.11 through 3.14.
-
-On Ubuntu or WSL, install the system prerequisites first:
+On Ubuntu or Debian, install Git and Python with `venv` support:
 
 ```bash
 sudo apt update
-sudo apt install -y git git-lfs python3 python3-venv time
+sudo apt install -y git python3 python3-venv
+python3 --version
 ```
 
-### Setup
+Check that Python reports version 3.11–3.14. If it does not, install a supported Python and its matching `venv` package, then use that interpreter in the venv command below.
+
+Then clone the project and set up the environment:
 
 ```bash
 git clone https://github.com/shanthan5589/mesoGPT.git
 cd mesoGPT
-bash setup.sh
+python3 -m venv .venv
 source .venv/bin/activate
+bash setup.sh gpu
 ```
 
-`setup.sh` creates a project-local virtual environment, reuses a compatible
-PyTorch installation when one is already available, installs missing
-dependencies, and checks whether CUDA is available. CPU-only environments are supported for development, although full pretraining requires a suitable GPU.
-
-If multiple Python versions are installed, select one explicitly:
-
-```bash
-PYTHON_BIN=python3.12 bash setup.sh
-```
+The GPU command selects the CUDA 12.6 PyTorch build. For CPU-only setup, run `bash setup.sh cpu` instead. Setup installs the selected PyTorch build and the remaining dependencies from `pyproject.toml`. It does not download data or run experiments.
 
 ## Downloading the dataset
 
