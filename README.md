@@ -72,7 +72,7 @@ Text generation
 
 ### [Experiment 1: Tokenizer training-data scaling](experiments/exp_001/README.md)
 
-![Marginal Gain](../mesoGPT/experiments/exp_001/assets/quality_and_marginal_gain.png)
+![Marginal Gain](experiments/exp_001/assets/quality_and_marginal_gain.png)
 
 Measured how tokenizer-training corpus size affects held-out compression while keeping the vocabulary fixed at 16,384 tokens.
 
@@ -80,7 +80,7 @@ Eleven tokenizers were trained using between 25M and 500M characters. The 250M-c
 
 ### [Experiment 2: Baseline language-model pretraining](experiments/exp_002/README.md)
 
-![Losses](../mesoGPT/experiments/exp_002/assets/losses.png)
+![Losses](experiments/exp_002/assets/losses.png)
 
 Pretrained a 97.7M-parameter decoder-only transformer on approximately 1.95B tokens.
 
@@ -90,7 +90,7 @@ Refer [Compute and Cost estimations](/experiments/exp_002/training_compute_estim
 
 ### [Experiment 3:  Accelerating Attention with Flash Attention](experiments/exp_003/README.md)
 
-![performance_overview](../mesoGPT/experiments/exp_003/assets/mfu_and_throughput.png)
+![performance_overview](experiments/exp_003/assets/mfu_and_throughput.png)
 
 Replaced the model’s explicit causal-attention implementation with PyTorch's SDPA (which used its built-in Flash attention implementation) and benchmarked micro-batch sizes of 16, 32, and 64 while keeping the global batch size fixed at 512 sequences.
 
