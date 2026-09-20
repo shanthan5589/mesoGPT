@@ -18,6 +18,8 @@ mesoGPT is a language-model built from scratch to understand transformer archite
 
 The current baseline is a 97.7M-parameter decoder-only Transformer pretrained on approximately 1.95B tokens using a single NVIDIA L40S.
 
+If you have any questions, I recommend using [DeepWiki](https://deepwiki.com/shanthan5589/mesoGPT) to get answers in a structured and organized manner. 
+
 ## Baseline results
 
 | Metric                    |           Result |
