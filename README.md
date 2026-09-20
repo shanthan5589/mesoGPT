@@ -270,15 +270,6 @@ python src/mesoGPT/utils/sample.py \
   --temperature 0.8
 ```
 
-## Current limitations
-
-* The baseline uses an explicit attention implementation rather than optimized SDPA or Flash Attention.
-* Tokens are produced dynamically by the dataloader instead of being pretokenized.
-* The measured model FLOP utilization is approximately 4%.
-* Dataset order and exact shard identity are not yet captured in a run manifest.
-* The model has not undergone instruction tuning or preference optimization.
-
-
 ## License
 
 This project is released under the [MIT License](LICENSE).
