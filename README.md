@@ -6,7 +6,7 @@
   <h1>
     mesoGPT
   </h1>
-        
+
   <h2>
     Building and training large language models from scratch.
   </h2>
@@ -72,7 +72,7 @@ Text generation
 
 ### [Experiment 1: Tokenizer training-data scaling](experiments/exp_001/README.md)
 
-![Marginal Gain](assets/quality_and_marginal_gain.png)
+![Marginal Gain](../mesoGPT/experiments/exp_001/assets/quality_and_marginal_gain.png)
 
 Measured how tokenizer-training corpus size affects held-out compression while keeping the vocabulary fixed at 16,384 tokens.
 
@@ -80,7 +80,7 @@ Eleven tokenizers were trained using between 25M and 500M characters. The 250M-c
 
 ### [Experiment 2: Baseline language-model pretraining](experiments/exp_002/README.md)
 
-![Losses](./assets/losses.png)
+![Losses](../mesoGPT/experiments/exp_002/assets/losses.png)
 
 Pretrained a 97.7M-parameter decoder-only transformer on approximately 1.95B tokens.
 
@@ -90,7 +90,7 @@ Refer [Compute and Cost estimations](/experiments/exp_002/training_compute_estim
 
 ### [Experiment 3:  Accelerating Attention with Flash Attention](experiments/exp_003/README.md)
 
-![performance_overview](./assets/mfu_and_throughput.png)
+![performance_overview](../mesoGPT/experiments/exp_003/assets/mfu_and_throughput.png)
 
 Replaced the model’s explicit causal-attention implementation with PyTorch's SDPA (which used its built-in Flash attention implementation) and benchmarked micro-batch sizes of 16, 32, and 64 while keeping the global batch size fixed at 512 sequences.
 
@@ -119,31 +119,63 @@ Overall this experiment demonstrates that Flash attention can significantly impr
 
 ```text
 mesoGPT/
-├── mesoGPT/
-│   ├── common.py
-│   ├── dataloader.py
-│   ├── dataset.py
-│   ├── model_registry.py
-│   └── tokenizer.py
+├── assets/
+│
+├── data/               # Downloaded shards are stored here. Not committed to Git.
 │
 ├── experiments/
 │   ├── exp_001/
 │   │   ├── README.md
-│   │   └── tok_train.py
-│   └── exp_002/
+│   │   └── assets/
+│   ├── exp_002/
+│   │   ├── README.md
+│   │   ├── training_compute_estimation.md
+│   │   └── assets/
+│   └── exp_003/
 │       ├── README.md
-│       ├── base_train.py
-│       └── model.py
+│       ├── estimations.py
+│       └── assets/
 │
-├── scripts/
-│   ├── data_stats.py
-│   ├── model_stats.py
-│   └── sample.py
-│
-├── runs/
+├── launchers/
 │   ├── exp_001.sh
-│   └── exp_002.sh
+│   ├── exp_002.sh
+│   └── exp_003.sh
 │
+├── outputs/
+│   ├── exp_001/
+│   ├── exp_002/
+│   └── exp_003/
+│
+├── src/
+│   └── mesoGPT/
+│       ├── __init__.py
+│       ├── paths.py
+│       ├── dataset/
+│       │   ├── __init__.py
+│       │   ├── __main__.py
+│       │   ├── dataset.py
+│       │   └── dataloader.py
+│       ├── models/
+│       │   ├── __init__.py
+│       │   ├── model.py
+│       │   └── registry.py
+│       ├── tokenizer/
+│       │   ├── __init__.py
+│       │   └── tokenizer.py
+│       ├── training/
+│       │   ├── __init__.py
+│       │   ├── tok_train.py
+│       │   └── trainer.py
+│       └── utils/
+│           ├── __init__.py
+│           ├── data_stats.py
+│           ├── model_stats.py
+│           └── sample.py
+│
+├── .gitattributes
+├── .gitignore
+├── LICENSE
+├── README.md
 ├── pyproject.toml
 └── setup.sh
 ```
@@ -200,13 +232,19 @@ Dataset files are saved locally under `data/` and are not committed to Git.
 Tokenizer scaling experiment:
 
 ```bash
-bash runs/exp_001.sh
+bash launchers/exp_001.sh
 ```
 
 Baseline language-model pretraining:
 
 ```bash
-bash runs/exp_002.sh
+bash launchers/exp_002.sh
+```
+
+Accelerating attention with Flash attention:
+
+```bash
+bash launchers/exp_003.sh
 ```
 
 Full configurations, measurements and limitations are documented in the corresponding experiment reports.
@@ -223,9 +261,11 @@ git lfs pull
 Generate text from a checkpoint:
 
 ```bash
-python scripts/sample.py \
-  experiments/exp_002/runs/2026-09-05_11-41-45_UTC \
-  --prompt "The future of artificial intelligence" \
+python src/mesoGPT/utils/sample.py \
+  "checkpoint directory" \
+  --tokenizer-dir "outputs/exp_001/<tokenizer-run-timestamp>" \
+  --tokenizer-name "tok-v16384-c450.00m" \
+  --prompt "Hello" \
   --max-tokens 100 \
   --temperature 0.8
 ```

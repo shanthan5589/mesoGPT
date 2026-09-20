@@ -5,7 +5,7 @@ import requests
 
 import argparse
 
-from mesoGPT.common import ROOT_DIR
+from mesoGPT.paths import ROOT_DIR
 
 BASE_URL = "https://huggingface.co/datasets/karpathy/climbmix-400b-shuffle/resolve/main"
 

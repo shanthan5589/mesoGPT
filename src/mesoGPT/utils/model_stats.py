@@ -11,12 +11,12 @@ available arguments:
 
 import torch
 
-from experiments.exp_002.model import GPT, GPTConfig
+from mesoGPT.models.model import GPT, GPTConfig
 
 import argparse
 import math
 
-def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
+def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout, attention):
 
     GPT_config = GPTConfig(
         T=T,
@@ -24,6 +24,7 @@ def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
         vocab_size=vocab_size,
         num_heads=num_heads,   
         n_layers=n_layers,
+        attention=attention,
         dropout=dropout,
     )
 
@@ -53,6 +54,7 @@ def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
     total_memory_usage = model_state_memory + run_time_memory + temporary_memory
     total_memory_usage_ = model_state_memory + run_time_memory_ + temporary_memory
 
+    print(f"Attention type: {attention}")
     print(f"Total parameters: {total_parameters:,}")
     print(f"Trainable parameters: {trainable_parameters:,}")
     print(f"Training token budget: {training_token_budget:,}")
@@ -60,6 +62,7 @@ def count_parameters(B, T, C, vocab_size, num_heads, n_layers, dropout):
     print(f"For batch size {B}, Optimizer steps needed: {math.ceil(training_token_budget / (B * T)):,}")
     print(f"Total memory usage (in GiB) - FP-32: {(total_memory_usage / 1_073_741_824):,}")
     print(f"Total memory usage (in GiB) - FP-16: {(total_memory_usage_ / 1_073_741_824):,}")
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Count parameters in a GPT model.")
@@ -70,6 +73,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_heads", type=int, required=True, help="Number of attention heads")
     parser.add_argument("--n_layers", type=int, required=True, help="Number of transformer layers")
     parser.add_argument("--dropout", type=float, required=False, default=0.1, help="Dropout rate")
+    parser.add_argument("--attention", type=str, required=True, help="Attention type (manual or sdpa)")
 
     args = parser.parse_args()
 
@@ -81,4 +85,5 @@ if __name__ == "__main__":
         num_heads=args.num_heads,
         n_layers=args.n_layers,
         dropout=args.dropout, 
+        attention=args.attention,
     )

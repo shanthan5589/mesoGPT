@@ -1,19 +1,10 @@
 from time import perf_counter
+import argparse
+from pathlib import Path
+import re
 
 from mesoGPT.dataset import list_parquet_files, parquet_batches
 from mesoGPT.tokenizer import BPETokenizer
-import pyarrow.parquet as pq
-from mesoGPT.common import ROOT_DIR
-
-import argparse
-
-from pathlib import Path
-
-import re
-
-TOKENIZER_OUTPUT_DIRECTORY = (
-    ROOT_DIR / "artifacts" / "tokenizer"
-)
 
 
 def training_text_iterator(args):
@@ -109,7 +100,7 @@ def main():
     parser.add_argument(
         "--tokenizer-output-directory",
         type=Path,
-        default=TOKENIZER_OUTPUT_DIRECTORY,
+        required=True,
         help="Parent directory for trained tokenizers.",
     )
     

@@ -3,17 +3,18 @@ available arguments:
     type: "tokenizer" or "model"
     --max-budget: maximum number of characters/tokens used to train tokenizer/model.
     --max-chars-per-document: maximum number of characters to use from each selected document (only applicable when type is "tokenizer")
+    --tokenizer-dir: directory containing the tokenizer
+    --tokenizer-name: name of the tokenizer
 '''
-
 
 from mesoGPT.dataset import list_parquet_files, parquet_batches
 from mesoGPT.tokenizer import BPETokenizer
-from mesoGPT.common import TOKENIZER_DIR, TOKENIZER_NAME
+from pathlib import Path
 
 import argparse
 import math
 
-def main(type, max_budget, max_characters_per_document=0):
+def main(type, max_budget, tokenizer_dir, tokenizer_name, max_characters_per_document=0):
 
     if type not in {"tokenizer", "model"}:
         raise ValueError("type must be either 'tokenizer' or 'model'")
@@ -47,8 +48,8 @@ def main(type, max_budget, max_characters_per_document=0):
     if type == "model":
 
         tokenizer = BPETokenizer.from_directory(
-            tokenizer_directory=TOKENIZER_DIR,
-            tokenizer_name=TOKENIZER_NAME,
+            tokenizer_directory=tokenizer_dir,
+            tokenizer_name=tokenizer_name,
         )
 
         tokens_per_shard = 0
@@ -97,10 +98,13 @@ if __name__ == "__main__":
         help="Maximum number of characters to use from each document.",
     )
 
+    parser.add_argument("--tokenizer-dir", type=Path,  required=True)
+    parser.add_argument("--tokenizer-name",type=str, required=True)
+
     args = parser.parse_args()
 
     available_training_shards, required_extra_shards, storage_needed = main(
-        args.type, args.max_budget, args.max_chars_per_document
+        args.type, args.max_budget, args.tokenizer_dir, args.tokenizer_name, args.max_chars_per_document
     )
 
     if required_extra_shards > 0:

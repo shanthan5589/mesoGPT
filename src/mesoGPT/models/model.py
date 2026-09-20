@@ -1,6 +1,6 @@
 '''
 Tied weights for token embedding and lm_head
-Fused QKV 
+Fused QKV
 Rotary Positional Embeddings without adding positional embedding.
 Pre-LayerNorm
 Linear and Embedding layers initialized with (mean=0, std=0.02)
@@ -20,6 +20,7 @@ class GPTConfig:
     vocab_size: int
     num_heads: int
     n_layers: int
+    attention: str
     dropout: float = 0.0
 
     def __post_init__(self):
@@ -35,6 +36,8 @@ class GPTConfig:
             raise ValueError("C must be divisible by num_heads")
         if self.n_layers <= 0:
             raise ValueError("n_layers must be positive")
+        if self.attention not in ["manual", "sdpa"]:
+            raise ValueError("attention must be either 'manual' or 'sdpa'")
         if not 0.0 <= self.dropout < 1.0:
             raise ValueError("dropout must be between 0 and 1")
         if (self.C // self.num_heads) % 2 != 0:
@@ -47,8 +50,8 @@ class TokenEmbedding(nn.Module):
         self.embedding = nn.Embedding(vocab_size, C)   # (vocab_size x C) learnable params
 
     def forward(self, x):
-        token_emb = self.embedding(x)     
-        return token_emb                           
+        token_emb = self.embedding(x)
+        return token_emb
 
 
 class RotaryEmbedding(nn.Module):
@@ -73,16 +76,19 @@ class RotaryEmbedding(nn.Module):
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, T, C, num_heads, dropout):
+    def __init__(self, T, C, num_heads, dropout, attention_type="manual"):
         super().__init__()
         self.T = T
         self.num_heads = num_heads
         assert C % num_heads == 0, "Embedding dimension must be divisible by number of heads"
         self.head_size = C // num_heads
-        self.qkv = nn.Linear(C, 3 * C)      # (3C, C) 
+        self.qkv = nn.Linear(C, 3 * C)      # (3C, C)
         self.rope = RotaryEmbedding(T, self.head_size)
         self.dropout = nn.Dropout(dropout)
         self.proj = nn.Linear(C, C)            # (C^2) + C  learnable params
+        self.attention_type = attention_type
+        if attention_type == "manual":
+            self.register_buffer("tril", torch.tril(torch.ones(T, T)), persistent=False)  # (T, T)
 
     def forward(self, x):
         B, T, C = x.shape
@@ -92,19 +98,28 @@ class MultiHeadAttention(nn.Module):
         q = q.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
         k = k.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
         v = v.transpose(1, 2)                                                   # (B, num_heads, T, head_size)
-        q, k = self.rope(q), self.rope(k)                                       # (B, num_heads, T, head_size) x 2     
-        out = F.scaled_dot_product_attention(
-            q,
-            k,
-            v,
-            attn_mask=None,
-            dropout_p=self.dropout.p if self.training else 0.0,
-            is_causal=True,
-        )
+        q, k = self.rope(q), self.rope(k)                                       # (B, num_heads, T, head_size) x 2
+
+        if self.attention_type == "sdpa":
+            out = F.scaled_dot_product_attention(
+                q,
+                k,
+                v,
+                attn_mask=None,
+                dropout_p=self.dropout.p if self.training else 0.0,
+                is_causal=True,
+            )
+        elif self.attention_type == "manual":
+            weights = q @ k.transpose(-2, -1) * (self.head_size ** -0.5)            # (B, num_heads, T, head_size) x (B, num_heads, head_size, T) -> (B, num_heads, T, T)
+            weights = weights.masked_fill(self.tril[:T, :T] == 0, float('-inf'))    # (B, num_heads, T, T) Dynamic causal-mask slicing
+            weights = torch.softmax(weights, dim=-1)
+            weights = self.dropout(weights)
+            out = weights @ v
+
         out = out.transpose(1, 2).contiguous()                                  # (B, T, num_heads, head_size)
-        out = out.view(B, T, C)                                                 # (B, T, C) because num_heads * head_size = C                  
-        out = self.proj(out) 
-        out = self.dropout(out)                              
+        out = out.view(B, T, C)                                                 # (B, T, C) because num_heads * head_size = C
+        out = self.proj(out)
+        out = self.dropout(out)
         return out
 
 
@@ -117,18 +132,18 @@ class FeedForward(nn.Module):
             nn.Linear(4*C, C),         # (4C^2) + C learnable params
             nn.Dropout(dropout)
         )
-        
+
     def forward(self, x):
         return self.net(x)
 
 
 class Block(nn.Module):
-    def __init__(self, T, C, num_heads, dropout):
+    def __init__(self, T, C, num_heads, dropout, attention_type):
         super().__init__()
         self.ln1 = nn.LayerNorm(C)                                     # 2C learnable params
-        self.attn = MultiHeadAttention(T, C, num_heads, dropout)       # (num_heads x (3 x head_size) x (C+1)) + (C^2 + C) learnable params
+        self.attn = MultiHeadAttention(T, C, num_heads, dropout, attention_type)       # (num_heads x (3 x head_size) x (C+1)) + (C^2 + C) learnable params
         self.ln2 = nn.LayerNorm(C)                                     # 2C learnable params
-        self.ff = FeedForward(C, dropout)                              # 8C^2 + 5C learnable params 
+        self.ff = FeedForward(C, dropout)                              # 8C^2 + 5C learnable params
 
     def forward(self, x):
         x = x + self.attn(self.ln1(x))
@@ -141,7 +156,7 @@ class GPT(nn.Module):
         super().__init__()
         self.config = config
         self.token_embedding = TokenEmbedding(config.vocab_size, config.C)
-        self.blocks = nn.Sequential(*[Block(config.T, config.C, config.num_heads, config.dropout) for _ in range(config.n_layers)])  
+        self.blocks = nn.Sequential(*[Block(config.T, config.C, config.num_heads, config.dropout, config.attention) for _ in range(config.n_layers)])
         self.ln_f = nn.LayerNorm(config.C)                 # 2C learnable params
         self.lm_head = nn.Linear(config.C, config.vocab_size)     # (vocab_size x C) + vocab_size learnable params
         # Weight Tying
@@ -149,7 +164,7 @@ class GPT(nn.Module):
         self.apply(self._init_weights)
 
     def _init_weights(self, module):
-        
+
         if isinstance(module, nn.Linear):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
             if module.bias is not None:
@@ -167,7 +182,7 @@ class GPT(nn.Module):
 
     @torch.no_grad()
     def generate(self, idx, max_tokens=100, temperature=1.0):
-        
+
         for _ in range(max_tokens):
             idx_cond = idx if idx.size(1) <= self.config.T else idx[:, -self.config.T:]
 

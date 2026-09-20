@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Run from anywhere with:
-# bash runs/exp_003.sh
+# bash runs/exp_002_baseline.sh
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
@@ -15,7 +15,7 @@ if [[ ! -x /usr/bin/time ]]; then
 fi
 
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
-RUNS_DIR="$PROJECT_ROOT/experiments/exp_003/runs"
+RUNS_DIR="$PROJECT_ROOT/outputs/exp_002"
 RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
 
 mkdir -p "$RUN_DIR"
@@ -69,14 +69,14 @@ else
 fi
 
 echo "===== BASELINE TRAINING ====="
-/usr/bin/time -v python -u experiments/exp_003/base_train.py \
+/usr/bin/time -v python -u src/mesoGPT/training/trainer.py \
     --context_length 1024 \
     --n_embed 768 \
     --n_layers 12 \
     --n_heads 12 \
     --dropout 0.1 \
     --global_batch_size 512 \
-    --micro_batch_size 64 \
+    --micro_batch_size 16 \
     --optimizer_steps 3726 \
     --max_lr 3e-4 \
     --min_lr 3e-5 \
@@ -86,7 +86,12 @@ echo "===== BASELINE TRAINING ====="
     --eval_iters 64 \
     --stride 1024 \
     --num_workers 4 \
-    --run_dir "$RUN_DIR"
+    --run_dir "$RUN_DIR" \
+    --profiling_enabled False \
+    --performance_timer False \
+    --tokenizer-dir "$PROJECT_ROOT/outputs/exp_001/2026-08-24_18-58-31_UTC" \
+    --tokenizer-name "tok-v16384-c450.00m" \
+    --attention "manual"
 
 stop_gpu_monitor
 

@@ -4,8 +4,9 @@ from pathlib import Path
 
 import torch
 
-from mesoGPT.common import ROOT_DIR, TOKENIZER_DIR, TOKENIZER_NAME
-from mesoGPT.model_registry import build_model
+from mesoGPT.models import model
+from mesoGPT.paths import ROOT_DIR
+from mesoGPT.models.registry import build_model
 from mesoGPT.tokenizer import BPETokenizer
 
 device = torch.device(
@@ -24,7 +25,7 @@ def resolve_run_directory(run_dir):
     return run_dir.resolve()
 
 
-def load_run(run_dir):
+def load_run(run_dir, tokenizer_dir, tokenizer_name):
     if not run_dir.is_dir():
         raise FileNotFoundError(
             f"Run directory does not exist: {run_dir}"
@@ -46,12 +47,12 @@ def load_run(run_dir):
     with metadata_path.open("r", encoding="utf-8") as file:
         metadata = json.load(file)
 
-    exp_no = metadata.get("exp_no")
     model_config = metadata.get("model_config")
+    attention = model_config.get("attention")
 
-    if not exp_no:
+    if not attention:
         raise ValueError(
-            f"exp_no is missing from {metadata_path}"
+            f"attention is missing from {metadata_path}"
         )
 
     if not isinstance(model_config, dict):
@@ -59,13 +60,8 @@ def load_run(run_dir):
             f"model_config is missing or invalid in {metadata_path}"
         )
 
-    tokenizer_name = metadata.get(
-        "tokenizer_name",
-        TOKENIZER_NAME,
-    )
-
     tokenizer = BPETokenizer.from_directory(
-        tokenizer_directory=TOKENIZER_DIR,
+        tokenizer_directory=tokenizer_dir,
         tokenizer_name=tokenizer_name,
     )
 
@@ -83,19 +79,29 @@ def load_run(run_dir):
             f"{expected_vocab_size}"
         )
 
-    model = build_model(
-        exp_no=exp_no,
-        model_config=model_config,
-    ).to(device)
+    if attention:
 
-    state_dict = torch.load(
-        model_path,
-        map_location=device,
-        weights_only=True,
-    )
+        model = build_model(
+            model_config=model_config,
+        ).to(device)
 
-    model.load_state_dict(state_dict, strict=True)
-    model.eval()
+        state_dict = torch.load(
+            model_path,
+            map_location=device,
+            weights_only=True,
+        )
+
+        legacy_mask_keys = [
+            key for key in state_dict
+            if key.endswith(".attn.tril")
+        ]
+
+        for key in legacy_mask_keys:
+            del state_dict[key]
+
+        model.load_state_dict(state_dict, strict=True)
+
+        model.eval()
 
     return model, tokenizer, metadata
 
@@ -119,6 +125,18 @@ def main():
         "run_dir",
         type=Path,
         help="Directory containing model.pt and model_meta.json.",
+    )
+
+    parser.add_argument(
+        "tokenizer_dir",
+        type=Path,
+        help="Directory containing the tokenizer.",
+    )
+
+    parser.add_argument(
+        "tokenizer_name",
+        type=str,
+        help="Name of the tokenizer.",
     )
 
     parser.add_argument(
@@ -155,7 +173,7 @@ def main():
     print(f"Using device: {device}")
     print(f"Loading run: {run_dir}")
 
-    model, tokenizer, metadata = load_run(run_dir)
+    model, tokenizer, metadata = load_run(run_dir, args.tokenizer_dir, args.tokenizer_name)
 
     print(f"Experiment no: {metadata['exp_no']}")
     print(f"Checkpoint step: {metadata.get('step', 'unknown')}")

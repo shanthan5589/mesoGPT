@@ -22,7 +22,7 @@ fi
 source "$VENV_DIR/bin/activate"
 
 RUN_TIMESTAMP="$(date -u +'%Y-%m-%d_%H-%M-%S_UTC')"
-RUNS_DIR="$PROJECT_ROOT/experiments/exp_001/runs"
+RUNS_DIR="$PROJECT_ROOT/outputs/exp_001"
 RUN_DIR="$RUNS_DIR/$RUN_TIMESTAMP"
 mkdir -p "$RUN_DIR"
 
@@ -47,7 +47,7 @@ for TRAINING_CHARS in \
     500_000_000
 do
     echo "===== TOKENIZER: $TRAINING_CHARS TRAINING CHARACTERS ====="
-    /usr/bin/time -v python experiments/exp_001/tok_train.py \
+    /usr/bin/time -v python src/mesoGPT/training/tok_train.py \
         --max-training-chars "$TRAINING_CHARS" \
         --max-chars-per-document 10_000 \
         --vocab-size 16384 \
